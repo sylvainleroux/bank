@@ -1,0 +1,8 @@
+/bin
+/target
+/.classpath
+/.gwt
+/.settings
+.DS_Store
+/.project
+.classpath

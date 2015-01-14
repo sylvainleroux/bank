@@ -1,0 +1,49 @@
+#!/bin/bash
+set -e
+
+function fail(){
+	echo "*** Installation failed ! ***"
+	exit 1
+}
+
+export VERSION=`java -jar target/bank-jar-with-dependencies.jar columns:0 version`
+export INSTALL_PATH=/usr/local/bank-$VERSION
+export LINK=/usr/local/bin/bank
+
+unzip -q -c target/bank-jar-with-dependencies.jar com/sleroux/bank/presentation/header.ascii
+echo ""
+echo "previous version : $(bank version)"
+echo "new version      : $VERSION"
+echo "Install path     : $INSTALL_PATH"
+echo "Linked to        : $LINK"
+echo ""
+echo "sudo password :"
+
+(
+	mkdir -p $INSTALL_PATH
+	rm -fv /usr/local/bank 
+	ln -sv $INSTALL_PATH /usr/local/bank 
+	cp -Rfv ./target/bank-jar-with-dependencies.jar $INSTALL_PATH/
+) 1>/dev/null 
+
+if [[ -e ${LINK} ]]; then 
+	if [[ "$(bank version)" == *SLR ]]; then 
+		echo "Remove previous version ${LINK} "
+		rm -f ${LINK} 1>/dev/null
+	else
+		echo "A not supported version of bank already exists : ${LINK}"
+		fail
+	fi
+fi
+
+(
+	cp -Rfv ./bank ${LINK}
+	chmod +x ${LINK} 
+) 1>/dev/null
+
+if [[ "$VERSION" == "$(bank version)" ]]; then
+	echo "*** Success ! ***"
+else
+	echo "Installed version doesn't match new version"
+	fail
+fi

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ ! -f /usr/local/bank/bank-jar-with-dependencies.jar ]
+then 
+	echo "Library not found, project may have not been compiled yet"
+	exit 1
+fi
+COLUMNS=$(tput cols)
+java -cp /usr/local/bank/bank-jar-with-dependencies.jar com.sleroux.bank.Bank $@ columns:$COLUMNS
