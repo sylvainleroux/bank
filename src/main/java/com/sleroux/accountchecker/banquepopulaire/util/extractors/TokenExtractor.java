@@ -39,7 +39,9 @@ public class TokenExtractor implements ContentExtractor<String> {
 	 */
 	public boolean extract(String _line) {
 		if (token != null) {
-			logger.debug("already found");
+             if (logger != null) {
+                 logger.debug("already found");
+             }
 			return true;
 		}
 		if (logger != null) {
