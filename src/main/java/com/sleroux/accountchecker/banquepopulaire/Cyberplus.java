@@ -143,7 +143,7 @@ public class Cyberplus extends CyberplusConfig implements AccountChecker {
 			public void exec() throws Exception {
 				addExtractor(new TokenExtractor());
 				addExtractor(new HashExtractor());
-				addExtractor(new TokenExtractor("documentID", "downloadDoc\\(.([a-z0-9]*)"));
+				addExtractor(new TokenExtractor("documentID", "DocumentUtils\\.download\\(.([a-z0-9]*)"));
 				String dateStart = getProperty("dateStart");
 				String dateEnd = getProperty("dateEnd");
 				String codeBanque = getProperty("codeBanque");
