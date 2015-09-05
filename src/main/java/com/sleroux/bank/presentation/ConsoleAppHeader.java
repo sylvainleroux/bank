@@ -41,4 +41,5 @@ public class ConsoleAppHeader {
 		}
 		System.out.println(line);
 	}
+
 }

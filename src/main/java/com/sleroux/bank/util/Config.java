@@ -36,7 +36,7 @@ public class Config {
 		properties.clear();
 		// Load default
 		properties.load(Config.class.getResourceAsStream("default.properties"));
-		
+
 		// Load custom
 		Properties p2 = new Properties();
 		try {
@@ -44,7 +44,7 @@ public class Config {
 		} catch (IOException e) {
 			System.err.println("Custom config file not found, run bank configure");
 		}
-		
+
 		for (Entry<Object, Object> entry : p2.entrySet()) {
 			String key = entry.getKey().toString();
 			if ("VERSION".equals(key)) {
@@ -179,5 +179,29 @@ public class Config {
 
 	public static String getFilterFileName() {
 		return getProperty("FILTER_FILE_NAME");
+	}
+
+	public static String getBudgetDocument() {
+		return getProperty("BUDGET_DOCUMENT");
+	}
+
+	public static String getBudgetDocumentTemplate() {
+		return getProperty("BUDGET_DOCUMENT_TEMPLATE");
+	}
+
+	public static String getDBHost() {
+		return getProperty("DB_HOST");
+	}
+
+	public static String getDBPort() {
+		return getProperty("DB_PORT");
+	}
+
+	public static String getDBUser() {
+		return getProperty("DB_USERNAME");
+	}
+
+	public static String getDBPass() {
+		return getProperty("DB_PASSWORD");
 	}
 }

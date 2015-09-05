@@ -44,4 +44,39 @@ public class OperationBuilder {
 			throw new Exception("Unable to parse date");
 		}
 	}
+
+	public static ExtractOperation createOperationCMB(String[] _nextLine, String _accountNumber) throws Exception {
+
+		ExtractOperation operation = new ExtractOperation();
+		operation.setDateOperation(parseDate(_nextLine[0]));
+		operation.setDateValeur(parseDate(_nextLine[1]));
+		operation.setLibelle(_nextLine[2]);
+		DecimalFormat formatter = new DecimalFormat("#0,00");
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		symbols.setDecimalSeparator(',');
+		symbols.setGroupingSeparator(' ');
+		formatter.setDecimalFormatSymbols(symbols);
+
+		if (_nextLine[3] != null && !_nextLine[3].equals("")) {
+			try {
+				Number d = formatter.parse(_nextLine[3]);
+				BigDecimal value = new BigDecimal(d.toString());
+				operation.setMontant(value.negate());
+			} catch (ParseException e) {
+				throw new Exception("Unable to parse operation amount for debit [" + _nextLine[3] + "|" + _nextLine[4] + "]", e);
+			}
+		} else if (_nextLine[4] != null) {
+			try {
+				Number d = formatter.parse(_nextLine[4]);
+				BigDecimal value = new BigDecimal(d.toString());
+				operation.setMontant(value);
+			} catch (ParseException e) {
+				throw new Exception("Unable to parse operation amount", e);
+			}
+		}
+
+		operation.setAccountID(_accountNumber);
+		return operation;
+
+	}
 }

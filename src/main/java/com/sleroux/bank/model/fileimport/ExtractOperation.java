@@ -78,8 +78,7 @@ public class ExtractOperation {
 	@Override
 	public String toString() {
 		String sep = ";";
-		return "[" + accountID + sep + formatDate(dateCompta) + sep + formatDate(dateOperation) + sep + libelle + sep + reference + sep
-				+ formatDate(dateValeur) + sep + montant + "]";
+		return "[" + accountID + sep + formatDate(dateOperation) + sep + formatDate(dateValeur) + sep + libelle + sep + montant + "]";
 
 	}
 

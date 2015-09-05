@@ -6,34 +6,45 @@ import java.util.List;
 import com.sleroux.bank.business.app.Calc;
 import com.sleroux.bank.business.app.Catego;
 import com.sleroux.bank.business.app.Period;
-import com.sleroux.bank.business.extract.FileImport;
 import com.sleroux.bank.business.extract.CyberplusImport;
+import com.sleroux.bank.business.extract.FileImport;
 import com.sleroux.bank.business.tool.Console;
 import com.sleroux.bank.business.tool.Setup;
 import com.sleroux.bank.business.tool.Test;
 import com.sleroux.bank.business.tool.UpdatePassword;
 import com.sleroux.bank.business.tool.Version;
+import com.sleroux.bank.evo.ImportCMB;
+import com.sleroux.bank.evo.ReadBudget;
+import com.sleroux.bank.evo.StoreBudget;
+import com.sleroux.bank.evo.ToCSV;
+import com.sleroux.bank.evo.WriteBudget;
 import com.sleroux.bank.persistence.PersistenceContext;
 import com.sleroux.bank.util.command.CommandCollection;
 
 public class Bank {
 
 	private static Bank					instance;
-	private static int					terminalWidth	= 80;
+	private static int					terminalWidth		= 80;
 	//
-	public final static String			APP_ALL			= "all";
-	public final static String			APP_PASSWORD	= "pwd";
-	public final static String			APP_SETUP		= "setup";
-	public final static String			APP_TEST		= "test";
-	public static final String			APP_CALC		= "calc";
-	public static final String			APP_CATEGO		= "catego";
-	public static final String			APP_FILEIMPORT	= "fileimport";
-	public static final String			APP_IMPORT		= "import";
-	public static final String			APP_VERSION		= "version";
-	public static final String			APP_PERIOD		= "period";
+	public final static String			APP_ALL				= "all";
+	public final static String			APP_PASSWORD		= "pwd";
+	public final static String			APP_SETUP			= "setup";
+	public final static String			APP_TEST			= "test";
+	public static final String			APP_CALC			= "calc";
+	public static final String			APP_CATEGO			= "catego";
+	public static final String			APP_FILEIMPORT		= "fileimport";
+	public static final String			APP_IMPORT			= "import";
+	public static final String			APP_VERSION			= "version";
+	public static final String			APP_PERIOD			= "period";
+	public static final String			APP_TOCSV			= "csv";
+	public static final String			APP_IMPORT_CMB		= "cmb";
+	public static final String			APP_STORE_BUDGET	= "store";
+	public static final String			APP_WRITE_BUDGET	= "write";
+	public static final String			APP_READ_BUDGET		= "read";
 	//
-	private final static List<String>	apps			= Arrays.asList(APP_IMPORT, APP_FILEIMPORT, APP_CATEGO, APP_CALC, APP_PASSWORD,
-																APP_SETUP, APP_TEST, APP_ALL, APP_VERSION, APP_PERIOD);
+	private final static List<String>	apps				= Arrays.asList(APP_IMPORT, APP_FILEIMPORT, APP_CATEGO, APP_CALC, APP_PASSWORD,
+																	APP_SETUP, APP_TEST, APP_ALL, APP_VERSION, APP_PERIOD, APP_TOCSV,
+																	APP_IMPORT_CMB, APP_STORE_BUDGET, APP_WRITE_BUDGET, APP_READ_BUDGET);
 
 	/**
 	 * @param args
@@ -91,7 +102,7 @@ public class Bank {
 			args = _args;
 		}
 		final CommandCollection commands = CommandCollection.getCommand(args, apps);
-		
+
 		if (commands.contains(APP_ALL)) {
 			commands.add(APP_IMPORT);
 			commands.add(APP_CATEGO);
@@ -137,6 +148,25 @@ public class Bank {
 		if (commands.contains(APP_PERIOD)) {
 			_context.exec(new Period());
 		}
+		if (commands.contains(APP_TOCSV)) {
+			_context.exec(new ToCSV());
+		}
+
+		if (commands.contains(APP_IMPORT_CMB)) {
+			_context.exec(new ImportCMB());
+		}
+
+		if (commands.contains(APP_STORE_BUDGET)) {
+			_context.exec(new StoreBudget());
+		}
+
+		if (commands.contains(APP_WRITE_BUDGET)) {
+			_context.exec(new WriteBudget());
+		}
+		if (commands.contains(APP_READ_BUDGET)) {
+			_context.exec(new ReadBudget());
+		}
+
 	}
 
 	public static List<String> getApps() {
