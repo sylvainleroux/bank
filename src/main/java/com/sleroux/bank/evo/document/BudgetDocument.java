@@ -345,6 +345,9 @@ public class BudgetDocument {
 				formula.append(columnName(_index) + (getRowForKey(compte) + 4));
 			}
 		}
+		if (formula.length() == 0){
+			formula.append("0");
+		}
 		setCellFormula(ROW_TOTAL_3, _index, formula.toString());
 	}
 

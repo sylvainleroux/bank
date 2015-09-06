@@ -31,4 +31,14 @@ public class OperationFormater {
 		return String.format("%-3s %s %10.2f %-13s %s", _equals ? ">>>" : _i + ".", formatDate(_operation.getDateCompta()),
 				_operation.getMontant(), _operation.getCatego(), _operation.getLibelle());
 	}
+
+	public static String toStringLight(com.sleroux.bank.evo.model.Operation o) {
+		return  "Compte    : " + o.getCompte() + 
+				"    Date Op.  : "
+				+ formatDate(o.getDateOperation()) + "    Date Valeur.  : " + formatDate(o.getDateValeur()) + 
+				"    Id : " + o.getId() +
+				"\nLibelelle : "
+				+ o.getLibelle() + "\nMontant   : " + o.getMontant();
+
+	}
 }

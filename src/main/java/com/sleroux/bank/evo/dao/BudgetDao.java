@@ -152,7 +152,7 @@ public class BudgetDao {
 
 			// Do backup
 
-			String sql1 = "insert into bank.budget_backup(year, month, catego, debit, credit, notes, compte) select year,month, catego, debit, credit, notes, compte from bank.budget";
+			String sql1 = "insert into bank.backup_budget(year, month, catego, debit, credit, notes, compte) select year,month, catego, debit, credit, notes, compte from bank.budget";
 			stmt.executeUpdate(sql1);
 
 			stmt.close();

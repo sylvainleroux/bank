@@ -37,6 +37,8 @@ public class Import extends BusinessServiceAbstract {
 		Connection conn = DatabaseConnection.getConnection();
 		operationDao = new OperationDao(conn);
 
+		operationDao.doBackup();
+
 		runImportCMB();
 
 		runImportBPO();

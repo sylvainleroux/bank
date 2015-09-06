@@ -92,4 +92,13 @@ public class OperationDao {
 		return o;
 	}
 
+	public void saveOperation(Operation _o) throws SQLException {
+		Statement s = conn.createStatement();
+		String sql = String.format("update bank.operation set catego='%s', year=%d, month_adjusted=%d where id=%d",_o.getCatego(), _o.getYear(), _o.getMonthAdjusted(), _o.getId());
+		logger.debug(sql);
+		s.executeUpdate(sql);
+		s.close();
+		
+	}
+
 }

@@ -1,6 +1,9 @@
 package com.sleroux.bank.persistence;
 
+import java.sql.SQLException;
+
 import com.sleroux.bank.business.BusinessServiceAbstract;
+import com.sleroux.bank.evo.dao.DatabaseConnection;
 import com.sleroux.bank.persistence.dao.book.BookDao;
 import com.sleroux.bank.persistence.dao.book.BookDaoImpl;
 import com.sleroux.bank.persistence.storage.xls.BookStorage;
@@ -49,6 +52,15 @@ public class PersistenceContext {
 	}
 
 	public void finalizeContext() {
+		
+		try {
+			DatabaseConnection.getConnection().close();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
 		if (readOnly) {
 			System.out.println("Read only context : do not save");
 			return;

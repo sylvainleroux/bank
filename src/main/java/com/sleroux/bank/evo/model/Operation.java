@@ -3,8 +3,6 @@ package com.sleroux.bank.evo.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 public class Operation {
 
 	private int			id;
@@ -99,7 +97,7 @@ public class Operation {
 	}
 
 	public String toString() {
-		return compte + "|" + dateOperation + "|" + dateValeur + "|"  + libelle  + "|" + montant;
+		return compte + "|" + dateOperation + "|" + dateValeur + "|" + libelle + "|" + montant;
 	}
 
 }
