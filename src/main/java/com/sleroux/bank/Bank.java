@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.sleroux.bank.business.app.Calc;
-import com.sleroux.bank.business.app.Catego;
 import com.sleroux.bank.business.app.Period;
 import com.sleroux.bank.business.extract.FileImport;
 import com.sleroux.bank.business.tool.Console;
@@ -12,6 +11,7 @@ import com.sleroux.bank.business.tool.Setup;
 import com.sleroux.bank.business.tool.Test;
 import com.sleroux.bank.business.tool.UpdatePassword;
 import com.sleroux.bank.business.tool.Version;
+import com.sleroux.bank.evo.Catego;
 import com.sleroux.bank.evo.Import;
 import com.sleroux.bank.evo.ReadBudget;
 import com.sleroux.bank.evo.WriteBudget;

@@ -1,13 +1,17 @@
 package com.sleroux.bank.evo.dao;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.log4j.Logger;
 
+import com.sleroux.bank.evo.model.Operation;
 import com.sleroux.bank.model.fileimport.ExtractDocument;
 import com.sleroux.bank.model.fileimport.ExtractOperation;
 
@@ -49,4 +53,43 @@ public class OperationDao {
 		}
 
 	}
+
+	public List<Operation> getNotCategorized() throws SQLException {
+		Statement s = conn.createStatement();
+		ResultSet rs = s.executeQuery("select * from operation where catego is null");
+		List<Operation> ops = new ArrayList<>();
+		while (rs.next()) {
+			ops.add(resultSetToObject(rs));
+		}
+		s.close();
+		return ops;
+	}
+	
+
+	public List<String> getSuggestionsFor(String _libelle) throws SQLException {
+		Statement s = conn.createStatement();
+		ResultSet rs = s.executeQuery("call get_catego('" + _libelle + "')");
+		List<String> suggests = new ArrayList<>();		
+		while (rs.next()){
+			suggests.add(rs.getString("catego"));
+		}
+		s.close();
+		return suggests;
+	}
+
+	private Operation resultSetToObject(ResultSet rs) throws SQLException {
+		Operation o = new Operation();
+		o.setId(rs.getInt("id"));
+		o.setCompte(rs.getString("compte"));
+		o.setDateOperation(rs.getDate("date_operation"));
+		o.setDateValeur(rs.getDate("date_valeur"));
+		o.setLibelle(rs.getString("libelle"));
+		o.setMontant(rs.getBigDecimal("montant"));
+		o.setCatego(rs.getString("catego"));
+		o.setYear(rs.getInt("year"));
+		o.setMonthBank(rs.getInt("month_bank"));
+		o.setMonthAdjusted(rs.getInt("month_adjusted"));
+		return o;
+	}
+
 }

@@ -22,6 +22,7 @@ import com.sleroux.bank.persistence.dao.filter.FiltersDaoImpl;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.util.formats.OperationFormater;
 
+@Deprecated
 public class Catego extends BusinessServiceAbstract {
 
 	private Logger						logger		= Logger.getLogger(Catego.class);
