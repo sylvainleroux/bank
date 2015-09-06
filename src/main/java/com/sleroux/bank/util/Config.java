@@ -204,4 +204,16 @@ public class Config {
 	public static String getDBPass() {
 		return getProperty("DB_PASSWORD");
 	}
+	
+	public static String getImportCommandPath() {
+		return getProperty("IMPORT_COMMAND_PATH");
+	}
+	
+	public static String getImportCommandCMB() {
+		return getProperty("IMPORT_COMMAND_CMB");
+	}
+	
+	public static String getImportCommandBPO() {
+		return getProperty("IMPORT_COMMAND_BPO");
+	}
 }

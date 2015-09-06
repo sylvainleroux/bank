@@ -89,4 +89,9 @@ public class ExtractOperation {
 		return formatter.format(d);
 	}
 
+	public String getIndex() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		return accountID + "-" + format.format(dateOperation) + "-" + format.format(dateValeur) + "-" + libelle + "-" + montant.toString();
+	}
+
 }

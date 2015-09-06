@@ -6,17 +6,14 @@ import java.util.List;
 import com.sleroux.bank.business.app.Calc;
 import com.sleroux.bank.business.app.Catego;
 import com.sleroux.bank.business.app.Period;
-import com.sleroux.bank.business.extract.CyberplusImport;
 import com.sleroux.bank.business.extract.FileImport;
 import com.sleroux.bank.business.tool.Console;
 import com.sleroux.bank.business.tool.Setup;
 import com.sleroux.bank.business.tool.Test;
 import com.sleroux.bank.business.tool.UpdatePassword;
 import com.sleroux.bank.business.tool.Version;
-import com.sleroux.bank.evo.ImportCMB;
+import com.sleroux.bank.evo.Import;
 import com.sleroux.bank.evo.ReadBudget;
-import com.sleroux.bank.evo.StoreBudget;
-import com.sleroux.bank.evo.ToCSV;
 import com.sleroux.bank.evo.WriteBudget;
 import com.sleroux.bank.persistence.PersistenceContext;
 import com.sleroux.bank.util.command.CommandCollection;
@@ -36,15 +33,12 @@ public class Bank {
 	public static final String			APP_IMPORT			= "import";
 	public static final String			APP_VERSION			= "version";
 	public static final String			APP_PERIOD			= "period";
-	public static final String			APP_TOCSV			= "csv";
-	public static final String			APP_IMPORT_CMB		= "cmb";
-	public static final String			APP_STORE_BUDGET	= "store";
 	public static final String			APP_WRITE_BUDGET	= "write";
 	public static final String			APP_READ_BUDGET		= "read";
 	//
 	private final static List<String>	apps				= Arrays.asList(APP_IMPORT, APP_FILEIMPORT, APP_CATEGO, APP_CALC, APP_PASSWORD,
-																	APP_SETUP, APP_TEST, APP_ALL, APP_VERSION, APP_PERIOD, APP_TOCSV,
-																	APP_IMPORT_CMB, APP_STORE_BUDGET, APP_WRITE_BUDGET, APP_READ_BUDGET);
+																	APP_SETUP, APP_TEST, APP_ALL, APP_VERSION, APP_PERIOD,
+																	APP_WRITE_BUDGET, APP_READ_BUDGET);
 
 	/**
 	 * @param args
@@ -118,7 +112,7 @@ public class Bank {
 		}
 
 		if (commands.contains(APP_IMPORT)) {
-			_context.exec(new CyberplusImport());
+			_context.exec(new Import());
 		}
 
 		if (commands.contains(APP_FILEIMPORT)) {
@@ -147,17 +141,6 @@ public class Bank {
 
 		if (commands.contains(APP_PERIOD)) {
 			_context.exec(new Period());
-		}
-		if (commands.contains(APP_TOCSV)) {
-			_context.exec(new ToCSV());
-		}
-
-		if (commands.contains(APP_IMPORT_CMB)) {
-			_context.exec(new ImportCMB());
-		}
-
-		if (commands.contains(APP_STORE_BUDGET)) {
-			_context.exec(new StoreBudget());
 		}
 
 		if (commands.contains(APP_WRITE_BUDGET)) {
