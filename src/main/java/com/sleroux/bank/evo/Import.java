@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
+import com.sleroux.bank.evo.dao.DatabaseConnection;
 import com.sleroux.bank.evo.dao.OperationDao;
 import com.sleroux.bank.model.fileimport.ExtractDocument;
 import com.sleroux.bank.model.fileimport.ExtractOperation;

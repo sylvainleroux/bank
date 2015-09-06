@@ -1,4 +1,4 @@
-package com.sleroux.bank.evo;
+package com.sleroux.bank.evo.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

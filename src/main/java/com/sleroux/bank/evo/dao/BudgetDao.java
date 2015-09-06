@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.sleroux.bank.evo.DatabaseConnection;
 import com.sleroux.bank.evo.model.Budget;
 
 public class BudgetDao {

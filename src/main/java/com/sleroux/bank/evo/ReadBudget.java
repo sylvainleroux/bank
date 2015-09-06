@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.evo.dao.BudgetDao;
+import com.sleroux.bank.evo.dao.DatabaseConnection;
 import com.sleroux.bank.evo.document.BudgetDocument;
 import com.sleroux.bank.evo.model.Budget;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
