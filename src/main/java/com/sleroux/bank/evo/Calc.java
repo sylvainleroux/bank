@@ -29,7 +29,7 @@ public class Calc extends BusinessServiceAbstract {
 
 		Calendar c = Calendar.getInstance();
 		int year = c.get(Calendar.YEAR);
-		int currentMonth = c.get(Calendar.MONTH) ;
+		int currentMonth = c.get(Calendar.MONTH) +1 ;
 
 		List<CalcResult> calc = calcDao.getCalcForMonth(year, currentMonth);
 
