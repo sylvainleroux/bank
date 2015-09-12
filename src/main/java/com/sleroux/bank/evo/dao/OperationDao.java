@@ -64,13 +64,12 @@ public class OperationDao {
 		s.close();
 		return ops;
 	}
-	
 
 	public List<String> getSuggestionsFor(String _libelle) throws SQLException {
 		Statement s = conn.createStatement();
 		ResultSet rs = s.executeQuery("call get_catego('" + _libelle + "')");
-		List<String> suggests = new ArrayList<>();		
-		while (rs.next()){
+		List<String> suggests = new ArrayList<>();
+		while (rs.next()) {
 			suggests.add(rs.getString("catego"));
 		}
 		s.close();
@@ -94,11 +93,35 @@ public class OperationDao {
 
 	public void saveOperation(Operation _o) throws SQLException {
 		Statement s = conn.createStatement();
-		String sql = String.format("update bank.operation set catego='%s', year=%d, month_adjusted=%d where id=%d",_o.getCatego(), _o.getYear(), _o.getMonthAdjusted(), _o.getId());
+		String sql = String.format("update bank.operation set catego='%s', year=%d, month_adjusted=%d where id=%d", _o.getCatego(),
+				_o.getYear(), _o.getMonthAdjusted(), _o.getId());
 		logger.debug(sql);
 		s.executeUpdate(sql);
 		s.close();
-		
+
 	}
+
+	public List<String> getDebitsCatego() throws SQLException {
+		Statement s = conn.createStatement();
+		ResultSet rs = s.executeQuery("select distinct catego from bank.operation where montant < 0");
+		List<String> suggests = new ArrayList<>();
+		while (rs.next()) {
+			suggests.add(rs.getString("catego"));
+		}
+		s.close();
+		return suggests;
+	}
+	
+	public List<String> getCreditsCatego() throws SQLException {
+		Statement s = conn.createStatement();
+		ResultSet rs = s.executeQuery("select distinct catego from bank.operation where montant > 0");
+		List<String> suggests = new ArrayList<>();
+		while (rs.next()) {
+			suggests.add(rs.getString("catego"));
+		}
+		s.close();
+		return suggests;
+	}
+
 
 }
