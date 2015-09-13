@@ -90,12 +90,9 @@ public class TestCatego {
 
 	@Test
 	public void testCategoLength3() throws ValidationException, SQLException {
-
 		Catego catego = new Catego();
-
 		Operation op = new Operation();
 		op.setMontant(new BigDecimal("-120"));
-
 		catego.validate(op, "REMB");
 
 	}
@@ -115,29 +112,22 @@ public class TestCatego {
 
 	@Test
 	public void testGetCategoListDebits() throws Exception {
-
 		OperationDao dao = new OperationDao(DatabaseConnection.getConnection());
 		List<String> debits = dao.getDebitsCatego();
 		for (String s : debits) {
 			System.out.println(s);
 		}
 		Assert.assertTrue(debits.contains("COURSES"));
-
 	}
 
 	@Test(expected=ValidationException.class)
 	public void testAddCatego() throws ValidationException, SQLException {
-
 		Catego catego = new Catego();
-
 		Operation op = new Operation();
 		op.setMontant(new BigDecimal("-120"));
-
 		catego.validate(op, "AVION");
-		
 		Operation op2 = new Operation();
 		op2.setMontant(new BigDecimal("120"));
-
 		catego.validate(op2, "AVION");
 	}
 }

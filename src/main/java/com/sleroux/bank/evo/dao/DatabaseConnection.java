@@ -29,7 +29,6 @@ public class DatabaseConnection {
 			}
 			try {
 				String url = String.format("jdbc:mysql://%s:%s/bank", Config.getDBHost(), Config.getDBPort());
-				System.out.println(url);
 				connection = (Connection) DriverManager.getConnection(url, Config.getDBUser(), Config.getDBPass());
 			} catch (SQLException e) {
 				throw new Exception(e.getMessage(), e);

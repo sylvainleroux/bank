@@ -1,5 +1,6 @@
 package com.sleroux.bank;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import com.sleroux.bank.business.tool.Setup;
 import com.sleroux.bank.business.tool.Test;
 import com.sleroux.bank.business.tool.UpdatePassword;
 import com.sleroux.bank.business.tool.Version;
+import com.sleroux.bank.evo.Adjust;
 import com.sleroux.bank.evo.Calc;
 import com.sleroux.bank.evo.Catego;
 import com.sleroux.bank.evo.Import;
@@ -35,15 +37,23 @@ public class Bank {
 	public static final String			APP_PERIOD			= "period";
 	public static final String			APP_WRITE_BUDGET	= "write";
 	public static final String			APP_READ_BUDGET		= "read";
+	public static final String			APP_ADJUST			= "adjust";
 	//
 	private final static List<String>	apps				= Arrays.asList(APP_IMPORT, APP_FILEIMPORT, APP_CATEGO, APP_CALC, APP_PASSWORD,
 																	APP_SETUP, APP_TEST, APP_ALL, APP_VERSION, APP_PERIOD,
-																	APP_WRITE_BUDGET, APP_READ_BUDGET);
+																	APP_WRITE_BUDGET, APP_READ_BUDGET, APP_ADJUST);
 
 	/**
 	 * @param args
+	 * @throws InvocationTargetException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException {
 		// Header.printHeader();
 		if (args.length == 1) {
 			System.out.println("Usage : bank <command> ");
@@ -71,6 +81,7 @@ public class Bank {
 	}
 
 	public static Bank getInstance() {
+
 		if (instance == null)
 			instance = new Bank();
 		return instance;
@@ -121,6 +132,10 @@ public class Bank {
 
 		if (commands.contains(APP_CATEGO)) {
 			_context.exec(new Catego());
+		}
+
+		if (commands.contains(APP_ADJUST)) {
+			_context.exec(new Adjust());
 		}
 
 		if (commands.contains(APP_CALC)) {
