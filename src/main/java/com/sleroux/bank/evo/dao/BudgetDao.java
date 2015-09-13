@@ -151,7 +151,7 @@ public class BudgetDao {
 
 			// Do backup
 
-			String sql1 = "insert into bank.backup_budget(year, month, catego, debit, credit, notes, compte) select year,month, catego, debit, credit, notes, compte from bank.budget";
+			String sql1 = "insert into bank.budget_backup(year, month, catego, debit, credit, notes, compte) select year,month, catego, debit, credit, notes, compte from bank.budget";
 			stmt.executeUpdate(sql1);
 
 			stmt.close();
@@ -181,7 +181,7 @@ public class BudgetDao {
 
 	public List<Changes> getAdded() throws Exception {
 		Statement stmt = conn.createStatement();
-		String sql = "select a.id, a.year, a.month, a.catego, a.debit, a.credit, a.compte, a.notes from budget a left join (select * from backup_budget inner join (select max(timestamp) last_backup from backup_budget) t on t.last_backup = timestamp) b on a.year = b.year and a.month = b.month and a.catego = b.catego and a.compte = b.compte where  b.timestamp is null";
+		String sql = "select a.id, a.year, a.month, a.catego, a.debit, a.credit, a.compte, a.notes from budget a left join (select * from budget_backup inner join (select max(timestamp) last_backup from budget_backup) t on t.last_backup = timestamp) b on a.year = b.year and a.month = b.month and a.catego = b.catego and a.compte = b.compte where  b.timestamp is null";
 		List<Changes> list = new ArrayList<>();
 		ResultSet rs = stmt.executeQuery(sql);
 		while (rs.next()) {
@@ -201,7 +201,7 @@ public class BudgetDao {
 
 	public List<Changes> getUpdated() throws Exception {
 		Statement stmt = conn.createStatement();
-		String sql = "select a.year year, a.month month, a.catego catego, a.compte compte, a.debit debit, a.credit credit, a.notes, b.debit old_debit, b.credit old_credit from budget a inner join backup_budget b on a.year = b.year and a.month = b.month and a.catego = b.catego and a.compte = b.compte inner join (select max(timestamp) last_backup from backup_budget) t on b.timestamp = t.last_backup where a.debit <> b.debit or a.credit <> b.credit;";
+		String sql = "select a.year year, a.month month, a.catego catego, a.compte compte, a.debit debit, a.credit credit, a.notes, b.debit old_debit, b.credit old_credit from budget a inner join budget_backup b on a.year = b.year and a.month = b.month and a.catego = b.catego and a.compte = b.compte inner join (select max(timestamp) last_backup from budget_backup) t on b.timestamp = t.last_backup where a.debit <> b.debit or a.credit <> b.credit;";
 		List<Changes> list = new ArrayList<>();
 		ResultSet rs = stmt.executeQuery(sql);
 		while (rs.next()) {
@@ -223,7 +223,7 @@ public class BudgetDao {
 
 	public List<Changes> getDeleted() throws Exception {
 		Statement stmt = conn.createStatement();
-		String sql = "select a.year, a.month, a.catego, a.compte, a.debit, a.credit, a.notes from backup_budget a inner join (select max(timestamp) last_backup from backup_budget) t on a.timestamp = t.last_backup left join budget b on a.year = b.year and a.month = b.month and a.catego = b.catego and a.compte = b.compte where  b.id is null";
+		String sql = "select a.year, a.month, a.catego, a.compte, a.debit, a.credit, a.notes from budget_backup a inner join (select max(timestamp) last_backup from budget_backup) t on a.timestamp = t.last_backup left join budget b on a.year = b.year and a.month = b.month and a.catego = b.catego and a.compte = b.compte where  b.id is null";
 		List<Changes> list = new ArrayList<>();
 		ResultSet rs = stmt.executeQuery(sql);
 		while (rs.next()) {
