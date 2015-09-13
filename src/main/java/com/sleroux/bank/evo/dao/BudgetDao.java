@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.sleroux.bank.evo.model.Budget;
+import com.sleroux.bank.model.budget.Update;
 
 public class BudgetDao {
 
@@ -22,7 +23,6 @@ public class BudgetDao {
 
 		try {
 
-			Connection conn = DatabaseConnection.getConnection();
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT count(*) FROM bank.operation");
 			while (rs.next()) {
@@ -147,7 +147,6 @@ public class BudgetDao {
 	public void backupAndReplace(List<Budget> _budgets) {
 		try {
 
-			Connection conn = DatabaseConnection.getConnection();
 			Statement stmt = conn.createStatement();
 
 			// Do backup
@@ -156,10 +155,8 @@ public class BudgetDao {
 			stmt.executeUpdate(sql1);
 
 			stmt.close();
-
 			stmt = conn.createStatement();
 			stmt.executeUpdate("truncate table bank.budget");
-
 			stmt = conn.createStatement();
 
 			StringBuilder sql = new StringBuilder("INSERT INTO bank.budget(year, month, catego, debit, credit, compte) values ");
@@ -180,6 +177,68 @@ public class BudgetDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public List<Update> getAdded() throws Exception {
+		Statement stmt = conn.createStatement();
+		String sql = "select a.id, a.year, a.month, a.catego, a.debit, a.credit, a.compte, a.notes from budget a left join (select * from backup_budget inner join (select max(timestamp) last_backup from backup_budget) t on t.last_backup = timestamp) b on a.year = b.year and a.month = b.month and a.catego = b.catego and a.compte = b.compte where  b.timestamp is null";
+		List<Update> list = new ArrayList<>();
+		ResultSet rs = stmt.executeQuery(sql);
+		while (rs.next()) {
+			Update b = new Update();
+			b.setYear(rs.getInt("year"));
+			b.setMonth(rs.getInt("month"));
+			b.setCatego(rs.getString("catego"));
+			b.setCompte(rs.getString("compte"));
+			b.setCredit(rs.getBigDecimal("credit"));
+			b.setDebit(rs.getBigDecimal("debit"));
+			b.setNotes(rs.getString("notes"));
+			list.add(b);
+		}
+
+		return list;
+	}
+
+	public List<Update> getUpdated() throws Exception {
+		Statement stmt = conn.createStatement();
+		String sql = "select a.year year, a.month month, a.catego catego, a.compte compte, a.debit debit, a.credit credit, a.notes, b.debit old_debit, b.credit old_credit from budget a inner join backup_budget b on a.year = b.year and a.month = b.month and a.catego = b.catego and a.compte = b.compte inner join (select max(timestamp) last_backup from backup_budget) t on b.timestamp = t.last_backup where a.debit <> b.debit or a.credit <> b.credit;";
+		List<Update> list = new ArrayList<>();
+		ResultSet rs = stmt.executeQuery(sql);
+		while (rs.next()) {
+			Update b = new Update();
+			b.setYear(rs.getInt("year"));
+			b.setMonth(rs.getInt("month"));
+			b.setCatego(rs.getString("catego"));
+			b.setCompte(rs.getString("compte"));
+			b.setCredit(rs.getBigDecimal("credit"));
+			b.setDebit(rs.getBigDecimal("debit"));
+			b.setNotes(rs.getString("notes"));
+			b.setOldCredit(rs.getBigDecimal("old_credit"));
+			b.setOldDebit(rs.getBigDecimal("old_debit"));
+			list.add(b);
+		}
+
+		return list;
+	}
+
+	public List<Update> getDeleted() throws Exception {
+		Statement stmt = conn.createStatement();
+		String sql = "select a.year, a.month, a.catego, a.compte, a.debit, a.credit, a.notes from backup_budget a inner join (select max(timestamp) last_backup from backup_budget) t on a.timestamp = t.last_backup left join budget b on a.year = b.year and a.month = b.month and a.catego = b.catego and a.compte = b.compte where  b.id is null";
+		List<Update> list = new ArrayList<>();
+		ResultSet rs = stmt.executeQuery(sql);
+		while (rs.next()) {
+			Update b = new Update();
+			b.setYear(rs.getInt("year"));
+			b.setMonth(rs.getInt("month"));
+			b.setCatego(rs.getString("catego"));
+			b.setCompte(rs.getString("compte"));
+			b.setCredit(rs.getBigDecimal("credit"));
+			b.setDebit(rs.getBigDecimal("debit"));
+			b.setNotes(rs.getString("notes"));
+			list.add(b);
+		}
+
+		return list;
 	}
 
 }

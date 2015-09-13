@@ -14,34 +14,34 @@ import com.sleroux.bank.business.tool.Version;
 import com.sleroux.bank.evo.Adjust;
 import com.sleroux.bank.evo.Calc;
 import com.sleroux.bank.evo.Catego;
+import com.sleroux.bank.evo.DBToFile;
+import com.sleroux.bank.evo.FileToDB;
 import com.sleroux.bank.evo.Import;
-import com.sleroux.bank.evo.ReadBudget;
-import com.sleroux.bank.evo.WriteBudget;
 import com.sleroux.bank.persistence.PersistenceContext;
 import com.sleroux.bank.util.command.CommandCollection;
 
 public class Bank {
 
 	private static Bank					instance;
-	private static int					terminalWidth		= 80;
+	private static int					terminalWidth	= 80;
 	//
-	public final static String			APP_ALL				= "all";
-	public final static String			APP_PASSWORD		= "pwd";
-	public final static String			APP_SETUP			= "setup";
-	public final static String			APP_TEST			= "test";
-	public static final String			APP_CALC			= "calc";
-	public static final String			APP_CATEGO			= "catego";
-	public static final String			APP_FILEIMPORT		= "fileimport";
-	public static final String			APP_IMPORT			= "import";
-	public static final String			APP_VERSION			= "version";
-	public static final String			APP_PERIOD			= "period";
-	public static final String			APP_WRITE_BUDGET	= "write";
-	public static final String			APP_READ_BUDGET		= "read";
-	public static final String			APP_ADJUST			= "adjust";
+	public final static String			APP_ALL			= "all";
+	public final static String			APP_PASSWORD	= "pwd";
+	public final static String			APP_SETUP		= "setup";
+	public final static String			APP_TEST		= "test";
+	public static final String			APP_CALC		= "calc";
+	public static final String			APP_CATEGO		= "catego";
+	public static final String			APP_FILEIMPORT	= "fileimport";
+	public static final String			APP_IMPORT		= "import";
+	public static final String			APP_VERSION		= "version";
+	public static final String			APP_PERIOD		= "period";
+	public static final String			APP_DB_TO_FILE	= "db2file";
+	public static final String			APP_FILE_TO_DB	= "file2db";
+	public static final String			APP_ADJUST		= "adjust";
 	//
-	private final static List<String>	apps				= Arrays.asList(APP_IMPORT, APP_FILEIMPORT, APP_CATEGO, APP_CALC, APP_PASSWORD,
-																	APP_SETUP, APP_TEST, APP_ALL, APP_VERSION, APP_PERIOD,
-																	APP_WRITE_BUDGET, APP_READ_BUDGET, APP_ADJUST);
+	private final static List<String>	apps			= Arrays.asList(APP_IMPORT, APP_FILEIMPORT, APP_CATEGO, APP_CALC, APP_PASSWORD,
+																APP_SETUP, APP_TEST, APP_ALL, APP_VERSION, APP_PERIOD, APP_DB_TO_FILE,
+																APP_FILE_TO_DB, APP_ADJUST);
 
 	/**
 	 * @param args
@@ -158,11 +158,11 @@ public class Bank {
 			_context.exec(new Period());
 		}
 
-		if (commands.contains(APP_WRITE_BUDGET)) {
-			_context.exec(new WriteBudget());
+		if (commands.contains(APP_DB_TO_FILE)) {
+			_context.exec(new DBToFile());
 		}
-		if (commands.contains(APP_READ_BUDGET)) {
-			_context.exec(new ReadBudget());
+		if (commands.contains(APP_FILE_TO_DB)) {
+			_context.exec(new FileToDB());
 		}
 
 	}

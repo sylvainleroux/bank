@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 
 public class Budget {
 
-	private int			id;
-	private int			year;
-	private int			month;
-	private String		catego;
-	private BigDecimal	debit	= BigDecimal.ZERO;
-	private BigDecimal	credit	= BigDecimal.ZERO;
-	private String		notes;
-	private String		compte;
+	protected int			id;
+	protected int			year;
+	protected int			month;
+	protected String		catego;
+	protected BigDecimal	debit	= BigDecimal.ZERO;
+	protected BigDecimal	credit	= BigDecimal.ZERO;
+	protected String		notes;
+	protected String		compte;
 
 	public int getId() {
 		return id;

@@ -11,7 +11,7 @@ import com.sleroux.bank.evo.model.Budget;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.util.Config;
 
-public class WriteBudget extends BusinessServiceAbstract {
+public class DBToFile extends BusinessServiceAbstract {
 
 	@Override
 	public void run() throws Exception {
