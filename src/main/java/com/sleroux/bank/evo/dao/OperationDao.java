@@ -28,7 +28,7 @@ public class OperationDao {
 	public void doBackup() throws SQLException {
 
 		Statement s = conn.createStatement();
-		StringBuilder sql = new StringBuilder("insert into backup_operation");
+		StringBuilder sql = new StringBuilder("insert into operation_backup");
 		sql.append("(compte, date_operation, date_valeur, libelle, montant, catego, year, month_bank, month_adjusted)");
 		sql.append(" ");
 		sql.append("select compte, date_operation, date_valeur, libelle, montant, catego, year, month_bank, month_adjusted from operation");
