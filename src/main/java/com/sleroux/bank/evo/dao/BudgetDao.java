@@ -232,13 +232,49 @@ public class BudgetDao {
 			b.setMonth(rs.getInt("month"));
 			b.setCatego(rs.getString("catego"));
 			b.setCompte(rs.getString("compte"));
-			b.setCredit(rs.getBigDecimal("credit"));
-			b.setDebit(rs.getBigDecimal("debit"));
+			b.setOldCredit(rs.getBigDecimal("credit"));
+			b.setOldDebit(rs.getBigDecimal("debit"));
+			b.setCredit(null);
+			b.setDebit(null);
 			b.setNotes(rs.getString("notes"));
 			list.add(b);
 		}
+		rs.close();
+		stmt.close();
 
 		return list;
+	}
+
+	public void saveChange(Changes _change) throws Exception {
+		Statement stmt = conn.createStatement();
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("insert into bank.budget_changes (year, month, catego, compte, type, prev_value, new_value) values (");
+		sql.append(_change.getYear());
+		sql.append(",");
+		sql.append(_change.getMonth());
+		sql.append(",");
+		sql.append("\"");
+		sql.append(_change.getCatego());
+		sql.append("\"");
+		sql.append(",");
+		sql.append("\"");
+		sql.append(_change.getCompte());
+		sql.append("\"");
+		sql.append(",");
+		sql.append("\"");
+		sql.append((_change.isCredit() ? "CREDIT" : "DEBIT"));
+		sql.append("\"");
+		sql.append(",");
+		sql.append(_change.isCredit() ? _change.getOldCredit() : _change.getOldDebit());
+		sql.append(",");
+		sql.append(_change.isCredit() ? _change.getCredit() : _change.getDebit());
+		sql.append(")");
+		
+		System.out.println(sql.toString());
+		stmt.executeUpdate(sql.toString());
+
+		stmt.close();
 	}
 
 }

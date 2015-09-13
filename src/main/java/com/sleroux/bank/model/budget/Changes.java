@@ -30,4 +30,21 @@ public class Changes extends Budget {
 		return super.toString() + " (Previously debit:" + oldDebit + " credit:" + oldCredit + ")";
 	}
 
+	public boolean isCredit() {
+		
+		if (oldCredit != null){
+			if (oldCredit.compareTo(BigDecimal.ZERO) > 0){
+				return true;
+			}
+		}
+		
+		if (credit != null){
+			if (credit.compareTo(BigDecimal.ZERO) > 0){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
 }

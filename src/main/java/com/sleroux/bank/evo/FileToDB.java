@@ -46,20 +46,23 @@ public class FileToDB extends BusinessServiceAbstract {
 		
 		System.out.println("-- New entries in Budget file : ");
 		for (Changes u : budgetDao.getAdded()){
+			budgetDao.saveChange(u);
 			System.out.println(u);
 		}
 		
 		System.out.println("-- Updated entries in Budget file :");
 		for (Changes u : budgetDao.getUpdated()){
+			budgetDao.saveChange(u);
 			System.out.println(u);
 		}
 		
 		System.out.println("-- Deleted entries in Budget file : ");
 		for (Changes u : budgetDao.getDeleted()){
+			budgetDao.saveChange(u);
 			System.out.println(u);
 		}
 		
-		System.out.println("Completed");
+		
 		
 		
 		conn.close();
