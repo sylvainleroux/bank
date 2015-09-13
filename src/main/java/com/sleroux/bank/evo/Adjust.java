@@ -5,7 +5,7 @@ import java.util.List;
 import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.evo.dao.BudgetDao;
 import com.sleroux.bank.evo.dao.DatabaseConnection;
-import com.sleroux.bank.model.budget.Update;
+import com.sleroux.bank.model.budget.Changes;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 
 public class Adjust extends BusinessServiceAbstract {
@@ -17,8 +17,8 @@ public class Adjust extends BusinessServiceAbstract {
 
 		BudgetDao dao = new BudgetDao(DatabaseConnection.getConnection());
 
-		List<Update> list = dao.getAdded();
-		for (Update b : list) {
+		List<Changes> list = dao.getAdded();
+		for (Changes b : list) {
 			System.out.println(b);
 		}
 

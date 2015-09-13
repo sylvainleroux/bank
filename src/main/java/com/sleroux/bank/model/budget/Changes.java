@@ -1,37 +1,33 @@
 package com.sleroux.bank.model.budget;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 import com.sleroux.bank.evo.model.Budget;
 
-public class Changes {
+public class Changes extends Budget {
 
-	private List<Budget>	created;
-	private List<Budget>	updated;
-	private List<Budget>	removed;
+	private BigDecimal	oldDebit;
+	private BigDecimal	oldCredit;
 
-	public List<Budget> getCreated() {
-		return created;
+	public BigDecimal getOldDebit() {
+		return oldDebit;
 	}
 
-	public void setCreated(List<Budget> _created) {
-		created = _created;
+	public void setOldDebit(BigDecimal _oldDebit) {
+		oldDebit = _oldDebit;
 	}
 
-	public List<Budget> getUpdated() {
-		return updated;
+	public BigDecimal getOldCredit() {
+		return oldCredit;
 	}
 
-	public void setUpdated(List<Budget> _updated) {
-		updated = _updated;
+	public void setOldCredit(BigDecimal _oldCredit) {
+		oldCredit = _oldCredit;
 	}
 
-	public List<Budget> getRemoved() {
-		return removed;
-	}
-
-	public void setRemoved(List<Budget> _removed) {
-		removed = _removed;
+	@Override
+	public String toString() {
+		return super.toString() + " (Previously debit:" + oldDebit + " credit:" + oldCredit + ")";
 	}
 
 }

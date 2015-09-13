@@ -9,7 +9,7 @@ import com.sleroux.bank.evo.dao.BudgetDao;
 import com.sleroux.bank.evo.dao.DatabaseConnection;
 import com.sleroux.bank.evo.document.BudgetDocument;
 import com.sleroux.bank.evo.model.Budget;
-import com.sleroux.bank.model.budget.Update;
+import com.sleroux.bank.model.budget.Changes;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.util.Config;
 
@@ -45,17 +45,17 @@ public class FileToDB extends BusinessServiceAbstract {
 		
 		
 		System.out.println("-- New entries in Budget file : ");
-		for (Update u : budgetDao.getAdded()){
+		for (Changes u : budgetDao.getAdded()){
 			System.out.println(u);
 		}
 		
 		System.out.println("-- Updated entries in Budget file :");
-		for (Update u : budgetDao.getUpdated()){
+		for (Changes u : budgetDao.getUpdated()){
 			System.out.println(u);
 		}
 		
 		System.out.println("-- Deleted entries in Budget file : ");
-		for (Update u : budgetDao.getDeleted()){
+		for (Changes u : budgetDao.getDeleted()){
 			System.out.println(u);
 		}
 		
