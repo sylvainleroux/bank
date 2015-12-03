@@ -4,8 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
-import com.sleroux.bank.business.app.Period;
-import com.sleroux.bank.business.extract.FileImport;
+import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.business.tool.Console;
 import com.sleroux.bank.business.tool.Setup;
 import com.sleroux.bank.business.tool.Test;
@@ -17,7 +16,6 @@ import com.sleroux.bank.evo.Catego;
 import com.sleroux.bank.evo.DBToFile;
 import com.sleroux.bank.evo.FileToDB;
 import com.sleroux.bank.evo.Import;
-import com.sleroux.bank.persistence.PersistenceContext;
 import com.sleroux.bank.util.command.CommandCollection;
 
 public class Bank {
@@ -75,9 +73,7 @@ public class Bank {
 			System.out.printf("\t  %-8s %s", "-h", "Print health report\n");
 			System.exit(1);
 		}
-		PersistenceContext context = PersistenceContext.getStandardInstance();
-		getInstance().run(args, context);
-		context.finalizeContext();
+		getInstance().run(args);
 	}
 
 	public static Bank getInstance() {
@@ -88,7 +84,7 @@ public class Bank {
 	}
 
 	// Loader
-	private void run(String[] _args, PersistenceContext _context) {
+	private void run(String[] _args) {
 		String args[];
 		String terminalWidthString = (_args.length > 0) ? _args[_args.length - 1] : "";
 		if (terminalWidthString.startsWith("columns:")) {
@@ -115,56 +111,56 @@ public class Bank {
 		}
 
 		if (commands.contains(APP_SETUP)) {
-			_context.exec(new Setup());
+			run(new Setup());
 		}
 
 		if (commands.contains(APP_PASSWORD)) {
-			_context.exec(new UpdatePassword());
+			run(new UpdatePassword());
 		}
 
 		if (commands.contains(APP_IMPORT)) {
-			_context.exec(new Import());
-		}
-
-		if (commands.contains(APP_FILEIMPORT)) {
-			_context.exec(new FileImport());
+			run(new Import());
 		}
 
 		if (commands.contains(APP_CATEGO)) {
-			_context.exec(new Catego());
+			run(new Catego());
 		}
 
 		if (commands.contains(APP_ADJUST)) {
-			_context.exec(new Adjust());
+			run(new Adjust());
 		}
 
 		if (commands.contains(APP_CALC)) {
-			_context.exec(new Calc());
+			run(new Calc());
 		}
 
 		if (commands.contains(APP_TEST)) {
-			_context.exec(new Test(commands.get(APP_TEST).getParameters().contains("-f")));
+			run(new Test(commands.get(APP_TEST).getParameters().contains("-f")));
 		}
 
 		if (commands.contains(APP_VERSION)) {
-			_context.exec(new Version());
+			run(new Version());
 		}
 
 		if (commands.getCommands().isEmpty()) {
-			_context.exec(new Console());
-		}
-
-		if (commands.contains(APP_PERIOD)) {
-			_context.exec(new Period());
+			run(new Console());
 		}
 
 		if (commands.contains(APP_DB_TO_FILE)) {
-			_context.exec(new DBToFile());
+			run(new DBToFile());
 		}
 		if (commands.contains(APP_FILE_TO_DB)) {
-			_context.exec(new FileToDB());
+			run(new FileToDB());
 		}
 
+	}
+
+	private void run(BusinessServiceAbstract _service) {
+		try {
+			_service.run();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static List<String> getApps() {
