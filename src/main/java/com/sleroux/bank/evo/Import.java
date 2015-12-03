@@ -62,7 +62,7 @@ public class Import extends BusinessServiceAbstract {
 	}
 
 	private void runImportBPO() throws Exception {
-		runImport(Config.getImportCommandBPO());
+		//runImport(Config.getImportCommandBPO());
 
 		ExtractDao extractDao = new ExtractDaoImpl();
 		List<ExtractDocument> docs = extractDao.getAll();
@@ -140,6 +140,9 @@ public class Import extends BusinessServiceAbstract {
 		String accountNumber = "CMB";
 		if (_file.contains("LB")) {
 			accountNumber = "LB";
+		}
+		if (_file.contains("PEL")){
+			accountNumber = "PEL";
 		}
 
 		ExtractDocument report = new ExtractDocument();

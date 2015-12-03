@@ -69,7 +69,14 @@ public class Catego extends BusinessServiceAbstract {
 			System.out.println(OperationFormater.toStringLight(o));
 
 			List<String> suggest = operationDao.getSuggestionsFor(o.getLibelle());
-			System.out.println("[Enter:" + suggest.get(0) + "], [m] for more suggestions, or type catego");
+
+			if (suggest.size() > 0) {
+				System.out.println("[Enter:" + suggest.get(0) + "], [m] for more suggestions, or type catego");
+			}else{
+				System.out.println("No suggestion, enter catego:");
+			}
+			
+			
 			while (categoRequests(o, suggest))
 				;
 

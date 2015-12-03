@@ -46,7 +46,7 @@ public class OperationDao {
 			stmt = conn.createStatement();
 			String sql = "INSERT IGNORE into operation (compte, date_operation, date_valeur, libelle, montant) ";
 			sql += String.format(Locale.ENGLISH, "values ('%s','%s','%s','%s', '%.2f') ", o.getAccountID(),
-					format.format(o.getDateOperation()), format.format(o.getDateValeur()), o.getLibelle().replaceAll("'", "\'"), o.getMontant());
+					format.format(o.getDateOperation()), format.format(o.getDateValeur()), o.getLibelle().replaceAll("'", ""), o.getMontant());
 			logger.info(sql);
 			stmt.executeUpdate(sql);
 			stmt.close();
