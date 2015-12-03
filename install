@@ -20,10 +20,10 @@ echo ""
 echo "sudo password :"
 
 (
-	mkdir -p $INSTALL_PATH
-	rm -fv /usr/local/bank 
-	ln -sv $INSTALL_PATH /usr/local/bank 
-	cp -Rfv ./target/bank-jar-with-dependencies.jar $INSTALL_PATH/
+	sudo mkdir -p $INSTALL_PATH
+	sudo rm -fv /usr/local/bank 
+	sudo ln -sv $INSTALL_PATH /usr/local/bank 
+	sudo cp -Rfv ./target/bank-jar-with-dependencies.jar $INSTALL_PATH/
 ) 1>/dev/null 
 
 if [[ -e ${LINK} ]]; then 
