@@ -1,5 +1,6 @@
 package com.sleroux.bank;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +17,7 @@ import com.sleroux.bank.evo.Catego;
 import com.sleroux.bank.evo.DBToFile;
 import com.sleroux.bank.evo.FileToDB;
 import com.sleroux.bank.evo.Import;
+import com.sleroux.bank.util.Config;
 import com.sleroux.bank.util.command.CommandCollection;
 
 public class Bank {
@@ -49,9 +51,10 @@ public class Bank {
 	 * @throws InstantiationException
 	 * @throws SecurityException
 	 * @throws NoSuchMethodException
+	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException {
+			IllegalArgumentException, InvocationTargetException, IOException {
 		// Header.printHeader();
 		if (args.length == 1) {
 			System.out.println("Usage : bank <command> ");
@@ -73,6 +76,9 @@ public class Bank {
 			System.out.printf("\t  %-8s %s", "-h", "Print health report\n");
 			System.exit(1);
 		}
+		
+		Config.loadProperties();
+		
 		getInstance().run(args);
 	}
 
