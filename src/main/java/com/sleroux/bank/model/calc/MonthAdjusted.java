@@ -56,7 +56,7 @@ public class MonthAdjusted implements Serializable {
 	public void addOperation(Operation _op, BudgetKeys _keyList) throws Exception {
 		String catego = _op.getCatego();
 		if (catego == null || catego.equals("")) {
-			throw new Exception("Can't do reporting, not categorized entry. Did you ran " + Bank.APP_CATEGO + " ? Operation : "
+			throw new Exception("Can't do reporting, not categorized entry. Did you ran Categorization ? Operation : "
 					+ OperationFormater.toString(_op));
 		}
 		if (catego.trim().equals("#DISPATCHED"))

@@ -2,163 +2,114 @@ package com.sleroux.bank;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.List;
+
+import asg.cliche.CLIException;
+import asg.cliche.Command;
+import asg.cliche.Shell;
+import asg.cliche.ShellFactory;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.business.tool.Console;
 import com.sleroux.bank.business.tool.Setup;
 import com.sleroux.bank.business.tool.Test;
 import com.sleroux.bank.business.tool.UpdatePassword;
 import com.sleroux.bank.business.tool.Version;
-import com.sleroux.bank.evo.Adjust;
 import com.sleroux.bank.evo.Calc;
 import com.sleroux.bank.evo.Catego;
 import com.sleroux.bank.evo.DBToFile;
 import com.sleroux.bank.evo.FileToDB;
 import com.sleroux.bank.evo.Import;
 import com.sleroux.bank.util.Config;
-import com.sleroux.bank.util.command.CommandCollection;
 
 public class Bank {
 
-	private static Bank					instance;
-	private static int					terminalWidth	= 80;
-	//
-	public final static String			APP_ALL			= "all";
-	public final static String			APP_PASSWORD	= "pwd";
-	public final static String			APP_SETUP		= "setup";
-	public final static String			APP_TEST		= "test";
-	public static final String			APP_CALC		= "calc";
-	public static final String			APP_CATEGO		= "catego";
-	public static final String			APP_FILEIMPORT	= "fileimport";
-	public static final String			APP_IMPORT		= "import";
-	public static final String			APP_VERSION		= "version";
-	public static final String			APP_PERIOD		= "period";
-	public static final String			APP_DB_TO_FILE	= "db2file";
-	public static final String			APP_FILE_TO_DB	= "file2db";
-	public static final String			APP_ADJUST		= "adjust";
-	//
-	private final static List<String>	apps			= Arrays.asList(APP_IMPORT, APP_FILEIMPORT, APP_CATEGO, APP_CALC, APP_PASSWORD,
-																APP_SETUP, APP_TEST, APP_ALL, APP_VERSION, APP_PERIOD, APP_DB_TO_FILE,
-																APP_FILE_TO_DB, APP_ADJUST);
+	private static Bank	instance;
+	private static int	terminalWidth	= 80;
 
-	/**
-	 * @param args
-	 * @throws InvocationTargetException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 * @throws IOException 
-	 */
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, IOException {
-		// Header.printHeader();
-		if (args.length == 1) {
-			System.out.println("Usage : bank <command> ");
-			System.out.println("Commands : ");
-			String f = "\t%-10s %s";
-			System.out.printf(f, APP_ALL, "Run import,catego and calc commands\n");
-			System.out.printf(f, APP_FILEIMPORT, "Import CSV files from disk\n");
-			System.out.printf(f, APP_IMPORT, "Import data from Cyberplus\n");
-			System.out.printf(f, APP_CATEGO, "Launch operations categorization\n");
-			System.out.printf(f, APP_CALC, "Do calculations and print report\n");
-			System.out.printf(f, APP_PERIOD, "Start a new 'adjusted month'\n");
-			System.out.println();
-			System.out.println("Maintenance commands : ");
-			System.out.printf(f, APP_VERSION, "Print version\n");
-			System.out.printf(f, APP_PASSWORD, "Set/update password, stored with encryption\n");
-			System.out.printf(f, APP_SETUP, "Initial setup\n");
-			System.out.printf(f, APP_TEST, "Test configuration\n");
-			System.out.printf("\t  %-8s %s", "-f", "Force for more tests\n");
-			System.out.printf("\t  %-8s %s", "-h", "Print health report\n");
-			System.exit(1);
-		}
-		
+			IllegalArgumentException, InvocationTargetException, IOException, CLIException {
+
 		Config.loadProperties();
-		
-		getInstance().run(args);
+
+		if (args.length == 2 && args[1].equals("version")) {
+			System.out.println(Config.getVersion());
+			return;
+		}
+
+		Shell shell = ShellFactory.createConsoleShell("bank", "bank", new Bank());
+
+		if (args.length > 1) {
+			StringBuffer line = new StringBuffer();
+			for (int i = 0; i < args.length -1; i++) {
+				if (i > 0) {
+					line.append(" ");
+				}
+				
+				line.append(args[i]);
+			}
+			System.out.println(line.toString());
+			shell.processLine(line.toString());
+		} else {
+			shell.commandLoop();
+		}
 	}
 
 	public static Bank getInstance() {
-
-		if (instance == null)
-			instance = new Bank();
 		return instance;
 	}
 
-	// Loader
-	private void run(String[] _args) {
-		String args[];
-		String terminalWidthString = (_args.length > 0) ? _args[_args.length - 1] : "";
-		if (terminalWidthString.startsWith("columns:")) {
-			args = new String[_args.length - 1];
-			for (int i = 0; i < _args.length - 1; i++) {
-				args[i] = _args[i];
-			}
-			String width = terminalWidthString.substring("columns:".length()).trim();
-			try {
-				terminalWidth = Integer.parseInt(width);
-			} catch (NumberFormatException e) {
-				// e.printStackTrace();
-				// ignore
-			}
-		} else {
-			args = _args;
-		}
-		final CommandCollection commands = CommandCollection.getCommand(args, apps);
+	public Bank() throws IOException {
+		Config.loadProperties();
+		instance = this;
+	}
 
-		if (commands.contains(APP_ALL)) {
-			commands.add(APP_IMPORT);
-			commands.add(APP_CATEGO);
-			commands.add(APP_CALC);
-		}
+	@Command(name = "setup", description = "run intial setup")
+	public void setup() {
+		run(new Setup());
+	}
 
-		if (commands.contains(APP_SETUP)) {
-			run(new Setup());
-		}
+	@Command(name = "password", abbrev = "pwd", description = "Configure/update password")
+	public void updatePassword() {
+		run(new UpdatePassword());
+	}
 
-		if (commands.contains(APP_PASSWORD)) {
-			run(new UpdatePassword());
-		}
+	@Command(name = "calc", abbrev = "c", description = "Calculate monthly summary")
+	public void calc() {
+		run(new Calc());
+	}
 
-		if (commands.contains(APP_IMPORT)) {
-			run(new Import());
-		}
+	@Command(name = "catego", abbrev = "ct", description = "Categorize operations")
+	public void catego() {
+		run(new Catego());
+	}
 
-		if (commands.contains(APP_CATEGO)) {
-			run(new Catego());
-		}
+	@Command(name = "solde", abbrev = "s", description = "Display current soldes")
+	public String solde() {
+		return "hello";
+	}
 
-		if (commands.contains(APP_ADJUST)) {
-			run(new Adjust());
-		}
+	@Command(name = "import", description = "import from bank website")
+	public void bankImport() {
+		run(new Import());
+	}
 
-		if (commands.contains(APP_CALC)) {
-			run(new Calc());
-		}
+	@Command(name = "file2db", description = "Store Excel document into MySQL")
+	public void file2db() {
+		run(new FileToDB());
+	}
 
-		if (commands.contains(APP_TEST)) {
-			run(new Test(commands.get(APP_TEST).getParameters().contains("-f")));
-		}
+	@Command(name = "db2file", description = "Write MySQL data to Excel document")
+	public void db2file() {
+		run(new DBToFile());
+	}
 
-		if (commands.contains(APP_VERSION)) {
-			run(new Version());
-		}
+	@Command(name = "version", description = "Display current version")
+	public void version() {
+		run(new Version());
+	}
 
-		if (commands.getCommands().isEmpty()) {
-			run(new Console());
-		}
-
-		if (commands.contains(APP_DB_TO_FILE)) {
-			run(new DBToFile());
-		}
-		if (commands.contains(APP_FILE_TO_DB)) {
-			run(new FileToDB());
-		}
-
+	@Command(name = "test-config", description = "Test configuration")
+	public void testConfig() {
+		run(new Test(true));
 	}
 
 	private void run(BusinessServiceAbstract _service) {
@@ -167,10 +118,6 @@ public class Bank {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static List<String> getApps() {
-		return apps;
 	}
 
 	public int getTerminalWidth() {
