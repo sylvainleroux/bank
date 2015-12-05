@@ -81,6 +81,11 @@
 			<artifactId>junit</artifactId>
 			<version>4.8.2</version>
 		</dependency>
+		<dependency>
+			<groupId>com.bethecoder</groupId>
+			<artifactId>java-ascii-table</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sleroux.bank.evo.model.CalcResult;
+import com.sleroux.bank.evo.model.Balance;
 
 public class CalcDao {
 
@@ -38,5 +39,20 @@ public class CalcDao {
 		s.close();
 		return crlist;
 
+	}
+
+	public List<Balance> getBalances() throws SQLException {
+		Statement s = conn.createStatement();
+		ResultSet rs = s.executeQuery("select * from bank.soldes;");
+		List<Balance> balances = new ArrayList<>();
+		while (rs.next()) {
+			Balance balance = new Balance();
+			balance.setAccount(rs.getString("compte"));
+			balance.setBalance(rs.getBigDecimal("solde"));
+			balances.add(balance);
+		}
+		rs.close();
+		s.close();
+		return balances;
 	}
 }
