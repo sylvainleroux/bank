@@ -9,6 +9,7 @@ import asg.cliche.Shell;
 import asg.cliche.ShellFactory;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
+import com.sleroux.bank.business.Solde;
 import com.sleroux.bank.business.tool.Setup;
 import com.sleroux.bank.business.tool.Test;
 import com.sleroux.bank.business.tool.UpdatePassword;
@@ -39,14 +40,13 @@ public class Bank {
 
 		if (args.length > 1) {
 			StringBuffer line = new StringBuffer();
-			for (int i = 0; i < args.length -1; i++) {
+			for (int i = 0; i < args.length - 1; i++) {
 				if (i > 0) {
 					line.append(" ");
 				}
-				
+
 				line.append(args[i]);
 			}
-			System.out.println(line.toString());
 			shell.processLine(line.toString());
 		} else {
 			shell.commandLoop();
@@ -83,8 +83,8 @@ public class Bank {
 	}
 
 	@Command(name = "solde", abbrev = "s", description = "Display current soldes")
-	public String solde() {
-		return "hello";
+	public void solde() {
+		run(new Solde());
 	}
 
 	@Command(name = "import", description = "import from bank website")
