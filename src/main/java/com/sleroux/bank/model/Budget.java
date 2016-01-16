@@ -1,9 +1,19 @@
-package com.sleroux.bank.evo.model;
+package com.sleroux.bank.model;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "budget")
 public class Budget {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected int			id;
 	protected int			year;
 	protected int			month;

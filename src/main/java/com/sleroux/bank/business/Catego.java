@@ -1,4 +1,4 @@
-package com.sleroux.bank.evo;
+package com.sleroux.bank.business;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,18 +12,22 @@ import java.util.List;
 import javax.xml.bind.ValidationException;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
 
-import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.evo.dao.DatabaseConnection;
-import com.sleroux.bank.evo.dao.OperationDao;
-import com.sleroux.bank.evo.model.Operation;
+import com.sleroux.bank.dao.OperationDao;
+import com.sleroux.bank.model.Operation;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.util.formats.OperationFormater;
 
+@Service
+@Lazy
 public class Catego extends BusinessServiceAbstract {
 
 	private Logger				logger						= Logger.getLogger(Catego.class);
 
+	@Autowired
 	private OperationDao		operationDao;
 
 	private final static int	MINIMUM_CATEGO_NAME_LENGTH	= 4;
@@ -33,10 +37,6 @@ public class Catego extends BusinessServiceAbstract {
 
 	public OperationDao getOperationDao() {
 		return operationDao;
-	}
-
-	public void setOperationDao(OperationDao _operationDao) {
-		operationDao = _operationDao;
 	}
 
 	public List<String> getDebitsCatego() {
@@ -59,8 +59,6 @@ public class Catego extends BusinessServiceAbstract {
 	public void run() throws Exception {
 		ConsoleAppHeader.printAppHeader("Categorize");
 
-		operationDao = new OperationDao(DatabaseConnection.getConnection());
-
 		List<Operation> operations = operationDao.getNotCategorized();
 		creditsCatego = operationDao.getCreditsCatego();
 		debitsCatego = operationDao.getDebitsCatego();
@@ -72,11 +70,10 @@ public class Catego extends BusinessServiceAbstract {
 
 			if (suggest.size() > 0) {
 				System.out.println("[Enter:" + suggest.get(0) + "], [m] for more suggestions, or type catego");
-			}else{
+			} else {
 				System.out.println("No suggestion, enter catego:");
 			}
-			
-			
+
 			while (categoRequests(o, suggest))
 				;
 

@@ -1,21 +1,16 @@
-package com.sleroux.bank.evo;
+package com.sleroux.bank.business;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.xml.bind.ValidationException;
-
-import junit.framework.Assert;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.sleroux.bank.evo.dao.DatabaseConnection;
-import com.sleroux.bank.evo.dao.OperationDao;
-import com.sleroux.bank.evo.model.Operation;
+import com.sleroux.bank.model.Operation;
 import com.sleroux.bank.util.Config;
 
 public class TestCatego {
@@ -97,30 +92,30 @@ public class TestCatego {
 
 	}
 
-	@Test
-	public void testGetCategoListCredits() throws Exception {
-		OperationDao dao = new OperationDao(DatabaseConnection.getConnection());
-		List<String> credits = dao.getCreditsCatego();
-		Assert.assertTrue(credits.contains("SALAIRE"));
-
-	}
+	// @Test
+	// public void testGetCategoListCredits() throws Exception {
+	// OperationDao dao = new OperationDao(DatabaseConnection.getConnection());
+	// List<String> credits = dao.getCreditsCatego();
+	// Assert.assertTrue(credits.contains("SALAIRE"));
+	//
+	// }
 
 	@BeforeClass
 	public static void doSetup() throws IOException {
 		Config.loadProperties();
 	}
 
-	@Test
-	public void testGetCategoListDebits() throws Exception {
-		OperationDao dao = new OperationDao(DatabaseConnection.getConnection());
-		List<String> debits = dao.getDebitsCatego();
-		for (String s : debits) {
-			System.out.println(s);
-		}
-		Assert.assertTrue(debits.contains("COURSES"));
-	}
+	// @Test
+	// public void testGetCategoListDebits() throws Exception {
+	// OperationDao dao = new OperationDao(DatabaseConnection.getConnection());
+	// List<String> debits = dao.getDebitsCatego();
+	// for (String s : debits) {
+	// System.out.println(s);
+	// }
+	// Assert.assertTrue(debits.contains("COURSES"));
+	// }
 
-	@Test(expected=ValidationException.class)
+	@Test(expected = ValidationException.class)
 	public void testAddCatego() throws ValidationException, SQLException {
 		Catego catego = new Catego();
 		Operation op = new Operation();

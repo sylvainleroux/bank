@@ -2,7 +2,7 @@ package com.sleroux.bank.model.budget;
 
 import java.math.BigDecimal;
 
-import com.sleroux.bank.evo.model.Budget;
+import com.sleroux.bank.model.Budget;
 
 public class Changes extends Budget {
 

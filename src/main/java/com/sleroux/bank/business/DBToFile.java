@@ -1,17 +1,23 @@
-package com.sleroux.bank.evo;
+package com.sleroux.bank.business;
 
-import java.sql.Connection;
 import java.util.List;
 
-import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.evo.dao.BudgetDao;
-import com.sleroux.bank.evo.dao.DatabaseConnection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+
+import com.sleroux.bank.dao.BudgetDao;
 import com.sleroux.bank.evo.document.BudgetDocument;
-import com.sleroux.bank.evo.model.Budget;
+import com.sleroux.bank.model.Budget;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.util.Config;
 
+@Service
+@Lazy
 public class DBToFile extends BusinessServiceAbstract {
+
+	@Autowired
+	BudgetDao	budgetDao;
 
 	@Override
 	public void run() throws Exception {
@@ -19,8 +25,6 @@ public class DBToFile extends BusinessServiceAbstract {
 
 		BudgetDocument document = new BudgetDocument(Config.getBudgetDocumentTemplate());
 
-		Connection conn = DatabaseConnection.getConnection();
-		BudgetDao budgetDao = new BudgetDao(conn);
 		List<String> credits = budgetDao.getCredits();
 		List<String> debits = budgetDao.getDebits();
 		List<Integer> years = budgetDao.getYears();

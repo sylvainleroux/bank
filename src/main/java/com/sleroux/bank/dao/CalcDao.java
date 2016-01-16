@@ -1,4 +1,4 @@
-package com.sleroux.bank.evo.dao;
+package com.sleroux.bank.dao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -7,17 +7,23 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sleroux.bank.evo.model.CalcResult;
+import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.sleroux.bank.model.CalcResult;
+
+@Repository
 public class CalcDao {
 
-	private Connection	conn;
-
-	public CalcDao(Connection _connection) {
-		conn = _connection;
-	}
+	@Autowired
+	DataSource	dataSource;
 
 	public List<CalcResult> getCalcForMonth(int _year, int _month) throws SQLException {
+
+		Connection conn = dataSource.getConnection();
+
 		Statement s = conn.createStatement();
 		ResultSet rs = s
 				.executeQuery("select catego, is_credit, if (is_credit, ops_credit, ops_debit) ops, if (is_credit, bud_credit, bud_debit) bud from diff where year = "
@@ -36,6 +42,7 @@ public class CalcDao {
 
 		rs.close();
 		s.close();
+		conn.close();
 		return crlist;
 
 	}

@@ -1,19 +1,38 @@
-package com.sleroux.bank.evo.model;
+package com.sleroux.bank.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "operation")
 public class Operation {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int			id;
 	private String		compte;
+
+	@Column(name = "date_operation")
 	private Date		dateOperation;
+
+	@Column(name = "date_valeur")
 	private Date		dateValeur;
 	private String		libelle;
 	private BigDecimal	montant;
 	private String		catego;
 	private int			year;
+
+	@Column(name = "month_bank")
 	private int			monthBank;
+	
+	@Column(name = "month_adjusted")
 	private int			monthAdjusted;
 
 	public int getId() {

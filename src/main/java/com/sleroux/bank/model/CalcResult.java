@@ -1,4 +1,4 @@
-package com.sleroux.bank.evo.model;
+package com.sleroux.bank.model;
 
 import java.math.BigDecimal;
 

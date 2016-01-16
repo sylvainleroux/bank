@@ -1,12 +1,13 @@
-package com.sleroux.bank.evo;
+package com.sleroux.bank.business;
 
 import java.util.Calendar;
 import java.util.List;
 
-import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.evo.dao.CalcDao;
-import com.sleroux.bank.evo.dao.DatabaseConnection;
-import com.sleroux.bank.evo.model.CalcResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sleroux.bank.dao.CalcDao;
+import com.sleroux.bank.model.CalcResult;
 import com.sleroux.bank.model.budget.BudgetKeys;
 import com.sleroux.bank.model.budget.BugdetMonth;
 import com.sleroux.bank.model.calc.Category;
@@ -16,8 +17,10 @@ import com.sleroux.bank.model.statement.Year;
 import com.sleroux.bank.presentation.ConsoleMonthBudgetPresenter;
 import com.sleroux.bank.presentation.MonitorInterface;
 
+@Service
 public class Calc extends BusinessServiceAbstract {
 
+	@Autowired
 	private CalcDao				calcDao;
 
 	private MonitorInterface	monitorInterface	= new ConsoleMonthBudgetPresenter();
@@ -25,11 +28,9 @@ public class Calc extends BusinessServiceAbstract {
 	@Override
 	public void run() throws Exception {
 
-		calcDao = new CalcDao(DatabaseConnection.getConnection());
-
 		Calendar c = Calendar.getInstance();
 		int year = c.get(Calendar.YEAR);
-		int currentMonth = c.get(Calendar.MONTH) +1 ;
+		int currentMonth = c.get(Calendar.MONTH) + 1;
 
 		List<CalcResult> calc = calcDao.getCalcForMonth(year, currentMonth);
 

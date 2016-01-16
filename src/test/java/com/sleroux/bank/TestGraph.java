@@ -19,5 +19,7 @@ public class TestGraph {
 		assertEquals(ConsoleMonthBudgetPresenter.graph(100), "####################");
 		assertEquals(ConsoleMonthBudgetPresenter.graph(110), "################+10%");
 		assertEquals(ConsoleMonthBudgetPresenter.graph(210), "###############+110%");
+		// TODO
+		assertEquals(ConsoleMonthBudgetPresenter.graph(Integer.MAX_VALUE), "########+2147483547%");
 	}
 }

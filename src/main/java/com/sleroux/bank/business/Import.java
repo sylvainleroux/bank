@@ -1,21 +1,21 @@
-package com.sleroux.bank.evo;
+package com.sleroux.bank.business;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.evo.dao.DatabaseConnection;
-import com.sleroux.bank.evo.dao.OperationDao;
+import com.sleroux.bank.dao.OperationDao;
 import com.sleroux.bank.model.fileimport.ExtractDocument;
 import com.sleroux.bank.model.fileimport.ExtractOperation;
 import com.sleroux.bank.persistence.dao.extract.ExtractDao;
@@ -24,18 +24,18 @@ import com.sleroux.bank.persistence.storage.extract.OperationBuilder;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.util.Config;
 
+@Service
+@Lazy
 public class Import extends BusinessServiceAbstract {
 
 	private Logger			logger	= Logger.getLogger(Import.class);
 
+	@Autowired
 	private OperationDao	operationDao;
 
 	@Override
 	public void run() throws Exception {
 		ConsoleAppHeader.printAppHeader("Import");
-
-		Connection conn = DatabaseConnection.getConnection();
-		operationDao = new OperationDao(conn);
 
 		operationDao.doBackup();
 
@@ -62,7 +62,7 @@ public class Import extends BusinessServiceAbstract {
 	}
 
 	private void runImportBPO() throws Exception {
-		//runImport(Config.getImportCommandBPO());
+		// runImport(Config.getImportCommandBPO());
 
 		ExtractDao extractDao = new ExtractDaoImpl();
 		List<ExtractDocument> docs = extractDao.getAll();
@@ -141,7 +141,7 @@ public class Import extends BusinessServiceAbstract {
 		if (_file.contains("LB")) {
 			accountNumber = "LB";
 		}
-		if (_file.contains("PEL")){
+		if (_file.contains("PEL")) {
 			accountNumber = "PEL";
 		}
 

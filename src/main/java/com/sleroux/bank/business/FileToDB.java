@@ -1,19 +1,25 @@
-package com.sleroux.bank.evo;
+package com.sleroux.bank.business;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.evo.dao.BudgetDao;
-import com.sleroux.bank.evo.dao.DatabaseConnection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+
+import com.sleroux.bank.dao.BudgetDao;
 import com.sleroux.bank.evo.document.BudgetDocument;
-import com.sleroux.bank.evo.model.Budget;
+import com.sleroux.bank.model.Budget;
 import com.sleroux.bank.model.budget.Changes;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.util.Config;
 
+@Service
+@Lazy
 public class FileToDB extends BusinessServiceAbstract {
+
+	@Autowired
+	BudgetDao	budgetDao;
 
 	@Override
 	public void run() throws Exception {
@@ -39,33 +45,25 @@ public class FileToDB extends BusinessServiceAbstract {
 			}
 		}
 
-		Connection conn = DatabaseConnection.getConnection();
-		BudgetDao budgetDao = new BudgetDao(conn);
 		budgetDao.backupAndReplace(budgets);
-		
-		
+
 		System.out.println("-- New entries in Budget file : ");
-		for (Changes u : budgetDao.getAdded()){
+		for (Changes u : budgetDao.getAdded()) {
 			budgetDao.saveChange(u);
 			System.out.println(u);
 		}
-		
+
 		System.out.println("-- Updated entries in Budget file :");
-		for (Changes u : budgetDao.getUpdated()){
+		for (Changes u : budgetDao.getUpdated()) {
 			budgetDao.saveChange(u);
 			System.out.println(u);
 		}
-		
+
 		System.out.println("-- Deleted entries in Budget file : ");
-		for (Changes u : budgetDao.getDeleted()){
+		for (Changes u : budgetDao.getDeleted()) {
 			budgetDao.saveChange(u);
 			System.out.println(u);
 		}
-		
-		
-		
-		
-		conn.close();
 
 	}
 

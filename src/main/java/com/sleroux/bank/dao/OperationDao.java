@@ -1,4 +1,4 @@
-package com.sleroux.bank.evo.dao;
+package com.sleroux.bank.dao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,24 +9,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.log4j.Logger;
+import javax.sql.DataSource;
 
-import com.sleroux.bank.evo.model.Operation;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.sleroux.bank.model.Operation;
 import com.sleroux.bank.model.fileimport.ExtractDocument;
 import com.sleroux.bank.model.fileimport.ExtractOperation;
 
+@Repository
 public class OperationDao {
 
-	private Connection	conn;
+	@Autowired
+	HibernateTemplate	hibernateTemplate;
 
-	private Logger		logger	= Logger.getLogger(OperationDao.class);
+	@Autowired
+	DataSource			dataSource;
 
-	public OperationDao(Connection _conn) {
-		conn = _conn;
+	public List<Operation> getAll() {
+		return hibernateTemplate.loadAll(Operation.class);
 	}
+
+	public Integer create(Operation _operation) {
+		return hibernateTemplate.merge(_operation).getId();
+	}
+
+	private Logger	logger	= Logger.getLogger(OperationDao.class);
 
 	public void doBackup() throws SQLException {
 
+		Connection conn = getConnection();
 		Statement s = conn.createStatement();
 		StringBuilder sql = new StringBuilder("insert into operation_backup");
 		sql.append("(compte, date_operation, date_valeur, libelle, montant, catego, year, month_bank, month_adjusted)");
@@ -35,26 +50,36 @@ public class OperationDao {
 
 		s.executeUpdate(sql.toString());
 		s.close();
+		conn.close();
 
+	}
+
+	private Connection getConnection() throws SQLException {
+		return dataSource.getConnection();
 	}
 
 	public void insertIngnoreOperations(ExtractDocument _doc) throws Exception {
 
+		Connection conn = getConnection();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Statement stmt = null;
 		for (ExtractOperation o : _doc.getOperations()) {
 			stmt = conn.createStatement();
 			String sql = "INSERT IGNORE into operation (compte, date_operation, date_valeur, libelle, montant) ";
 			sql += String.format(Locale.ENGLISH, "values ('%s','%s','%s','%s', '%.2f') ", o.getAccountID(),
-					format.format(o.getDateOperation()), format.format(o.getDateValeur()), o.getLibelle().replaceAll("'", ""), o.getMontant());
+					format.format(o.getDateOperation()), format.format(o.getDateValeur()), o.getLibelle().replaceAll("'", ""),
+					o.getMontant());
 			logger.info(sql);
 			stmt.executeUpdate(sql);
 			stmt.close();
 		}
+		conn.close();
 
 	}
 
 	public List<Operation> getNotCategorized() throws SQLException {
+
+		Connection conn = getConnection();
 		Statement s = conn.createStatement();
 		ResultSet rs = s.executeQuery("select * from operation where catego is null");
 		List<Operation> ops = new ArrayList<>();
@@ -62,10 +87,14 @@ public class OperationDao {
 			ops.add(resultSetToObject(rs));
 		}
 		s.close();
+		conn.close();
+
 		return ops;
 	}
 
 	public List<String> getSuggestionsFor(String _libelle) throws SQLException {
+
+		Connection conn = getConnection();
 		Statement s = conn.createStatement();
 		ResultSet rs = s.executeQuery("call get_catego('" + _libelle + "')");
 		List<String> suggests = new ArrayList<>();
@@ -73,6 +102,7 @@ public class OperationDao {
 			suggests.add(rs.getString("catego"));
 		}
 		s.close();
+		conn.close();
 		return suggests;
 	}
 
@@ -92,36 +122,44 @@ public class OperationDao {
 	}
 
 	public void saveOperation(Operation _o) throws SQLException {
+		Connection conn = getConnection();
 		Statement s = conn.createStatement();
 		String sql = String.format("update bank.operation set catego='%s', year=%d, month_adjusted=%d where id=%d", _o.getCatego(),
 				_o.getYear(), _o.getMonthAdjusted(), _o.getId());
 		logger.debug(sql);
 		s.executeUpdate(sql);
 		s.close();
+		conn.close();
 
 	}
 
 	public List<String> getDebitsCatego() throws SQLException {
+		Connection conn = getConnection();
 		Statement s = conn.createStatement();
 		ResultSet rs = s.executeQuery("select distinct catego from bank.operation where montant < 0");
 		List<String> suggests = new ArrayList<>();
 		while (rs.next()) {
 			suggests.add(rs.getString("catego"));
 		}
+		rs.close();
 		s.close();
+		conn.close();
+		
 		return suggests;
 	}
-	
+
 	public List<String> getCreditsCatego() throws SQLException {
+		Connection conn = getConnection();
 		Statement s = conn.createStatement();
 		ResultSet rs = s.executeQuery("select distinct catego from bank.operation where montant > 0");
 		List<String> suggests = new ArrayList<>();
 		while (rs.next()) {
 			suggests.add(rs.getString("catego"));
 		}
+		rs.close();
 		s.close();
+		conn.close();
 		return suggests;
 	}
-
 
 }
