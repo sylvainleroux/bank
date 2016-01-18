@@ -11,14 +11,10 @@ import java.util.Locale;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
 
 import com.sleroux.bank.model.Budget;
 import com.sleroux.bank.model.budget.Changes;
 
-@Service
-@Lazy
 public class BudgetDao {
 
 	@Autowired
@@ -41,8 +37,7 @@ public class BudgetDao {
 					sql.append(",");
 				}
 				first = false;
-				sql.append(String.format(Locale.ENGLISH, "(%d,%d,'%s',%.2f,%.2f)", b.getYear(), b.getMonth(), b.getCatego(), b.getDebit(),
-						b.getCredit()));
+				sql.append(String.format(Locale.ENGLISH, "(%d,%d,'%s',%.2f,%.2f)", b.getYear(), b.getMonth(), b.getCatego(), b.getDebit(), b.getCredit()));
 			}
 
 			System.out.println(sql);
@@ -148,8 +143,8 @@ public class BudgetDao {
 	public Budget getBudgetForCompte(String _compte, Integer _year, int _month) throws SQLException {
 		Connection conn = datasource.getConnection();
 		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("select sum(debit) debit,sum(credit) credit from budget where compte = '" + _compte
-				+ "' and year= " + _year + " and month = " + _month);
+		ResultSet rs = stmt.executeQuery("select sum(debit) debit,sum(credit) credit from budget where compte = '" + _compte + "' and year= " + _year
+				+ " and month = " + _month);
 		if (rs != null && rs.next()) {
 			Budget b = new Budget();
 			b.setCredit(rs.getBigDecimal("credit"));
@@ -184,8 +179,8 @@ public class BudgetDao {
 					sql.append(",");
 				}
 				first = false;
-				sql.append(String.format(Locale.ENGLISH, "(%d,%d,'%s',%.2f,%.2f,'%s')", b.getYear(), b.getMonth(), b.getCatego(),
-						b.getDebit(), b.getCredit(), b.getCompte()));
+				sql.append(String.format(Locale.ENGLISH, "(%d,%d,'%s',%.2f,%.2f,'%s')", b.getYear(), b.getMonth(), b.getCatego(), b.getDebit(), b.getCredit(),
+						b.getCompte()));
 			}
 
 			System.out.println(sql);

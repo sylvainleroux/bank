@@ -14,13 +14,11 @@ import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
-import org.springframework.stereotype.Repository;
 
 import com.sleroux.bank.model.Operation;
 import com.sleroux.bank.model.fileimport.ExtractDocument;
 import com.sleroux.bank.model.fileimport.ExtractOperation;
 
-@Repository
 public class OperationDao {
 
 	@Autowired
@@ -34,7 +32,8 @@ public class OperationDao {
 	}
 
 	public Integer create(Operation _operation) {
-		return hibernateTemplate.merge(_operation).getId();
+		hibernateTemplate.save(_operation);
+		return 0;
 	}
 
 	private Logger	logger	= Logger.getLogger(OperationDao.class);
@@ -66,9 +65,8 @@ public class OperationDao {
 		for (ExtractOperation o : _doc.getOperations()) {
 			stmt = conn.createStatement();
 			String sql = "INSERT IGNORE into operation (compte, date_operation, date_valeur, libelle, montant) ";
-			sql += String.format(Locale.ENGLISH, "values ('%s','%s','%s','%s', '%.2f') ", o.getAccountID(),
-					format.format(o.getDateOperation()), format.format(o.getDateValeur()), o.getLibelle().replaceAll("'", ""),
-					o.getMontant());
+			sql += String.format(Locale.ENGLISH, "values ('%s','%s','%s','%s', '%.2f') ", o.getAccountID(), format.format(o.getDateOperation()),
+					format.format(o.getDateValeur()), o.getLibelle().replaceAll("'", ""), o.getMontant());
 			logger.info(sql);
 			stmt.executeUpdate(sql);
 			stmt.close();
@@ -124,8 +122,8 @@ public class OperationDao {
 	public void saveOperation(Operation _o) throws SQLException {
 		Connection conn = getConnection();
 		Statement s = conn.createStatement();
-		String sql = String.format("update bank.operation set catego='%s', year=%d, month_adjusted=%d where id=%d", _o.getCatego(),
-				_o.getYear(), _o.getMonthAdjusted(), _o.getId());
+		String sql = String.format("update bank.operation set catego='%s', year=%d, month_adjusted=%d where id=%d", _o.getCatego(), _o.getYear(),
+				_o.getMonthAdjusted(), _o.getId());
 		logger.debug(sql);
 		s.executeUpdate(sql);
 		s.close();
@@ -144,7 +142,7 @@ public class OperationDao {
 		rs.close();
 		s.close();
 		conn.close();
-		
+
 		return suggests;
 	}
 

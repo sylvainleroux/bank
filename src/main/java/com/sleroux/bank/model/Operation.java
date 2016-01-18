@@ -1,5 +1,6 @@
 package com.sleroux.bank.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -10,9 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "operation")
-public class Operation {
+public class Operation implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,7 +33,7 @@ public class Operation {
 
 	@Column(name = "month_bank")
 	private int			monthBank;
-	
+
 	@Column(name = "month_adjusted")
 	private int			monthAdjusted;
 

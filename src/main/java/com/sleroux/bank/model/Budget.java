@@ -1,5 +1,6 @@
 package com.sleroux.bank.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
@@ -8,9 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "budget")
-public class Budget {
+public class Budget implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
