@@ -8,9 +8,9 @@ import com.sleroux.bank.business.TestCalc;
 import com.sleroux.bank.business.TestExtract;
 import com.sleroux.bank.business.TestImport;
 import com.sleroux.bank.dao.TestBudgetDao;
+import com.sleroux.bank.dao.TestCatego;
 import com.sleroux.bank.dao.TestOperationDao;
 import com.sleroux.bank.model.statement.TestYear;
-import com.sleroux.bank.service.TestCatego;
 import com.sleroux.bank.service.TestCategoValidation;
 
 @RunWith(Suite.class)

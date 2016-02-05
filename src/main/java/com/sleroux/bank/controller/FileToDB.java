@@ -1,4 +1,4 @@
-package com.sleroux.bank.business;
+package com.sleroux.bank.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.sleroux.bank.dao.BudgetDao;
+import com.sleroux.bank.business.BusinessServiceAbstract;
+import com.sleroux.bank.dao.IBudgetDao;
 import com.sleroux.bank.evo.document.BudgetDocument;
 import com.sleroux.bank.model.Budget;
 import com.sleroux.bank.model.budget.Changes;
@@ -19,9 +21,10 @@ import com.sleroux.bank.util.Config;
 public class FileToDB extends BusinessServiceAbstract {
 
 	@Autowired
-	BudgetDao	budgetDao;
+	IBudgetDao	budgetDao;
 
 	@Override
+	@Transactional
 	public void run() throws Exception {
 
 		ConsoleAppHeader.printAppHeader("Read Budget");
@@ -45,26 +48,42 @@ public class FileToDB extends BusinessServiceAbstract {
 			}
 		}
 
-		budgetDao.backupAndReplace(budgets);
+		budgetDao.backupAndTruncate();
+		for (Budget b : budgets) {
+			budgetDao.create(b);
+		}
 
 		System.out.println("-- New entries in Budget file : ");
-		for (Changes u : budgetDao.getAdded()) {
-			budgetDao.saveChange(u);
+		List<Changes> added = budgetDao.getAdded();
+		for (Changes u : added) {
 			System.out.println(u);
+			budgetDao.saveChange(u);
+		}
+		if (added.size() == 0){
+			System.out.println("No additions");
 		}
 
 		System.out.println("-- Updated entries in Budget file :");
-		for (Changes u : budgetDao.getUpdated()) {
-			budgetDao.saveChange(u);
+		List<Changes> updated =budgetDao.getUpdated();
+		for (Changes u : updated) {
 			System.out.println(u);
+			budgetDao.saveChange(u);
+		}
+		if (updated.size() == 0){
+			System.out.println("No updates");
 		}
 
 		System.out.println("-- Deleted entries in Budget file : ");
-		for (Changes u : budgetDao.getDeleted()) {
-			budgetDao.saveChange(u);
+		List<Changes> deleted = budgetDao.getDeleted();
+		for (Changes u : deleted) {
 			System.out.println(u);
+			budgetDao.saveChange(u);
+		}
+		if (deleted.size() == 0){
+			System.out.println("No deletions");
 		}
 
 	}
+
 
 }

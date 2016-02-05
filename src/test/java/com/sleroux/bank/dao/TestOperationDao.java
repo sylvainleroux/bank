@@ -18,6 +18,7 @@ import com.sleroux.bank.TestConfig;
 import com.sleroux.bank.model.AccountBalance;
 import com.sleroux.bank.model.CalcResult;
 import com.sleroux.bank.model.Operation;
+import com.sleroux.bank.service.CategoService;
 import com.sleroux.bank.testutils.OperationHelper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,6 +27,9 @@ public class TestOperationDao {
 
 	@Autowired
 	IOperationDao	operationDao;
+
+	@Autowired
+	CategoService	categoService;
 
 	@Test
 	@Transactional
@@ -139,5 +143,6 @@ public class TestOperationDao {
 		}
 
 	}
+
 
 }

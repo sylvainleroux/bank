@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
@@ -75,11 +76,14 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 		return list;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<String> getSuggestionsFor(Operation _o) {
-		Query query = getCurrentSession().createSQLQuery("call get_catego(:libelle)").setParameter("libelle", _o.getLibelle());
-		return query.list();
+	public List<String> getSuggestionsFor(final Operation _o) {
+
+		CategorizationProcStockWork work = new CategorizationProcStockWork(_o);
+		Session session = getCurrentSession();
+		session.doWork(work);
+		return work.getSuggestions();
+
 	}
 
 	@SuppressWarnings("unchecked")
