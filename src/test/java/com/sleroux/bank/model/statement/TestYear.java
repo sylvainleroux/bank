@@ -2,8 +2,7 @@ package com.sleroux.bank.model.statement;
 
 import java.util.Calendar;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 public class TestYear {

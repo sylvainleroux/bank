@@ -1,4 +1,4 @@
-package com.sleroux.bank.business;
+package com.sleroux.bank.service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,62 +11,41 @@ import java.util.List;
 
 import javax.xml.bind.ValidationException;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.sleroux.bank.dao.OperationDao;
+import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.model.Operation;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.util.formats.OperationFormater;
 
 @Service
-@Lazy
-public class Catego extends BusinessServiceAbstract {
+public class CategoService {
 
-	private Logger				logger						= Logger.getLogger(Catego.class);
-
-	@Autowired
-	private OperationDao		operationDao;
-
+	
 	private final static int	MINIMUM_CATEGO_NAME_LENGTH	= 4;
 
 	private List<String>		debitsCatego				= new ArrayList<>();
 	private List<String>		creditsCatego				= new ArrayList<>();
 
-	public OperationDao getOperationDao() {
-		return operationDao;
-	}
+	@Autowired
+	IOperationDao				operationDao;
 
-	public List<String> getDebitsCatego() {
-		return debitsCatego;
-	}
-
-	public void setDebitsCatego(List<String> _debitsCatego) {
-		debitsCatego = _debitsCatego;
-	}
-
-	public List<String> getCreditsCatego() {
-		return creditsCatego;
-	}
-
-	public void setCreditsCatego(List<String> _creditsCatego) {
-		creditsCatego = _creditsCatego;
-	}
-
-	@Override
 	public void run() throws Exception {
-		ConsoleAppHeader.printAppHeader("Categorize");
 
-		List<Operation> operations = operationDao.getNotCategorized();
-		creditsCatego = operationDao.getCreditsCatego();
-		debitsCatego = operationDao.getDebitsCatego();
+		List<Operation> operations = operationDao.findUncategorized();
+		debitsCatego = operationDao.getCategoriesDebit();
+		creditsCatego = operationDao.getCategoriesCredit();
+
+		if (operations.size() == 0) {
+			System.out.println("No operation to categorize");
+			return;
+		}
 
 		for (Operation o : operations) {
 			System.out.println(OperationFormater.toStringLight(o));
 
-			List<String> suggest = operationDao.getSuggestionsFor(o.getLibelle());
+			List<String> suggest = getCategoSuggestionsFor(o);
 
 			if (suggest.size() > 0) {
 				System.out.println("[Enter:" + suggest.get(0) + "], [m] for more suggestions, or type catego");
@@ -97,12 +76,18 @@ public class Catego extends BusinessServiceAbstract {
 			o.setYear(opYear);
 			o.setMonthAdjusted(opMonth);
 
-			operationDao.saveOperation(o);
+			operationDao.update(o);
 
 			ConsoleAppHeader.printLine();
 
 		}
+		
+		System.out.println("Categorization completed");
 
+	}
+
+	public List<String> getCategoSuggestionsFor(Operation o) {
+		return operationDao.getSuggestionsFor(o);
 	}
 
 	private boolean categoRequests(Operation _op, List<String> _suggest) throws SQLException {
@@ -135,14 +120,13 @@ public class Catego extends BusinessServiceAbstract {
 		return true;
 	}
 
-	protected void validate(Operation _op, String _categoName) throws ValidationException, SQLException {
+	public void validate(Operation _op, String _categoName) throws ValidationException, SQLException {
 
 		if (_categoName.length() < MINIMUM_CATEGO_NAME_LENGTH) {
 			throw new ValidationException("Catego name is too short");
 		}
 
 		if (_op.getMontant().compareTo(BigDecimal.ZERO) > 0) {
-			logger.debug("credit");
 			if (debitsCatego.contains(_categoName)) {
 				throw new ValidationException("This catego already exists for DEBITS operations");
 			}
@@ -151,7 +135,6 @@ public class Catego extends BusinessServiceAbstract {
 			}
 
 		} else {
-			logger.debug("debit");
 			for (String c : creditsCatego) {
 				System.out.println(c);
 			}
@@ -165,4 +148,24 @@ public class Catego extends BusinessServiceAbstract {
 
 	}
 
+	public List<String> getDebitsCatego() {
+		return debitsCatego;
+	}
+
+	public void setDebitsCatego(List<String> _debitsCatego) {
+		debitsCatego = _debitsCatego;
+	}
+
+	public List<String> getCreditsCatego() {
+		return creditsCatego;
+	}
+
+	public void setCreditsCatego(List<String> _creditsCatego) {
+		creditsCatego = _creditsCatego;
+	}
+	
+	
+	
+	
+	
 }

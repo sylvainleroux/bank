@@ -1,6 +1,7 @@
 package com.sleroux.bank.model;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class CalcResult {
 
@@ -37,8 +38,8 @@ public class CalcResult {
 		return credit;
 	}
 
-	public void setCredit(boolean _credit) {
-		credit = _credit;
+	public void setCredit(BigInteger _credit) {
+		credit = _credit.intValue() > 0;
 	}
 
 }

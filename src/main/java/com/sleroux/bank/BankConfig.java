@@ -55,18 +55,17 @@ public class BankConfig {
 		asfb.setPackagesToScan(new String[] { "com.sleroux.bank.model" });
 		return asfb;
 	}
-	
 
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-        return new PersistenceExceptionTranslationPostProcessor();
-    }
+	@Bean
+	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+		return new PersistenceExceptionTranslationPostProcessor();
+	}
 
 	@Bean
 	public Properties getHibernateProperties() {
 		Properties properties = new Properties();
 		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-		properties.put("hibernate.show_sql", "true");
+		properties.put("hibernate.show_sql", "false");
 		properties.put("hibernate.hbm2ddl.auto", "validate");
 
 		return properties;

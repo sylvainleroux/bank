@@ -45,6 +45,7 @@ public class OperationBuilder {
 		}
 	}
 
+	@Deprecated
 	public static ExtractOperation createOperationCMB(String[] _nextLine, String _accountNumber) throws Exception {
 
 		ExtractOperation operation = new ExtractOperation();

@@ -1,24 +1,36 @@
-package com.sleroux.bank.business;
+package com.sleroux.bank.service;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+import javax.transaction.Transactional;
 import javax.xml.bind.ValidationException;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import com.sleroux.bank.TestConfig;
+import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.model.Operation;
-import com.sleroux.bank.util.Config;
 
-public class TestCatego {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = { TestConfig.class }, loader = AnnotationConfigContextLoader.class)
+public class TestCategoValidation {
+
+	@Autowired
+	CategoService	catego;
+
+	@Autowired
+	IOperationDao	operationDao;
 
 	@Test(expected = ValidationException.class)
+	@Transactional
 	public void testCatego() throws SQLException, ValidationException {
-
-		Catego catego = new Catego();
 
 		Operation op = new Operation();
 		op.setMontant(new BigDecimal("-120"));
@@ -31,8 +43,6 @@ public class TestCatego {
 
 	@Test
 	public void testCatego2() throws SQLException, ValidationException {
-
-		Catego catego = new Catego();
 
 		Operation op = new Operation();
 		op.setMontant(new BigDecimal("120"));
@@ -47,8 +57,6 @@ public class TestCatego {
 	@Test
 	public void testCatego3() throws SQLException, ValidationException {
 
-		Catego catego = new Catego();
-
 		Operation op = new Operation();
 		op.setMontant(new BigDecimal("-120"));
 
@@ -62,8 +70,6 @@ public class TestCatego {
 	@Test(expected = ValidationException.class)
 	public void testCategoLength() throws ValidationException, SQLException {
 
-		Catego catego = new Catego();
-
 		Operation op = new Operation();
 		op.setMontant(new BigDecimal("-120"));
 
@@ -74,8 +80,6 @@ public class TestCatego {
 	@Test(expected = ValidationException.class)
 	public void testCategoLength2() throws ValidationException, SQLException {
 
-		Catego catego = new Catego();
-
 		Operation op = new Operation();
 		op.setMontant(new BigDecimal("-120"));
 
@@ -85,39 +89,14 @@ public class TestCatego {
 
 	@Test
 	public void testCategoLength3() throws ValidationException, SQLException {
-		Catego catego = new Catego();
 		Operation op = new Operation();
 		op.setMontant(new BigDecimal("-120"));
 		catego.validate(op, "REMB");
 
 	}
 
-	// @Test
-	// public void testGetCategoListCredits() throws Exception {
-	// OperationDao dao = new OperationDao(DatabaseConnection.getConnection());
-	// List<String> credits = dao.getCreditsCatego();
-	// Assert.assertTrue(credits.contains("SALAIRE"));
-	//
-	// }
-
-	@BeforeClass
-	public static void doSetup() throws IOException {
-		Config.loadProperties();
-	}
-
-	// @Test
-	// public void testGetCategoListDebits() throws Exception {
-	// OperationDao dao = new OperationDao(DatabaseConnection.getConnection());
-	// List<String> debits = dao.getDebitsCatego();
-	// for (String s : debits) {
-	// System.out.println(s);
-	// }
-	// Assert.assertTrue(debits.contains("COURSES"));
-	// }
-
 	@Test(expected = ValidationException.class)
 	public void testAddCatego() throws ValidationException, SQLException {
-		Catego catego = new Catego();
 		Operation op = new Operation();
 		op.setMontant(new BigDecimal("-120"));
 		catego.validate(op, "AVION");

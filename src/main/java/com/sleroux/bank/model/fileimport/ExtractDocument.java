@@ -4,14 +4,16 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sleroux.bank.model.Operation;
+
 public class ExtractDocument {
 
-	private String					filename;
-	private List<ExtractOperation>	operations	= new ArrayList<ExtractOperation>();
-	private BigDecimal				debit		= new BigDecimal("0.00");
-	private BigDecimal				credit		= new BigDecimal("0.00");
+	private String			filename;
+	private List<Operation>	operations	= new ArrayList<Operation>();
+	private BigDecimal		debit		= new BigDecimal("0.00");
+	private BigDecimal		credit		= new BigDecimal("0.00");
 
-	public void addOperation(ExtractOperation o) {
+	public void addOperation(Operation o) {
 		operations.add(o);
 		BigDecimal value = o.getMontant();
 
@@ -22,7 +24,7 @@ public class ExtractDocument {
 
 	}
 
-	public List<ExtractOperation> getOperations() {
+	public List<Operation> getOperations() {
 		return operations;
 	}
 

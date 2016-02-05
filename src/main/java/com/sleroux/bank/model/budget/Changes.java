@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.sleroux.bank.model.Budget;
 
+@SuppressWarnings("serial")
 public class Changes extends Budget {
 
 	private BigDecimal	oldDebit;

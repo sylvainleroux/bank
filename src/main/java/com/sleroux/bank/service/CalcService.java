@@ -1,4 +1,4 @@
-package com.sleroux.bank.business;
+package com.sleroux.bank.service;
 
 import java.util.Calendar;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sleroux.bank.dao.CalcDao;
+import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.model.CalcResult;
 import com.sleroux.bank.model.budget.BudgetKeys;
 import com.sleroux.bank.model.budget.BugdetMonth;
@@ -18,21 +18,20 @@ import com.sleroux.bank.presentation.ConsoleMonthBudgetPresenter;
 import com.sleroux.bank.presentation.MonitorInterface;
 
 @Service
-public class Calc extends BusinessServiceAbstract {
+public class CalcService {
 
 	@Autowired
-	private CalcDao				calcDao;
-
+	IOperationDao	operationDao;
+	
 	private MonitorInterface	monitorInterface	= new ConsoleMonthBudgetPresenter();
 
-	@Override
-	public void run() throws Exception {
+	public void run() {
 
 		Calendar c = Calendar.getInstance();
 		int year = c.get(Calendar.YEAR);
 		int currentMonth = c.get(Calendar.MONTH) + 1;
 
-		List<CalcResult> calc = calcDao.getCalcForMonth(year, currentMonth);
+		List<CalcResult> calc = operationDao.getCalcForMonth(year, currentMonth);
 
 		MonthAdjusted monthAdjusted = createMonthAdjusted(calc, year, currentMonth);
 
@@ -43,6 +42,7 @@ public class Calc extends BusinessServiceAbstract {
 		monitorInterface.print(monthAdjusted, month, budgetMonth, keys);
 
 	}
+	
 
 	private MonthAdjusted createMonthAdjusted(List<CalcResult> _calc, int _year, int _currentMonth) {
 		MonthAdjusted ma = new MonthAdjusted();

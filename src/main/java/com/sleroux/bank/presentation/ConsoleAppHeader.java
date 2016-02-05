@@ -4,9 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.sleroux.bank.Bank;
-
 public class ConsoleAppHeader {
+
+	private static int	terminalWidth	= 80;
 
 	public static void printHeader() {
 		BufferedReader reader;
@@ -22,7 +22,6 @@ public class ConsoleAppHeader {
 	}
 
 	public static void printAppHeader(String _s) {
-		int terminalWidth = Bank.getInstance().getTerminalWidth();
 		String line = "";
 		for (int i = 0; i < terminalWidth; i++) {
 			line += "-";
@@ -34,7 +33,6 @@ public class ConsoleAppHeader {
 	}
 
 	public static void printLine() {
-		int terminalWidth = Bank.getInstance().getTerminalWidth();
 		String line = "";
 		for (int i = 0; i < terminalWidth; i++) {
 			line += "-";

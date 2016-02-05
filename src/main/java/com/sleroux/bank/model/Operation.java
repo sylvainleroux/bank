@@ -2,6 +2,8 @@ package com.sleroux.bank.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @SuppressWarnings("serial")
 @Entity
@@ -29,13 +32,13 @@ public class Operation implements Serializable {
 	private String		libelle;
 	private BigDecimal	montant;
 	private String		catego;
-	private int			year;
+	private Integer		year;
 
 	@Column(name = "month_bank")
-	private int			monthBank;
+	private Integer		monthBank;
 
 	@Column(name = "month_adjusted")
-	private int			monthAdjusted;
+	private Integer		monthAdjusted;
 
 	public int getId() {
 		return id;
@@ -117,8 +120,31 @@ public class Operation implements Serializable {
 		monthAdjusted = _monthAdjusted;
 	}
 
+	@Transient
 	public String toString() {
-		return compte + "|" + dateOperation + "|" + dateValeur + "|" + libelle + "|" + montant;
+		String sep = "|";
+		return "[" + compte + sep + formatDate(dateOperation) + sep + formatDate(dateValeur) + sep + libelle + sep + montant + "]";
+
+	}
+
+	@Transient
+	private String formatDate(Date d) {
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+		if (d == null)
+			return "null";
+		return formatter.format(d);
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash = 31 * hash + compte.hashCode();
+		hash = 31 * hash + dateOperation.hashCode();
+		hash = 31 * hash + dateValeur.hashCode();
+		hash = 31 * hash + libelle.hashCode();
+		hash = 31 * hash + montant.hashCode();
+
+		return hash;
 	}
 
 }

@@ -216,4 +216,14 @@ public class Config {
 	public static String getImportCommandBPO() {
 		return getProperty("IMPORT_COMMAND_BPO");
 	}
+
+	// Prefix imported files with IMPORTED_
+	public static boolean getArchiveImportFiles() {
+		
+		return properties.get("ARCHIVE_IMPORT_FILES").equals("true");
+	}
+
+	public static boolean deleteImportFile() {
+		return properties.get("DELETE_IMPORT_FILES").equals("true");
+	}
 }

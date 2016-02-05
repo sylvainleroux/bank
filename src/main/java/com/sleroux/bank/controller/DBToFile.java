@@ -1,12 +1,14 @@
-package com.sleroux.bank.business;
+package com.sleroux.bank.controller;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.sleroux.bank.dao.BudgetDao;
+import com.sleroux.bank.business.BusinessServiceAbstract;
+import com.sleroux.bank.dao.IBudgetDao;
 import com.sleroux.bank.evo.document.BudgetDocument;
 import com.sleroux.bank.model.Budget;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
@@ -17,9 +19,10 @@ import com.sleroux.bank.util.Config;
 public class DBToFile extends BusinessServiceAbstract {
 
 	@Autowired
-	BudgetDao	budgetDao;
+	IBudgetDao	budgetDao;
 
 	@Override
+	@Transactional(readOnly=true)
 	public void run() throws Exception {
 		ConsoleAppHeader.printAppHeader("Write Budget");
 

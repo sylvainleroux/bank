@@ -3,6 +3,7 @@ package com.sleroux.bank.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,8 +23,10 @@ public class Budget implements Serializable {
 	protected String		catego;
 	protected BigDecimal	debit	= BigDecimal.ZERO;
 	protected BigDecimal	credit	= BigDecimal.ZERO;
-	protected String		notes;
-	protected String		compte;
+	protected String		notes	= "";
+
+	@Column(length = 10)
+	protected String		compte	= "";
 
 	public int getId() {
 		return id;

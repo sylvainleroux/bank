@@ -13,22 +13,23 @@ import asg.cliche.Shell;
 import asg.cliche.ShellFactory;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.business.Calc;
-import com.sleroux.bank.business.Catego;
-import com.sleroux.bank.business.DBToFile;
-import com.sleroux.bank.business.FileToDB;
-import com.sleroux.bank.business.Import;
 import com.sleroux.bank.business.tool.Setup;
 import com.sleroux.bank.business.tool.Test;
 import com.sleroux.bank.business.tool.UpdatePassword;
 import com.sleroux.bank.business.tool.Version;
+import com.sleroux.bank.controller.CalcController;
+import com.sleroux.bank.controller.CategoController;
+import com.sleroux.bank.controller.DBToFile;
+import com.sleroux.bank.controller.ExtractController;
+import com.sleroux.bank.controller.FileToDB;
+import com.sleroux.bank.controller.ImportController;
+import com.sleroux.bank.controller.SoldeController;
 import com.sleroux.bank.util.Config;
 
 @Component
 public class Bank {
 
 	private static Bank					instance;
-	private static int					terminalWidth	= 80;
 	private static ApplicationContext	applicationContext;
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
@@ -55,7 +56,6 @@ public class Bank {
 
 				line.append(args[i]);
 			}
-			System.out.println(line.toString());
 			shell.processLine(line.toString());
 		} else {
 			shell.commandLoop();
@@ -78,22 +78,22 @@ public class Bank {
 
 	@Command(name = "calc", abbrev = "c", description = "Calculate monthly summary")
 	public void calc() {
-		run(Calc.class);
+		run(CalcController.class);
 	}
 
 	@Command(name = "catego", abbrev = "ct", description = "Categorize operations")
 	public void catego() {
-		run(Catego.class);
+		run(CategoController.class);
 	}
 
-	@Command(name = "solde", abbrev = "s", description = "Display current soldes")
-	public String solde() {
-		return "hello";
+	@Command(name = "extract", description = "extract from bank website")
+	public void bankExtract() {
+		run(ExtractController.class);
 	}
 
 	@Command(name = "import", description = "import from bank website")
 	public void bankImport() {
-		run(Import.class);
+		run(ImportController.class);
 	}
 
 	@Command(name = "file2db", description = "Store Excel document into MySQL")
@@ -116,6 +116,11 @@ public class Bank {
 		run(Test.class);
 	}
 
+	@Command(name = "solde", abbrev = "s", description = "Display balance for all accounts")
+	public void balance() {
+		run(SoldeController.class);
+	}
+
 	private void run(Class<? extends BusinessServiceAbstract> _clazz) {
 
 		BusinessServiceAbstract service = applicationContext.getBean(_clazz);
@@ -125,10 +130,6 @@ public class Bank {
 			e.printStackTrace();
 		}
 
-	}
-
-	public int getTerminalWidth() {
-		return terminalWidth;
 	}
 
 }
