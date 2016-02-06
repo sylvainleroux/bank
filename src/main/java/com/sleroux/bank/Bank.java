@@ -3,6 +3,10 @@ package com.sleroux.bank;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
+
 import asg.cliche.CLIException;
 import asg.cliche.Command;
 import asg.cliche.Shell;
@@ -13,17 +17,20 @@ import com.sleroux.bank.business.tool.Setup;
 import com.sleroux.bank.business.tool.Test;
 import com.sleroux.bank.business.tool.UpdatePassword;
 import com.sleroux.bank.business.tool.Version;
-import com.sleroux.bank.evo.Calc;
-import com.sleroux.bank.evo.Catego;
-import com.sleroux.bank.evo.DBToFile;
-import com.sleroux.bank.evo.FileToDB;
-import com.sleroux.bank.evo.Import;
+import com.sleroux.bank.controller.CalcController;
+import com.sleroux.bank.controller.CategoController;
+import com.sleroux.bank.controller.DBToFile;
+import com.sleroux.bank.controller.ExtractController;
+import com.sleroux.bank.controller.FileToDB;
+import com.sleroux.bank.controller.ImportController;
+import com.sleroux.bank.controller.SoldeController;
 import com.sleroux.bank.util.Config;
 
+@Component
 public class Bank {
 
-	private static Bank	instance;
-	private static int	terminalWidth	= 80;
+	private static Bank					instance;
+	private static ApplicationContext	applicationContext;
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, IOException, CLIException {
@@ -34,19 +41,23 @@ public class Bank {
 			System.out.println(Config.getVersion());
 			return;
 		}
+		
+		System.out.println("Loading ...");
+		
+		applicationContext = new AnnotationConfigApplicationContext(BankConfig.class);
+		instance = applicationContext.getBean(Bank.class);
 
-		Shell shell = ShellFactory.createConsoleShell("bank", "bank", new Bank());
+		Shell shell = ShellFactory.createConsoleShell("bank", "bank", instance);
 
 		if (args.length > 1) {
 			StringBuffer line = new StringBuffer();
-			for (int i = 0; i < args.length -1; i++) {
+			for (int i = 0; i < args.length - 1; i++) {
 				if (i > 0) {
 					line.append(" ");
 				}
-				
+
 				line.append(args[i]);
 			}
-			System.out.println(line.toString());
 			shell.processLine(line.toString());
 		} else {
 			shell.commandLoop();
@@ -57,71 +68,70 @@ public class Bank {
 		return instance;
 	}
 
-	public Bank() throws IOException {
-		Config.loadProperties();
-		instance = this;
-	}
-
 	@Command(name = "setup", description = "run intial setup")
 	public void setup() {
-		run(new Setup());
+		run(Setup.class);
 	}
 
 	@Command(name = "password", abbrev = "pwd", description = "Configure/update password")
 	public void updatePassword() {
-		run(new UpdatePassword());
+		run(UpdatePassword.class);
 	}
 
 	@Command(name = "calc", abbrev = "c", description = "Calculate monthly summary")
 	public void calc() {
-		run(new Calc());
+		run(CalcController.class);
 	}
 
 	@Command(name = "catego", abbrev = "ct", description = "Categorize operations")
 	public void catego() {
-		run(new Catego());
+		run(CategoController.class);
 	}
 
-	@Command(name = "solde", abbrev = "s", description = "Display current soldes")
-	public String solde() {
-		return "hello";
+	@Command(name = "extract", description = "extract from bank website")
+	public void bankExtract() {
+		run(ExtractController.class);
 	}
 
 	@Command(name = "import", description = "import from bank website")
 	public void bankImport() {
-		run(new Import());
+		run(ImportController.class);
 	}
 
 	@Command(name = "file2db", description = "Store Excel document into MySQL")
 	public void file2db() {
-		run(new FileToDB());
+		run(FileToDB.class);
 	}
 
 	@Command(name = "db2file", description = "Write MySQL data to Excel document")
 	public void db2file() {
-		run(new DBToFile());
+		run(DBToFile.class);
 	}
 
 	@Command(name = "version", description = "Display current version")
 	public void version() {
-		run(new Version());
+		run(Version.class);
 	}
 
 	@Command(name = "test-config", description = "Test configuration")
 	public void testConfig() {
-		run(new Test(true));
+		run(Test.class);
 	}
 
-	private void run(BusinessServiceAbstract _service) {
+	@Command(name = "solde", abbrev = "s", description = "Display balance for all accounts")
+	public void balance() {
+		run(SoldeController.class);
+	}
+
+	private void run(Class<? extends BusinessServiceAbstract> _clazz) {
+
+		BusinessServiceAbstract service = applicationContext.getBean(_clazz);
 		try {
-			_service.run();
+			service.run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
 
-	public int getTerminalWidth() {
-		return terminalWidth;
 	}
 
 }

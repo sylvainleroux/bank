@@ -32,7 +32,7 @@ public class OperationFormater {
 				_operation.getMontant(), _operation.getCatego(), _operation.getLibelle());
 	}
 
-	public static String toStringLight(com.sleroux.bank.evo.model.Operation o) {
+	public static String toStringLight(com.sleroux.bank.model.Operation o) {
 		return  "Compte    : " + o.getCompte() + 
 				"    Date Op.  : "
 				+ formatDate(o.getDateOperation()) + "    Date Valeur.  : " + formatDate(o.getDateValeur()) + 

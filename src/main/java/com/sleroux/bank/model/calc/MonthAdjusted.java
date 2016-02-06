@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import com.sleroux.bank.Bank;
 import com.sleroux.bank.model.budget.BudgetKeys;
 import com.sleroux.bank.model.statement.Operation;
 import com.sleroux.bank.model.statement.Year;

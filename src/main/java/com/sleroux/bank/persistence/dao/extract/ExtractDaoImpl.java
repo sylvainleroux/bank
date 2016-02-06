@@ -6,18 +6,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.sleroux.bank.model.fileimport.ExtractDocument;
-import com.sleroux.bank.persistence.storage.extract.ExtractStorage;
 import com.sleroux.bank.util.Config;
 
 public class ExtractDaoImpl implements ExtractDao {
 
-	private ExtractStorage	extractor	= new ExtractStorage();
-
 	@Override
+	@Deprecated
 	public List<ExtractDocument> getAll() {
-		// Get file list
-		List<String> files = getFiles();
-		return extractor.getAll(files);
+		return null;
 	}
 
 	private List<String> getFiles() {

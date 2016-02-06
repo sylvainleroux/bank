@@ -22,7 +22,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
-import com.sleroux.bank.evo.model.Budget;
+import com.sleroux.bank.model.Budget;
 import com.sleroux.bank.util.Config;
 
 public class BudgetDocument {

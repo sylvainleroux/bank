@@ -3,13 +3,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.sleroux.bank</groupId>
 	<artifactId>bank</artifactId>
-	<version>2.3.0</version>
+	<version>3.0.0</version>
 	<packaging>jar</packaging>
 	<properties>
 		<java.version>1.7</java.version>
 
 		<maven.build.timestamp.format>yyMMdd-HHmm</maven.build.timestamp.format>
 		<buildNumber>${project.version}-${maven.build.timestamp}</buildNumber>
+
+		<javassist.version>3.20.0-GA</javassist.version>
+		<mysql-connector-java.version>5.1.37</mysql-connector-java.version>
+		<tomcat-dbcp.version>7.0.42</tomcat-dbcp.version>
+		<org.slf4j.version>1.7.13</org.slf4j.version>
+
 	</properties>
 
 	<dependencies>
@@ -48,23 +54,32 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-
 		<dependency>
 			<groupId>org.glassfish.grizzly</groupId>
 			<artifactId>grizzly-http-server</artifactId>
 			<version>2.3.14</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.2.3</version>
 		</dependency>
 		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>${javassist.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.35</version>
+			<version>${mysql-connector-java.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-dbcp</artifactId>
+			<version>${tomcat-dbcp.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.reflections</groupId>
@@ -79,8 +94,45 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
+			<version>4.12</version>
 		</dependency>
+
+		<!-- Spring -->
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>4.2.4.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>4.2.4.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>4.2.4.RELEASE</version>
+		</dependency>
+
+		<!-- Hibernate -->
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>4.3.11.Final</version>
+		</dependency>
+
+		<!-- DBCP -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
@@ -96,7 +148,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
+				<version>3.5</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
