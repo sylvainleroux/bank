@@ -41,7 +41,9 @@ public class Bank {
 			System.out.println(Config.getVersion());
 			return;
 		}
-
+		
+		System.out.println("Loading ...");
+		
 		applicationContext = new AnnotationConfigApplicationContext(BankConfig.class);
 		instance = applicationContext.getBean(Bank.class);
 
