@@ -17,11 +17,11 @@ public class SoldeService {
 
 	public void run() {
 		
-		DecimalFormat formater = new DecimalFormat("###,###.##");
+		DecimalFormat formater = new DecimalFormat("+ ###,###.##;-#");
 
 		List<AccountBalance> accounts = operationDao.getSoldes();
 		for (AccountBalance c : accounts) {
-			System.out.printf("%10s: %14s\n", c.getCompte(), formater.format(c.getSolde()));
+			System.out.printf("%-4s: %14s\n", c.getCompte(), formater.format(c.getSolde()));
 		}
 
 	}

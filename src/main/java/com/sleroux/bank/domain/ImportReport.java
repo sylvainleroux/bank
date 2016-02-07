@@ -15,5 +15,12 @@ public class ImportReport {
 		reportFiles = _reportFiles;
 	}
 
+	public int getNbLines() {
+		int nbLines = 0;
+		for (ImportReportFile rf : reportFiles) {
+			nbLines += rf.getRawLines();
+		}
+		return nbLines;
+	}
 
 }

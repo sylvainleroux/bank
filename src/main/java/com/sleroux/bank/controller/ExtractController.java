@@ -44,7 +44,6 @@ public class ExtractController extends BusinessServiceAbstract {
 		ImportReport report = importService.importFiles(ImportType.CMB, files);
 		ImportReportPresenter.displayReport(report);
 		
-
 	}
 
 }

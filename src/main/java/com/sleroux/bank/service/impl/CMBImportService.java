@@ -14,15 +14,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import au.com.bytecode.opencsv.CSVReader;
 
+import com.sleroux.bank.dao.IExtractHistoryDao;
 import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.domain.ImportReport;
 import com.sleroux.bank.domain.ImportReportFile;
+import com.sleroux.bank.model.ExtractHistory;
 import com.sleroux.bank.model.Operation;
 import com.sleroux.bank.model.fileimport.ExtractDocument;
 import com.sleroux.bank.service.ImportType;
@@ -38,6 +42,10 @@ public class CMBImportService {
 	@Autowired
 	IOperationDao					operationDao;
 
+	@Autowired
+	IExtractHistoryDao				extractHistoryDao;
+
+	@Transactional
 	public void importFiles(List<String> _files, ImportReport _report) {
 
 		for (String f : _files) {
@@ -74,9 +82,18 @@ public class CMBImportService {
 				File file = new File(f);
 				file.delete();
 			}
-
+		}
+		
+		if (_report.getNbLines() > 0){
+			createHistoryEntry();
 		}
 
+	}
+
+	private void createHistoryEntry() {
+		ExtractHistory extractHistory = new ExtractHistory();
+		extractHistory.setExtractDate(new Date());
+		extractHistoryDao.create(extractHistory);
 	}
 
 	private void archiveFile(String _f) {

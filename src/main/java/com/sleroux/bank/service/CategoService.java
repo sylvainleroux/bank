@@ -22,7 +22,6 @@ import com.sleroux.bank.util.formats.OperationFormater;
 @Service
 public class CategoService {
 
-	
 	private final static int	MINIMUM_CATEGO_NAME_LENGTH	= 4;
 
 	private List<String>		debitsCatego				= new ArrayList<>();
@@ -81,7 +80,7 @@ public class CategoService {
 			ConsoleAppHeader.printLine();
 
 		}
-		
+
 		System.out.println("Categorization completed");
 
 	}
@@ -163,9 +162,9 @@ public class CategoService {
 	public void setCreditsCatego(List<String> _creditsCatego) {
 		creditsCatego = _creditsCatego;
 	}
-	
-	
-	
-	
-	
+
+	public int getNonCategorized() {
+		return operationDao.findUncategorized().size();
+	}
+
 }

@@ -3,6 +3,7 @@ package com.sleroux.bank;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ import com.sleroux.bank.controller.ExtractController;
 import com.sleroux.bank.controller.FileToDB;
 import com.sleroux.bank.controller.ImportController;
 import com.sleroux.bank.controller.SoldeController;
+import com.sleroux.bank.controller.SummaryController;
 import com.sleroux.bank.util.Config;
 
 @Component
@@ -41,13 +43,13 @@ public class Bank {
 			System.out.println(Config.getVersion());
 			return;
 		}
-		
+
 		System.out.println("Loading ...");
-		
+
 		applicationContext = new AnnotationConfigApplicationContext(BankConfig.class);
 		instance = applicationContext.getBean(Bank.class);
 
-		Shell shell = ShellFactory.createConsoleShell("bank", "bank", instance);
+		Shell shell = ShellFactory.createConsoleShell("bank", "--------------------------------------------------------------------------------", instance);
 
 		if (args.length > 1) {
 			StringBuffer line = new StringBuffer();
@@ -60,6 +62,14 @@ public class Bank {
 			}
 			shell.processLine(line.toString());
 		} else {
+
+			try {
+				applicationContext.getBean(SummaryController.class).run();
+			} catch (BeansException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			shell.commandLoop();
 		}
 	}
