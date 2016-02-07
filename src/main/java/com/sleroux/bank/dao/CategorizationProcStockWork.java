@@ -1,4 +1,4 @@
-package com.sleroux.bank.dao.impl;
+package com.sleroux.bank.dao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

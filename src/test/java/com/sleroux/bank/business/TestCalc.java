@@ -13,7 +13,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sleroux.bank.TestConfig;
-import com.sleroux.bank.dao.IOperationDao;
+import com.sleroux.bank.dao.OperationDao;
 import com.sleroux.bank.model.Operation;
 
 // http://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html
@@ -23,7 +23,7 @@ import com.sleroux.bank.model.Operation;
 public class TestCalc {
 
 	@Autowired
-	IOperationDao	operationDao;
+	OperationDao	operationDao;
 
 	@Test
 	@Transactional

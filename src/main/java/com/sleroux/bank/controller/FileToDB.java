@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.dao.IBudgetDao;
+import com.sleroux.bank.dao.BudgetDao;
 import com.sleroux.bank.evo.document.BudgetDocument;
 import com.sleroux.bank.model.Budget;
 import com.sleroux.bank.model.budget.Changes;
@@ -21,7 +21,7 @@ import com.sleroux.bank.util.Config;
 public class FileToDB extends BusinessServiceAbstract {
 
 	@Autowired
-	IBudgetDao	budgetDao;
+	BudgetDao	budgetDao;
 
 	@Override
 	@Transactional

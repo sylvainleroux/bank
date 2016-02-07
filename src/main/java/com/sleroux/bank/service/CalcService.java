@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sleroux.bank.dao.IOperationDao;
+import com.sleroux.bank.dao.OperationDao;
 import com.sleroux.bank.model.CalcResult;
 import com.sleroux.bank.model.budget.BudgetKeys;
 import com.sleroux.bank.model.budget.BugdetMonth;
@@ -21,7 +21,7 @@ import com.sleroux.bank.presentation.MonitorInterface;
 public class CalcService {
 
 	@Autowired
-	IOperationDao	operationDao;
+	OperationDao	operationDao;
 	
 	private MonitorInterface	monitorInterface	= new ConsoleMonthBudgetPresenter();
 

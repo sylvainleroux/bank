@@ -14,7 +14,7 @@ import javax.xml.bind.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sleroux.bank.dao.IOperationDao;
+import com.sleroux.bank.dao.OperationDao;
 import com.sleroux.bank.model.Operation;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.util.formats.OperationFormater;
@@ -28,7 +28,7 @@ public class CategoService {
 	private List<String>		creditsCatego				= new ArrayList<>();
 
 	@Autowired
-	IOperationDao				operationDao;
+	OperationDao				operationDao;
 
 	public void run() throws Exception {
 

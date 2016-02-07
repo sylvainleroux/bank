@@ -1,4 +1,4 @@
-package com.sleroux.bank.dao.impl;
+package com.sleroux.bank.dao;
 
 import java.util.List;
 
@@ -9,14 +9,13 @@ import org.hibernate.Session;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
-import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.dao.common.AbstractHibernateDao;
 import com.sleroux.bank.model.AccountBalance;
 import com.sleroux.bank.model.CalcResult;
 import com.sleroux.bank.model.Operation;
 
 @Repository
-public class OperationDao extends AbstractHibernateDao<Operation> implements IOperationDao {
+public class OperationDao extends AbstractHibernateDao<Operation> {
 
 	public OperationDao() {
 		super();
@@ -24,7 +23,6 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 		setClazz(Operation.class);
 	}
 
-	@Override
 	public void doBackup() {
 
 		StringBuilder sql = new StringBuilder("insert into operation_backup");
@@ -36,7 +34,6 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 
 	}
 
-	@Override
 	@Transactional
 	public int insertIgnore(Operation _o) {
 
@@ -49,17 +46,15 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 		query.setParameter("date_valeur", _o.getDateValeur());
 		query.setParameter("libelle", _o.getLibelle());
 		query.setParameter("montant", _o.getMontant());
-		
+
 		return query.executeUpdate();
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<Operation> findUncategorized() {
 		return getCurrentSession().createQuery("from Operation where catego is null").list();
 	}
 
-	@Override
 	public List<String> getCategoriesDebit() {
 		Query query = getCurrentSession().createQuery("select distinct catego from Operation where montant < 0");
 		@SuppressWarnings("unchecked")
@@ -67,7 +62,6 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 		return list;
 	}
 
-	@Override
 	public List<String> getCategoriesCredit() {
 		Query query = getCurrentSession().createQuery("select distinct catego from Operation where montant > 0");
 		@SuppressWarnings("unchecked")
@@ -75,7 +69,6 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 		return list;
 	}
 
-	@Override
 	public List<String> getSuggestionsFor(final Operation _o) {
 
 		CategorizationProcStockWork work = new CategorizationProcStockWork(_o);
@@ -86,7 +79,6 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<CalcResult> getCalcForMonth(int _year, int _month) {
 		Query query = getCurrentSession()
 				.createSQLQuery(
@@ -98,7 +90,6 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<AccountBalance> getSoldes() {
 		Query query = getCurrentSession().createSQLQuery("select * from bank.soldes").setResultTransformer(
 				Transformers.aliasToBean(AccountBalance.class));

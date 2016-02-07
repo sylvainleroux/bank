@@ -20,7 +20,7 @@ import com.sleroux.bank.testutils.BudgetHelper;
 @ContextConfiguration(classes = { TestConfig.class }, loader = AnnotationConfigContextLoader.class)
 public class TestBudgetDao {
 	@Autowired
-	IBudgetDao	budgetDao;
+	BudgetDao	budgetDao;
 
 	@Test
 	@Transactional

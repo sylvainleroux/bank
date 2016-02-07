@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import com.sleroux.bank.TestConfig;
-import com.sleroux.bank.dao.IOperationDao;
+import com.sleroux.bank.dao.OperationDao;
 import com.sleroux.bank.model.Operation;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,7 +26,7 @@ public class TestCategoValidation {
 	CategoService	catego;
 
 	@Autowired
-	IOperationDao	operationDao;
+	OperationDao	operationDao;
 
 	@Test(expected = ValidationException.class)
 	@Transactional
