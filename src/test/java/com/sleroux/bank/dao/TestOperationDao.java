@@ -26,7 +26,7 @@ import com.sleroux.bank.testutils.OperationHelper;
 public class TestOperationDao {
 
 	@Autowired
-	OperationDao	operationDao;
+	IOperationDao	operationDao;
 
 	@Autowired
 	CategoService	categoService;

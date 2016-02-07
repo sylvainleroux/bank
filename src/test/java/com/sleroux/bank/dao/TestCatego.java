@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import com.sleroux.bank.TestConfig;
-import com.sleroux.bank.dao.OperationDao;
+import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.model.Operation;
 import com.sleroux.bank.service.CategoService;
 import com.sleroux.bank.testutils.OperationHelper;
@@ -26,7 +26,7 @@ public class TestCatego {
 	CategoService	categoService;
 
 	@Autowired
-	OperationDao	operationDao;
+	IOperationDao	operationDao;
 
 	@Test
 	@Transactional

@@ -6,14 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sleroux.bank.dao.OperationDao;
+import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.model.AccountBalance;
 
 @Service
 public class SoldeService {
 
 	@Autowired
-	OperationDao	operationDao;
+	IOperationDao	operationDao;
 
 	public void run() {
 		

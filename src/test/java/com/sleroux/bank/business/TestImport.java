@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sleroux.bank.TestConfig;
 import com.sleroux.bank.controller.ImportController;
-import com.sleroux.bank.dao.OperationDao;
+import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.model.Operation;
 import com.sleroux.bank.service.ImportService;
 import com.sleroux.bank.service.ImportType;
@@ -40,7 +40,7 @@ public class TestImport {
 	ImportService	importService;
 
 	@Autowired
-	OperationDao		operationDao;
+	IOperationDao		operationDao;
 
 	@Test
 	@Transactional
