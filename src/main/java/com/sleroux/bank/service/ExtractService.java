@@ -7,12 +7,17 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sleroux.bank.dao.IExtractHistoryDao;
 import com.sleroux.bank.util.Config;
 
 @Service
 public class ExtractService {
+
+	@Autowired
+	IExtractHistoryDao	extractHistoryDao;
 
 	private Logger	logger	= Logger.getLogger(this.getClass());
 
