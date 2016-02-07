@@ -38,7 +38,7 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 
 	@Override
 	@Transactional
-	public void insertIgnore(Operation _o) {
+	public int insertIgnore(Operation _o) {
 
 		String sql = "INSERT IGNORE into operation (compte, date_operation, date_valeur, libelle, montant)";
 		sql += "VALUES (:compte, :date_operation, :date_valeur, :libelle, :montant)";
@@ -49,9 +49,8 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 		query.setParameter("date_valeur", _o.getDateValeur());
 		query.setParameter("libelle", _o.getLibelle());
 		query.setParameter("montant", _o.getMontant());
-
-		query.executeUpdate();
-
+		
+		return query.executeUpdate();
 	}
 
 	@SuppressWarnings("unchecked")

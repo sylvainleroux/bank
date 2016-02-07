@@ -19,6 +19,7 @@ import com.sleroux.bank.TestConfig;
 import com.sleroux.bank.controller.ImportController;
 import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.model.Operation;
+import com.sleroux.bank.service.ImportService;
 import com.sleroux.bank.service.ImportType;
 import com.sleroux.bank.util.Config;
 
@@ -36,7 +37,7 @@ public class TestImport {
 	}
 
 	@Autowired
-	ImportController	importController;
+	ImportService	importService;
 
 	@Autowired
 	IOperationDao		operationDao;
@@ -49,7 +50,7 @@ public class TestImport {
 		String f = TestImport.class.getResource("RELEVE_2016_01_18_CMB_last5weeks.csv").getFile();
 		files.add(new File(f).toString());
 
-		importController.importFiles(ImportType.CMB, files);
+		importService.importFiles(ImportType.CMB, files);
 
 		List<Operation> list = operationDao.findAll();
 

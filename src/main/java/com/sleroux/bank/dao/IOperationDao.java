@@ -11,7 +11,7 @@ public interface IOperationDao extends IOperations<Operation> {
 
 	void doBackup();
 
-	void insertIgnore(Operation _o);
+	int insertIgnore(Operation _o);
 
 	List<Operation> findUncategorized();
 

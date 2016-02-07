@@ -21,23 +21,31 @@ import org.springframework.stereotype.Service;
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.sleroux.bank.dao.IOperationDao;
+import com.sleroux.bank.domain.ImportReport;
+import com.sleroux.bank.domain.ImportReportFile;
 import com.sleroux.bank.model.Operation;
 import com.sleroux.bank.model.fileimport.ExtractDocument;
-import com.sleroux.bank.service.ImportService;
+import com.sleroux.bank.service.ImportType;
 import com.sleroux.bank.util.Config;
 
 @Service
-public class CMBImportService implements ImportService {
+public class CMBImportService {
 
-	private Logger	logger	= Logger.getLogger(CMBImportService.class);
+	private final static ImportType	IMPORT_TYPE	= ImportType.CMB;
+
+	private Logger					logger		= Logger.getLogger(CMBImportService.class);
 
 	@Autowired
-	IOperationDao	operationDao;
+	IOperationDao					operationDao;
 
-	@Override
-	public void importFiles(List<String> _files) {
+	public void importFiles(List<String> _files, ImportReport _report) {
 
 		for (String f : _files) {
+
+			ImportReportFile rf = new ImportReportFile();
+			rf.setImportType(IMPORT_TYPE.toString());
+			rf.setFilename(f);
+			_report.getReportFiles().add(rf);
 
 			logger.info("Import file [" + f + "]");
 			ExtractDocument extractDocument = null;
@@ -49,9 +57,13 @@ public class CMBImportService implements ImportService {
 			}
 			checkDuplicatesInFile(extractDocument);
 
+			rf.setRawLines(extractDocument.getOperations().size());
+
+			int newLines = 0;
 			for (Operation o : extractDocument.getOperations()) {
-				operationDao.insertIgnore(o);
+				newLines += operationDao.insertIgnore(o);
 			}
+			rf.setNewLines(newLines);
 
 			// Mark as processed or deleted
 
