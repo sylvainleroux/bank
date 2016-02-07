@@ -32,12 +32,17 @@ public class TestAnalysisDao {
 
 		Operation o = OperationHelper.createDebitOperation();
 		o.setCatego("CATEGO1");
+		o.setCompte("CMB");
+		o.setMonthAdjusted(11);
+		o.setYear(2015);
 
 		operationDao.create(o);
 
 		List<AnalysisFact> list = analysisDao.getFacts();
-		System.out.println(list.size());
 
+		for (AnalysisFact a : list) {
+			System.out.println(a);
+		}
 	}
 
 }

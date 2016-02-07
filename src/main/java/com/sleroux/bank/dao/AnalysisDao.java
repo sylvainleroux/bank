@@ -24,12 +24,9 @@ public class AnalysisDao {
 	@SuppressWarnings("unchecked")
 	public List<AnalysisFact> getFacts() {
 
-		Query query = getCurrentSession()
-				.createSQLQuery(
-						"select catego, CASE WHEN is_credit THEN TRUE ELSE FALSE END as credit, if (is_credit, ops_credit, ops_debit) as ops, if (is_credit, bud_credit, bud_debit) as bud from diff where year = :year and month = :month order by catego");
+		Query query = getCurrentSession().createSQLQuery("select * from analysis");
 		query.setResultTransformer(Transformers.aliasToBean(AnalysisFact.class));
 		return query.list();
 
 	}
-
 }

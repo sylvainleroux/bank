@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
+import com.sleroux.bank.service.AnalysisService;
 import com.sleroux.bank.service.CategoService;
 import com.sleroux.bank.service.ExtractHistoryService;
 import com.sleroux.bank.service.SoldeService;
@@ -23,6 +24,9 @@ public class SummaryController extends BusinessServiceAbstract {
 	@Autowired
 	CategoService			categoService;
 
+	@Autowired
+	AnalysisService			analysisService;
+
 	@Override
 	@Transactional
 	public void run() throws Exception {
@@ -30,9 +34,20 @@ public class SummaryController extends BusinessServiceAbstract {
 		System.out.println("Last Import   : " + extractHistoryService.getFormattedImportDate());
 
 		printNonCategorized(categoService.getNonCategorized());
+		printHealthCheck();
 		ConsoleAppHeader.printLine();
 		soldeService.run();
 
+	}
+
+	private void printHealthCheck() {
+		int nbFacts = analysisService.getNbFacts();
+		String status = "OK";
+		if (nbFacts > 0) {
+			status = nbFacts + " alerts";
+		}
+
+		System.out.println("Health check  : " + status);
 	}
 
 	private String printNonCategorized(int _nonCategorized) {

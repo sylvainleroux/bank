@@ -23,6 +23,7 @@ import com.sleroux.bank.controller.CategoController;
 import com.sleroux.bank.controller.DBToFile;
 import com.sleroux.bank.controller.ExtractController;
 import com.sleroux.bank.controller.FileToDB;
+import com.sleroux.bank.controller.HealthCheckController;
 import com.sleroux.bank.controller.ImportController;
 import com.sleroux.bank.controller.SoldeController;
 import com.sleroux.bank.controller.SummaryController;
@@ -49,7 +50,8 @@ public class Bank {
 		applicationContext = new AnnotationConfigApplicationContext(BankConfig.class);
 		instance = applicationContext.getBean(Bank.class);
 
-		Shell shell = ShellFactory.createConsoleShell("bank", "--------------------------------------------------------------------------------", instance);
+		Shell shell = ShellFactory.createConsoleShell("bank",
+				"--------------------------------------------------------------------------------", instance);
 
 		if (args.length > 1) {
 			StringBuffer line = new StringBuffer();
@@ -131,6 +133,11 @@ public class Bank {
 	@Command(name = "solde", abbrev = "s", description = "Display balance for all accounts")
 	public void balance() {
 		run(SoldeController.class);
+	}
+
+	@Command(name = "health-check", abbrev = "check", description = "Run health-check as suggest fixes")
+	public void check() {
+		run(HealthCheckController.class);
 	}
 
 	private void run(Class<? extends BusinessServiceAbstract> _clazz) {

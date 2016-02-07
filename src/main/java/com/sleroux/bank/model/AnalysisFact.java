@@ -1,6 +1,7 @@
 package com.sleroux.bank.model;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class AnalysisFact {
 
@@ -15,7 +16,7 @@ public class AnalysisFact {
 	private BigDecimal	debit_bud;
 
 	private String		notes;
-	private Boolean		flag;
+	private BigInteger	flag;
 
 	public int getYear() {
 		return year;
@@ -81,12 +82,18 @@ public class AnalysisFact {
 		notes = _notes;
 	}
 
-	public Boolean getFlag() {
+	public BigInteger getFlag() {
 		return flag;
 	}
 
-	public void setFlag(Boolean _flag) {
+	public void setFlag(BigInteger _flag) {
 		flag = _flag;
+	}
+
+	public String toString() {
+
+		return String.format("%d/%02d:%s DEBIT[%.2f|%.2f] CREDIT[%.2f|%.2f]", year, month, catego, debit_ops, debit_bud, credit_ops,
+				credit_bud);
 	}
 
 }
