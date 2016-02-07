@@ -17,7 +17,7 @@ public class CalcController extends BusinessServiceAbstract {
 	@Override
 	@Transactional
 	public void run() throws Exception {
-		
+
 		calcService.run();
 
 	}

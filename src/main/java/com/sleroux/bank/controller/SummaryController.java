@@ -28,7 +28,7 @@ public class SummaryController extends BusinessServiceAbstract {
 	public void run() throws Exception {
 		ConsoleAppHeader.printLine();
 		System.out.println("Last Import   : " + extractHistoryService.getFormattedImportDate());
-	
+
 		printNonCategorized(categoService.getNonCategorized());
 		ConsoleAppHeader.printLine();
 		soldeService.run();
@@ -36,10 +36,10 @@ public class SummaryController extends BusinessServiceAbstract {
 	}
 
 	private String printNonCategorized(int _nonCategorized) {
-		if (_nonCategorized > 0){
+		if (_nonCategorized > 0) {
 			System.out.println("To categorize : " + _nonCategorized + " operations");
 		}
-		
+
 		return null;
 	}
 
