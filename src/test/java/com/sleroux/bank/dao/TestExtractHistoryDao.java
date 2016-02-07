@@ -21,7 +21,7 @@ import com.sleroux.bank.model.ExtractHistory;
 public class TestExtractHistoryDao {
 
 	@Autowired
-	private ExtractHistoryDao	extractHistoryDao;
+	private IExtractHistoryDao	extractHistoryDao;
 
 	@Test
 	@Transactional

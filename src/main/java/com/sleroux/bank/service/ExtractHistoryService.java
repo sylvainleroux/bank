@@ -9,12 +9,12 @@ import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sleroux.bank.dao.ExtractHistoryDao;
+import com.sleroux.bank.dao.IExtractHistoryDao;
 
 @Service
 public class ExtractHistoryService {
 	@Autowired
-	ExtractHistoryDao	extractHistoryDao;
+	IExtractHistoryDao	extractHistoryDao;
 
 	public Date getLastImportDate() {
 		return extractHistoryDao.getLastExtractDate();

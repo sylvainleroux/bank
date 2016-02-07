@@ -9,9 +9,9 @@ import com.sleroux.bank.dao.common.AbstractHibernateDao;
 import com.sleroux.bank.model.ExtractHistory;
 
 @Repository
-public class ExtractHistoryDao extends AbstractHibernateDao<ExtractHistory> {
+public class ExtactHistoryDao extends AbstractHibernateDao<ExtractHistory> {
 
-	public ExtractHistoryDao() {
+	public ExtactHistoryDao() {
 		super();
 
 		setClazz(ExtractHistory.class);
