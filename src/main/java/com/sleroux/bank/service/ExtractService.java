@@ -10,16 +10,16 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sleroux.bank.dao.IExtractHistoryDao;
+import com.sleroux.bank.dao.ExtractHistoryDao;
 import com.sleroux.bank.util.Config;
 
 @Service
 public class ExtractService {
 
 	@Autowired
-	IExtractHistoryDao	extractHistoryDao;
+	ExtractHistoryDao	extractHistoryDao;
 
-	private Logger	logger	= Logger.getLogger(this.getClass());
+	private Logger		logger	= Logger.getLogger(this.getClass());
 
 	public void runExtract(String _command) {
 		File file = new File(Config.getImportCommandPath() + File.separator + _command);

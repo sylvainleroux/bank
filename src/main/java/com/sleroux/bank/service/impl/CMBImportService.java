@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-import com.sleroux.bank.dao.IExtractHistoryDao;
+import com.sleroux.bank.dao.ExtractHistoryDao;
 import com.sleroux.bank.dao.OperationDao;
 import com.sleroux.bank.domain.ImportReport;
 import com.sleroux.bank.domain.ImportReportFile;
@@ -43,7 +43,7 @@ public class CMBImportService {
 	OperationDao					operationDao;
 
 	@Autowired
-	IExtractHistoryDao				extractHistoryDao;
+	ExtractHistoryDao				extractHistoryDao;
 
 	@Transactional
 	public void importFiles(List<String> _files, ImportReport _report) {
