@@ -2,6 +2,8 @@ package com.sleroux.bank;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -45,10 +47,23 @@ public class Bank {
 			return;
 		}
 
-		System.out.println("Loading ...");
+		Timer t = new Timer();
+		t.scheduleAtFixedRate(new TimerTask() {
+
+			String	l	= "|/—\\|/-\\";
+			int		i	= 0;
+
+			@Override
+			public void run() {
+				System.out.printf("Loading %c\r", l.charAt(i % 8));
+				i++;
+
+			}
+		}, 0, 100);
 
 		applicationContext = new AnnotationConfigApplicationContext(BankConfig.class);
 		instance = applicationContext.getBean(Bank.class);
+		t.cancel();
 
 		Shell shell = ShellFactory.createConsoleShell("bank",
 				"--------------------------------------------------------------------------------", instance);

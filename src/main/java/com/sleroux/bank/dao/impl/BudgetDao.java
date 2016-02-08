@@ -144,4 +144,12 @@ public class BudgetDao extends AbstractHibernateDao<Budget> implements IBudgetDa
 
 	}
 
+	@Override
+	public Budget findByYearMonthCatego(int _year, int _month, String _catego, String _compte) {
+		return (Budget) getCurrentSession()
+				.createQuery("from Budget where year = :year and month = :month and catego = :catego and compte=:compte")
+				.setParameter("compte", _compte).setParameter("year", _year).setParameter("month", _month).setParameter("catego", _catego)
+				.uniqueResult();
+	}
+
 }

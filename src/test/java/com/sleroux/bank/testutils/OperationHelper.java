@@ -29,4 +29,15 @@ public class OperationHelper {
 		return o;
 	}
 
+	public static Operation createDebitOperation(@SuppressWarnings("rawtypes") Class _class) {
+		Operation o = new Operation();
+		o.setCompte("BPO");
+		o.setDateOperation(new Date());
+		o.setDateValeur(new Date());
+		o.setLibelle(_class.getName().toUpperCase().substring(_class.getName().lastIndexOf(".")+1) + " RANDOM CREDIT OPERATION "
+				+ Math.round(Math.random() * 100000) + "_" + new Date().getTime());
+		o.setMontant(new BigDecimal(1 + Math.round(Math.random() * 100)).negate());
+		return o;
+	}
+
 }

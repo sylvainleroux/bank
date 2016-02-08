@@ -150,7 +150,7 @@ public class TestOperationDao {
 		Operation o1 = OperationHelper.createCreditOperation();
 		operationDao.insertIgnore(o1);
 		operationDao.insertIgnore(o1);
-		Assert.assertEquals(1, operationDao.findAll());
+		Assert.assertEquals(1, operationDao.findAll().size());
 	}
 
 }

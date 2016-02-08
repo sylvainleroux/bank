@@ -3,6 +3,8 @@ package com.sleroux.bank.model;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import com.sleroux.bank.domain.AlertType;
+
 public class AnalysisFact {
 
 	private int			year;
@@ -17,6 +19,16 @@ public class AnalysisFact {
 
 	private String		notes;
 	private BigInteger	flag;
+
+	private AlertType	alertType	= AlertType.UNDEFINED;
+
+	public AlertType getReason() {
+		return alertType;
+	}
+
+	public void setReason(AlertType _type) {
+		alertType = _type;
+	}
 
 	public int getYear() {
 		return year;
@@ -92,8 +104,8 @@ public class AnalysisFact {
 
 	public String toString() {
 
-		return String.format("%d/%02d:%s DEBIT[%.2f|%.2f] CREDIT[%.2f|%.2f]", year, month, catego, debit_ops, debit_bud, credit_ops,
-				credit_bud);
+		return String.format("%d/%02d:%s DEBIT[%.2f|%.2f] CREDIT[%.2f|%.2f] %s", year, month, catego, debit_ops, debit_bud, credit_ops,
+				credit_bud, alertType.toString());
 	}
 
 }

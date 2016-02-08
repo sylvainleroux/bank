@@ -32,4 +32,6 @@ public interface IBudgetDao extends IOperations<Budget> {
 
 	void saveChange(Changes _u);
 
+	Budget findByYearMonthCatego(int _year, int _month, String _catego, String _compte);
+
 }

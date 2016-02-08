@@ -1,5 +1,7 @@
 package com.sleroux.bank.controller;
 
+import java.util.Calendar;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +43,10 @@ public class SummaryController extends BusinessServiceAbstract {
 	}
 
 	private void printHealthCheck() {
-		int nbFacts = analysisService.getNbFacts();
+
+		Calendar c = Calendar.getInstance();
+
+		int nbFacts = analysisService.getNbFacts(c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1);
 		String status = "OK";
 		if (nbFacts > 0) {
 			status = nbFacts + " alerts";

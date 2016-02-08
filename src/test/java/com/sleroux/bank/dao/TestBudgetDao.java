@@ -162,4 +162,41 @@ public class TestBudgetDao {
 		Assert.assertNotNull(budget);
 		Assert.assertEquals(1000, budget.getCredit().intValue());
 	}
+
+	@Test
+	@Transactional
+	public void testFindBudget() {
+
+		{
+			Budget b = BudgetHelper.createCredit();
+			b.setMonth(2);
+			b.setYear(2015);
+			b.setCatego("TEST_CATEGO");
+			b.setCompte("COURANT");
+			b.setCredit(new BigDecimal("1000"));
+			budgetDao.create(b);
+		}
+
+		Budget b = budgetDao.findByYearMonthCatego(2015, 2, "TEST_CATEGO", "COURANT");
+		Assert.assertNotNull(b);
+		Assert.assertEquals(1000, b.getCredit().intValue());
+	}
+	
+	@Test
+	@Transactional
+	public void testFindBudgetNoBudget() {
+
+		{
+			Budget b = BudgetHelper.createCredit();
+			b.setMonth(2);
+			b.setYear(2015);
+			b.setCatego("TEST_CATEGO");
+			b.setCompte("COURANT");
+			b.setCredit(new BigDecimal("1000"));
+			budgetDao.create(b);
+		}
+
+		Budget b = budgetDao.findByYearMonthCatego(2000, 2, "TEST_CATEGO", "COURANT");
+		Assert.assertNull(b);
+	}
 }
