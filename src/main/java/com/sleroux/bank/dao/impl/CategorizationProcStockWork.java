@@ -24,7 +24,6 @@ public class CategorizationProcStockWork implements Work {
 		java.sql.Statement st = _connection.createStatement();
 		
 		String sql = "CALL get_catego(\"" + op.getLibelle().replaceAll("'", "").replaceAll("\"", "") + "\")";
-		System.out.println(sql);
 		ResultSet rs = st.executeQuery(sql);
 
 		while (rs.next()) {
