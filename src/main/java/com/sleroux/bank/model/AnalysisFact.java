@@ -7,8 +7,8 @@ import com.sleroux.bank.domain.AlertType;
 
 public class AnalysisFact {
 
-	private int			year;
-	private int			month;
+	private Integer		year;
+	private Integer		month;
 	private String		catego;
 
 	private BigDecimal	credit_ops;
@@ -30,19 +30,19 @@ public class AnalysisFact {
 		alertType = _type;
 	}
 
-	public int getYear() {
+	public Integer getYear() {
 		return year;
 	}
 
-	public void setYear(int _year) {
+	public void setYear(Integer _year) {
 		year = _year;
 	}
 
-	public int getMonth() {
+	public Integer getMonth() {
 		return month;
 	}
 
-	public void setMonth(int _month) {
+	public void setMonth(Integer _month) {
 		month = _month;
 	}
 

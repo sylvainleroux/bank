@@ -63,6 +63,8 @@ public class TestAnalysisReasons {
 		AnalysisFact fact = new AnalysisFact();
 		fact.setDebit_ops(m(10.2));
 		fact.setDebit_bud(m(100));
+		fact.setYear(2015);
+		fact.setMonth(11);
 		as.doAnalysis(fact, 2015, 12);
 		Assert.assertEquals(AlertType.DEBIT_OVER_ESTIMATE, fact.getReason());
 	}
@@ -83,6 +85,8 @@ public class TestAnalysisReasons {
 		AnalysisFact fact = new AnalysisFact();
 		fact.setCredit_ops(m(10.2));
 		fact.setCredit_bud(m(100));
+		fact.setYear(2015);
+		fact.setMonth(11);
 		as.doAnalysis(fact, 2015, 12);
 		Assert.assertEquals(AlertType.CREDIT_OVER_ESTIMATE, fact.getReason());
 	}
