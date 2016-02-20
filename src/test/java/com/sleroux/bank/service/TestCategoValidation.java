@@ -33,7 +33,7 @@ public class TestCategoValidation {
 	public void testCatego() throws SQLException, ValidationException {
 
 		Operation op = new Operation();
-		op.setMontant(new BigDecimal("-120"));
+		op.setDebit(new BigDecimal("120"));
 		catego.getCreditsCatego().addAll(Arrays.asList("CREDIT", "REMBOURSEMENT"));
 		catego.getDebitsCatego().addAll(Arrays.asList("DEBIT", "LOISIRS"));
 
@@ -41,11 +41,11 @@ public class TestCategoValidation {
 
 	}
 
-	@Test
+	@Test(expected = ValidationException.class)
 	public void testCatego2() throws SQLException, ValidationException {
 
 		Operation op = new Operation();
-		op.setMontant(new BigDecimal("120"));
+		op.setDebit(new BigDecimal("120"));
 
 		catego.getCreditsCatego().addAll(Arrays.asList("CREDIT", "REMBOURSEMENT"));
 		catego.getDebitsCatego().addAll(Arrays.asList("DEBIT", "LOISIRS"));
@@ -58,7 +58,7 @@ public class TestCategoValidation {
 	public void testCatego3() throws SQLException, ValidationException {
 
 		Operation op = new Operation();
-		op.setMontant(new BigDecimal("-120"));
+		op.setDebit(new BigDecimal("120"));
 
 		catego.getCreditsCatego().addAll(Arrays.asList("CREDIT", "REMBOURSEMENT"));
 		catego.getDebitsCatego().addAll(Arrays.asList("DEBIT", "LOISIRS"));
@@ -71,7 +71,7 @@ public class TestCategoValidation {
 	public void testCategoLength() throws ValidationException, SQLException {
 
 		Operation op = new Operation();
-		op.setMontant(new BigDecimal("-120"));
+		op.setDebit(new BigDecimal("120"));
 
 		catego.validate(op, "RE");
 
@@ -81,7 +81,7 @@ public class TestCategoValidation {
 	public void testCategoLength2() throws ValidationException, SQLException {
 
 		Operation op = new Operation();
-		op.setMontant(new BigDecimal("-120"));
+		op.setDebit(new BigDecimal("120"));
 
 		catego.validate(op, "REB");
 
@@ -90,7 +90,7 @@ public class TestCategoValidation {
 	@Test
 	public void testCategoLength3() throws ValidationException, SQLException {
 		Operation op = new Operation();
-		op.setMontant(new BigDecimal("-120"));
+		op.setDebit(new BigDecimal("120"));
 		catego.validate(op, "REMB");
 
 	}
@@ -98,10 +98,10 @@ public class TestCategoValidation {
 	@Test(expected = ValidationException.class)
 	public void testAddCatego() throws ValidationException, SQLException {
 		Operation op = new Operation();
-		op.setMontant(new BigDecimal("-120"));
+		op.setDebit(new BigDecimal("120"));
 		catego.validate(op, "AVION");
 		Operation op2 = new Operation();
-		op2.setMontant(new BigDecimal("120"));
+		op2.setCredit(new BigDecimal("120"));
 		catego.validate(op2, "AVION");
 	}
 }

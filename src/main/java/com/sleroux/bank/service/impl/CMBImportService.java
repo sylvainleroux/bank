@@ -170,7 +170,7 @@ public class CMBImportService {
 			try {
 				Number d = formatter.parse(_nextLine[3]);
 				BigDecimal value = new BigDecimal(d.toString());
-				operation.setMontant(value.negate());
+				operation.setDebit(value);
 			} catch (ParseException e) {
 				throw new Exception("Unable to parse operation amount for debit [" + _nextLine[3] + "|" + _nextLine[4] + "]", e);
 			}
@@ -178,7 +178,7 @@ public class CMBImportService {
 			try {
 				Number d = formatter.parse(_nextLine[4]);
 				BigDecimal value = new BigDecimal(d.toString());
-				operation.setMontant(value);
+				operation.setCredit(value);
 			} catch (ParseException e) {
 				throw new Exception("Unable to parse operation amount", e);
 			}

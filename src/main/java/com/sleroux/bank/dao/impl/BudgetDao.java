@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sleroux.bank.dao.IBudgetDao;
 import com.sleroux.bank.dao.common.AbstractHibernateDao;
+import com.sleroux.bank.domain.AggregatedOperations;
 import com.sleroux.bank.model.Budget;
 import com.sleroux.bank.model.budget.Changes;
 
@@ -150,6 +151,17 @@ public class BudgetDao extends AbstractHibernateDao<Budget> implements IBudgetDa
 				.createQuery("from Budget where year = :year and month = :month and catego = :catego and compte=:compte")
 				.setParameter("compte", _compte).setParameter("year", _year).setParameter("month", _month).setParameter("catego", _catego)
 				.uniqueResult();
+	}
+
+	@Override
+	public List<AggregatedOperations> findBudgetForMonth(int _year, int _month) {
+		Query query = getCurrentSession()
+				.createSQLQuery(
+						"select year, month, compte as account, catego, sum(credit) as credit, sum(debit) as debit from budget where year = :year and month = :month group by year, month, compte, catego");
+		query.setParameter("year", _year);
+		query.setParameter("month", _month);
+		query.setResultTransformer(Transformers.aliasToBean(AggregatedOperations.class));
+		return query.list();
 	}
 
 }

@@ -15,13 +15,8 @@ public class ExtractDocument {
 
 	public void addOperation(Operation o) {
 		operations.add(o);
-		BigDecimal value = o.getMontant();
-
-		if (BigDecimal.ZERO.compareTo(value) > 0)
-			credit = value.add(credit);
-		else
-			debit = value.add(debit);
-
+		credit = credit.add(o.getCredit());
+		debit = debit.add(o.getDebit());
 	}
 
 	public List<Operation> getOperations() {

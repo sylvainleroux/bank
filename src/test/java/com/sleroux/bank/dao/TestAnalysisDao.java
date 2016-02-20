@@ -33,7 +33,7 @@ public class TestAnalysisDao {
 		Operation o = OperationHelper.createDebitOperation();
 		o.setCatego("CATEGO1");
 		o.setCompte("CMB");
-		o.setMonthAdjusted(11);
+		o.setMonthAdjusted((short)11);
 		o.setYear(2015);
 
 		operationDao.create(o);

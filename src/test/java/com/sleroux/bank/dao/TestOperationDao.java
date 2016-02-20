@@ -1,7 +1,6 @@
 package com.sleroux.bank.dao;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -15,8 +14,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import com.sleroux.bank.TestConfig;
+import com.sleroux.bank.domain.AggregatedOperations;
 import com.sleroux.bank.model.AccountBalance;
-import com.sleroux.bank.model.CalcResult;
 import com.sleroux.bank.model.Operation;
 import com.sleroux.bank.service.CategoService;
 import com.sleroux.bank.testutils.OperationHelper;
@@ -80,60 +79,33 @@ public class TestOperationDao {
 
 	@Test
 	@Transactional
-	public void testCalcResult() {
-
-		Calendar c = Calendar.getInstance();
-		c.set(2016, 2, 4);
-
-		Operation o = OperationHelper.createDebitOperation();
-		o.setDateOperation(c.getTime());
-		o.setDateValeur(c.getTime());
-		o.setCatego("TEST_CATEGO");
-		o.setYear(2016);
-		o.setMonthAdjusted(2);
-
-		operationDao.create(o);
-
-		{
-			List<CalcResult> list = operationDao.getCalcForMonth(2016, 2);
-			Assert.assertEquals(1, list.size());
-		}
-
-		{
-			List<CalcResult> list = operationDao.getCalcForMonth(2016, 1);
-			Assert.assertEquals(0, list.size());
-		}
-	}
-
-	@Test
-	@Transactional
 	public void testSoldes() {
 
 		{
 			Operation o = OperationHelper.createDebitOperation();
 			o.setCompte("CMB");
-			o.setMontant(new BigDecimal("-10.50"));
+			o.setDebit(new BigDecimal("10.50"));
 			operationDao.create(o);
 		}
 
 		{
 			Operation o = OperationHelper.createDebitOperation();
 			o.setCompte("CMB");
-			o.setMontant(new BigDecimal("-9.50"));
+			o.setDebit(new BigDecimal("9.50"));
 			operationDao.create(o);
 		}
 
 		{
 			Operation o = OperationHelper.createCreditOperation();
 			o.setCompte("CMB");
-			o.setMontant(new BigDecimal("45.00"));
+			o.setCredit(new BigDecimal("45.00"));
 			operationDao.create(o);
 		}
 
 		{
 			Operation o = OperationHelper.createCreditOperation();
 			o.setCompte("BPO");
-			o.setMontant(new BigDecimal("25.00"));
+			o.setCredit(new BigDecimal("25.00"));
 			operationDao.create(o);
 		}
 
@@ -151,6 +123,34 @@ public class TestOperationDao {
 		operationDao.insertIgnore(o1);
 		operationDao.insertIgnore(o1);
 		Assert.assertEquals(1, operationDao.findAll().size());
+	}
+
+	@Test
+	@Transactional
+	public void testRetrieveAggregatedOperationsForMonth() {
+
+		{
+			Operation o = OperationHelper.createCreditOperation();
+			o.setYear(2016);
+			o.setMonthAdjusted(2);
+			o.setCatego("AVION");
+			o.setCredit(new BigDecimal("100.00"));
+			operationDao.create(o);
+		}
+
+		{
+			Operation o = OperationHelper.createCreditOperation();
+			o.setYear(2016);
+			o.setMonthAdjusted(2);
+			o.setCatego("AVION");
+			o.setCredit(new BigDecimal("100.00"));
+			operationDao.create(o);
+		}
+		List<AggregatedOperations> list = operationDao.findAggregatedYearMonth(2016, 2);
+
+		Assert.assertEquals(1, list.size());
+		Assert.assertEquals(200, list.get(0).getCredit().intValue());
+
 	}
 
 }

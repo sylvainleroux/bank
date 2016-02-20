@@ -59,7 +59,7 @@ public class TestAnalysisService {
 		Operation o1 = OperationHelper.createDebitOperation(this.getClass());
 		o1.setMonthAdjusted(12);
 		o1.setYear(2015);
-		o1.setMontant(new BigDecimal(-100));
+		o1.setDebit(new BigDecimal(100));
 		o1.setCatego("TEST_CATEGO");
 		operationDao.create(o1);
 
@@ -83,7 +83,7 @@ public class TestAnalysisService {
 		Operation o1 = OperationHelper.createDebitOperation(this.getClass());
 		o1.setMonthAdjusted(12);
 		o1.setYear(2015);
-		o1.setMontant(new BigDecimal(-120));
+		o1.setDebit(new BigDecimal(120));
 		o1.setCatego("TEST_CATEGO");
 		operationDao.create(o1);
 
@@ -107,7 +107,7 @@ public class TestAnalysisService {
 		Operation o1 = OperationHelper.createDebitOperation(this.getClass());
 		o1.setMonthAdjusted(12);
 		o1.setYear(2015);
-		o1.setMontant(new BigDecimal(-20));
+		o1.setDebit(new BigDecimal(20));
 		o1.setCatego("TEST_CATEGO");
 		operationDao.create(o1);
 
@@ -131,7 +131,7 @@ public class TestAnalysisService {
 		Operation o1 = OperationHelper.createDebitOperation(this.getClass());
 		o1.setMonthAdjusted(12);
 		o1.setYear(2015);
-		o1.setMontant(new BigDecimal(-20));
+		o1.setDebit(new BigDecimal(20));
 		o1.setCatego(null);
 		operationDao.create(o1);
 
@@ -172,7 +172,7 @@ public class TestAnalysisService {
 		Operation o1 = OperationHelper.createDebitOperation(this.getClass());
 		o1.setMonthAdjusted(12);
 		o1.setYear(2015);
-		o1.setMontant(new BigDecimal(-20));
+		o1.setDebit(new BigDecimal(20));
 		o1.setCatego("TEST_CATEGO");
 		operationDao.create(o1);
 

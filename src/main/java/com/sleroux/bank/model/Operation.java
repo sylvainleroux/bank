@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @SuppressWarnings("serial")
@@ -25,19 +27,21 @@ public class Operation implements Serializable {
 	private String		compte;
 
 	@Column(name = "date_operation")
+	@Temporal(TemporalType.DATE)
 	private Date		dateOperation;
 
 	@Column(name = "date_valeur")
+	@Temporal(TemporalType.DATE)
 	private Date		dateValeur;
 	private String		libelle;
-	private BigDecimal	montant;
+
+	private BigDecimal	debit	= BigDecimal.ZERO.setScale(2);
+	private BigDecimal	credit	= BigDecimal.ZERO.setScale(2);
+
 	private String		catego;
 	private Integer		year;
 
-	@Column(name = "month_bank")
-	private Integer		monthBank;
-
-	@Column(name = "month_adjusted")
+	@Column(name = "month")
 	private Integer		monthAdjusted;
 
 	public int getId() {
@@ -80,14 +84,6 @@ public class Operation implements Serializable {
 		libelle = _libelle;
 	}
 
-	public BigDecimal getMontant() {
-		return montant;
-	}
-
-	public void setMontant(BigDecimal _montant) {
-		montant = _montant;
-	}
-
 	public String getCatego() {
 		return catego;
 	}
@@ -104,14 +100,6 @@ public class Operation implements Serializable {
 		year = _year;
 	}
 
-	public int getMonthBank() {
-		return monthBank;
-	}
-
-	public void setMonthBank(int _monthBank) {
-		monthBank = _monthBank;
-	}
-
 	public int getMonthAdjusted() {
 		return monthAdjusted;
 	}
@@ -122,6 +110,8 @@ public class Operation implements Serializable {
 
 	@Transient
 	public String toString() {
+		String montant = credit.compareTo(BigDecimal.ZERO) > 0 ? credit.toString() : debit.negate().toString();
+
 		String sep = "|";
 		return "[" + compte + sep + formatDate(dateOperation) + sep + formatDate(dateValeur) + sep + libelle + sep + montant + "]";
 
@@ -142,9 +132,26 @@ public class Operation implements Serializable {
 		hash = 31 * hash + dateOperation.hashCode();
 		hash = 31 * hash + dateValeur.hashCode();
 		hash = 31 * hash + libelle.hashCode();
-		hash = 31 * hash + montant.hashCode();
+		hash = 31 * hash + credit.hashCode();
+		hash = 31 * hash + debit.hashCode();
 
 		return hash;
+	}
+
+	public BigDecimal getDebit() {
+		return debit;
+	}
+
+	public void setDebit(BigDecimal _debit) {
+		debit = _debit;
+	}
+
+	public BigDecimal getCredit() {
+		return credit;
+	}
+
+	public void setCredit(BigDecimal _credit) {
+		credit = _credit;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.sleroux.bank.util.formats;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,9 +16,8 @@ public class OperationFormater {
 	}
 
 	public static String toStringLight(Operation o) {
-		return "Date Op.  : "
-				+ formatDate(o.getDateOperation()) + "    Date Compta.  : " + formatDate(o.getDateCompta()) + "\nLibelelle : "
-				+ o.getLibelle() + "\nReference : " + o.getReference() + "\nMontant   : " + o.getMontant();
+		return "Date Op.  : " + formatDate(o.getDateOperation()) + "    Date Compta.  : " + formatDate(o.getDateCompta())
+				+ "\nLibelelle : " + o.getLibelle() + "\nReference : " + o.getReference() + "\nMontant   : " + o.getMontant();
 	}
 
 	private static String formatDate(Date d) {
@@ -33,12 +33,12 @@ public class OperationFormater {
 	}
 
 	public static String toStringLight(com.sleroux.bank.model.Operation o) {
-		return  "Compte    : " + o.getCompte() + 
-				"    Date Op.  : "
-				+ formatDate(o.getDateOperation()) + "    Date Valeur.  : " + formatDate(o.getDateValeur()) + 
-				"    Id : " + o.getId() +
-				"\nLibelelle : "
-				+ o.getLibelle() + "\nMontant   : " + o.getMontant();
+
+		BigDecimal montant = (o.getCredit().compareTo(BigDecimal.ZERO) > 0) ? o.getCredit() : o.getDebit().negate();
+
+		return "Compte    : " + o.getCompte() + "    Date Op.  : " + formatDate(o.getDateOperation()) + "    Date Valeur.  : "
+				+ formatDate(o.getDateValeur()) + "    Id : " + o.getId() + "\nLibelelle : " + o.getLibelle() + "\nMontant   : "
+				+ montant;
 
 	}
 }

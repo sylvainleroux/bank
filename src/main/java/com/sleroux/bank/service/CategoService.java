@@ -73,7 +73,7 @@ public class CategoService {
 			}
 
 			o.setYear(opYear);
-			o.setMonthAdjusted(opMonth);
+			o.setMonthAdjusted((short)opMonth);
 
 			operationDao.update(o);
 
@@ -125,7 +125,7 @@ public class CategoService {
 			throw new ValidationException("Catego name is too short");
 		}
 
-		if (_op.getMontant().compareTo(BigDecimal.ZERO) > 0) {
+		if (_op.getCredit().compareTo(BigDecimal.ZERO) > 0) {
 			if (debitsCatego.contains(_categoName)) {
 				throw new ValidationException("This catego already exists for DEBITS operations");
 			}

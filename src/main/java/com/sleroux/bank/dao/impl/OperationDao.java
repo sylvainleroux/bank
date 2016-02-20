@@ -2,8 +2,6 @@ package com.sleroux.bank.dao.impl;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.transform.Transformers;
@@ -11,8 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.dao.common.AbstractHibernateDao;
+import com.sleroux.bank.domain.AggregatedOperations;
 import com.sleroux.bank.model.AccountBalance;
-import com.sleroux.bank.model.CalcResult;
 import com.sleroux.bank.model.Operation;
 
 @Repository
@@ -25,31 +23,19 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 	}
 
 	@Override
-	public void doBackup() {
-
-		StringBuilder sql = new StringBuilder("insert into operation_backup");
-		sql.append("(compte, date_operation, date_valeur, libelle, montant, catego, year, month_bank, month_adjusted) ");
-		sql.append("select compte, date_operation, date_valeur, libelle, montant, catego, year, month_bank, month_adjusted from operation");
-
-		Query query = getCurrentSession().createSQLQuery(sql.toString());
-		query.executeUpdate();
-
-	}
-
-	@Override
-	@Transactional
 	public int insertIgnore(Operation _o) {
 
-		String sql = "INSERT IGNORE into operation (compte, date_operation, date_valeur, libelle, montant)";
-		sql += "VALUES (:compte, :date_operation, :date_valeur, :libelle, :montant)";
+		String sql = "INSERT IGNORE into operation (compte, date_operation, date_valeur, libelle, credit, debit)";
+		sql += "VALUES (:compte, :date_operation, :date_valeur, :libelle, :credit, :debit)";
 
 		Query query = getCurrentSession().createSQLQuery(sql);
 		query.setParameter("compte", _o.getCompte());
 		query.setParameter("date_operation", _o.getDateOperation());
 		query.setParameter("date_valeur", _o.getDateValeur());
 		query.setParameter("libelle", _o.getLibelle());
-		query.setParameter("montant", _o.getMontant());
-		
+		query.setParameter("credit", _o.getCredit());
+		query.setParameter("debit", _o.getDebit());
+
 		return query.executeUpdate();
 	}
 
@@ -61,7 +47,7 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 
 	@Override
 	public List<String> getCategoriesDebit() {
-		Query query = getCurrentSession().createQuery("select distinct catego from Operation where montant < 0");
+		Query query = getCurrentSession().createQuery("select distinct catego from Operation where debit > 0");
 		@SuppressWarnings("unchecked")
 		List<String> list = query.list();
 		return list;
@@ -69,7 +55,7 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 
 	@Override
 	public List<String> getCategoriesCredit() {
-		Query query = getCurrentSession().createQuery("select distinct catego from Operation where montant > 0");
+		Query query = getCurrentSession().createQuery("select distinct catego from Operation where credit > 0");
 		@SuppressWarnings("unchecked")
 		List<String> list = query.list();
 		return list;
@@ -87,21 +73,21 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<CalcResult> getCalcForMonth(int _year, int _month) {
-		Query query = getCurrentSession()
-				.createSQLQuery(
-						"select catego, CASE WHEN is_credit THEN TRUE ELSE FALSE END as credit, if (is_credit, ops_credit, ops_debit) as ops, if (is_credit, bud_credit, bud_debit) as bud from diff where year = :year and month = :month order by catego");
-		query.setParameter("month", _month);
-		query.setParameter("year", _year);
-		query.setResultTransformer(Transformers.aliasToBean(CalcResult.class));
+	public List<AccountBalance> getSoldes() {
+		Query query = getCurrentSession().createSQLQuery("select * from bank.soldes").setResultTransformer(
+				Transformers.aliasToBean(AccountBalance.class));
 		return query.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<AccountBalance> getSoldes() {
-		Query query = getCurrentSession().createSQLQuery("select * from bank.soldes").setResultTransformer(
-				Transformers.aliasToBean(AccountBalance.class));
+	public List<AggregatedOperations> findAggregatedYearMonth(int _year, int _month) {
+		Query query = getCurrentSession()
+				.createSQLQuery(
+						"select year, month, compte as account, catego, sum(credit) as credit, sum(debit) as debit from operation where year = :year and month = :month group by year, month, compte, catego");
+		query.setParameter("year", _year);
+		query.setParameter("month", _month);
+		query.setResultTransformer(Transformers.aliasToBean(AggregatedOperations.class));
 		return query.list();
 	}
 
