@@ -22,7 +22,7 @@ public class DBToFile extends BusinessServiceAbstract {
 	IBudgetDao	budgetDao;
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public void run() throws Exception {
 		ConsoleAppHeader.printAppHeader("Write Budget");
 
@@ -38,6 +38,9 @@ public class DBToFile extends BusinessServiceAbstract {
 
 		List<String> comptes = budgetDao.getComptesEpargne();
 		for (String compte : comptes) {
+			if (compte == null || compte.equals("")){
+				throw new Exception("Unknown account Exception");
+			}
 			document.addCompteEpargne(compte);
 		}
 

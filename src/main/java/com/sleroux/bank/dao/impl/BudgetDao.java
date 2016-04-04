@@ -101,7 +101,7 @@ public class BudgetDao extends AbstractHibernateDao<Budget> implements IBudgetDa
 
 	@Override
 	public List<Changes> getUpdated() {
-		String sql = "select a.year year, a.month month, a.catego catego, a.compte compte, a.debit debit, a.credit credit, a.notes, b.debit old_debit, b.credit old_credit from budget a inner join budget_backup b on a.year = b.year and a.month = b.month and a.catego = b.catego and a.compte = b.compte inner join (select max(timestamp) last_backup from budget_backup) t on b.timestamp = t.last_backup where a.debit <> b.debit or a.credit <> b.credit;";
+		String sql = "select a.year year, a.month month, a.catego catego, a.compte compte, a.debit debit, a.credit credit, a.notes, b.debit oldDebit, b.credit oldCredit from budget a inner join budget_backup b on a.year = b.year and a.month = b.month and a.catego = b.catego and a.compte = b.compte inner join (select max(timestamp) last_backup from budget_backup) t on b.timestamp = t.last_backup where a.debit <> b.debit or a.credit <> b.credit;";
 		Query q = getCurrentSession().createSQLQuery(sql);
 		q.setResultTransformer(Transformers.aliasToBean(Changes.class));
 		return q.list();
