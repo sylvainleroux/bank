@@ -20,7 +20,7 @@ public class TestConfig extends BankConfig {
 	public DataSource getDataSource() {
 		DriverManagerDataSource datasource = new DriverManagerDataSource();
 		datasource.setDriverClassName("com.mysql.jdbc.Driver");
-		datasource.setUrl("jdbc:mysql://localhost:3306/bank");
+		datasource.setUrl("jdbc:mysql://jenkins-mysql:3306/bank");
 		datasource.setUsername("root");
 		datasource.setPassword("");
 		return datasource;
