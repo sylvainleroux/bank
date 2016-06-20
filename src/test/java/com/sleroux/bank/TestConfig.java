@@ -20,7 +20,7 @@ public class TestConfig extends BankConfig {
 	public DataSource getDataSource() {
 		DriverManagerDataSource datasource = new DriverManagerDataSource();
 		datasource.setDriverClassName("com.mysql.jdbc.Driver");
-		datasource.setUrl("jdbc:mysql://192.168.99.100:3306/bank");
+		datasource.setUrl("jdbc:mysql://127.0.0.1:3306/bank");
 		datasource.setUsername("root");
 		datasource.setPassword("");
 		return datasource;
