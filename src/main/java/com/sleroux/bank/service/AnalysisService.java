@@ -46,27 +46,13 @@ public class AnalysisService {
 			return;
 		}
 
+		// Debits
+
 		if (notBudgetedDebit(a)) {
 			a.setReason(AlertType.DEBIT_NOT_BUDGETED);
 		}
 		if (burnedBudgetDebit(a)) {
 			a.setReason(AlertType.DEBIT_BURNED);
-		}
-		if (notBudgetedCredit(a)) {
-			a.setReason(AlertType.CREDIT_NOT_BUDGETED);
-		}
-		if (burnedBudgetCredit(a)) {
-			a.setReason(AlertType.CREDIT_BURNED);
-		}
-		if (categoHasDebitAndCredit(a)) {
-			a.setReason(AlertType.CATEGO_CONFLICT);
-		}
-		if (coolCredit(a)) {
-			a.setReason(AlertType.CREDIT_OVER_ESTIMATE);
-			if (a.getYear() == _year && a.getMonth() == _month) {
-				a.setReason(AlertType.NO_ALERT);
-			}
-
 		}
 		if (coolDebit(a)) {
 			a.setReason(AlertType.DEBIT_OVER_ESTIMATE);
@@ -75,12 +61,34 @@ public class AnalysisService {
 			}
 		}
 
+		// Credits
+
+		if (notBudgetedCredit(a)) {
+			a.setReason(AlertType.CREDIT_NOT_BUDGETED);
+		}
+		if (burnedBudgetCredit(a)) {
+			a.setReason(AlertType.CREDIT_BURNED);
+		}
+		if (coolCredit(a)) {
+			a.setReason(AlertType.CREDIT_OVER_ESTIMATE);
+			if (a.getYear() == _year && a.getMonth() == _month) {
+				a.setReason(AlertType.NO_ALERT);
+			}
+
+		}
+
+		// Inconsistencies
+
+		if (categoHasDebitAndCredit(a)) {
+			a.setReason(AlertType.CATEGO_CONFLICT);
+		}
+
 	}
 
 	private boolean coolDebit(AnalysisFact _a) {
 		boolean r = true;
-		r = r && isPositiveNotNull(_a.getDebit_ops());
-		r = r && isPositiveNotNull(_a.getDebit_bud());
+		r = r && isNotNull(_a.getDebit_ops());
+		r = r && isNotNull(_a.getDebit_bud());
 		r = r && isUnset(_a.getCredit_ops());
 		r = r && isUnset(_a.getCredit_bud());
 		r = r && _a.getDebit_ops().compareTo(_a.getDebit_bud()) < 0;
@@ -91,8 +99,8 @@ public class AnalysisService {
 		boolean r = true;
 		r = r && isUnset(_a.getDebit_ops());
 		r = r && isUnset(_a.getDebit_bud());
-		r = r && isPositiveNotNull(_a.getCredit_ops());
-		r = r && isPositiveNotNull(_a.getCredit_bud());
+		r = r && isNotNull(_a.getCredit_ops());
+		r = r && isNotNull(_a.getCredit_bud());
 		r = r && _a.getCredit_ops().compareTo(_a.getCredit_bud()) < 0;
 		return r;
 	}
@@ -184,6 +192,17 @@ public class AnalysisService {
 			return false;
 		}
 		if (_n.compareTo(BigDecimal.ZERO) <= 0) {
+			return false;
+		}
+
+		return true;
+	}
+
+	protected boolean isNotNull(BigDecimal _n) {
+		if (_n == null) {
+			return false;
+		}
+		if (_n.compareTo(BigDecimal.ZERO) < 0) {
 			return false;
 		}
 

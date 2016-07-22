@@ -48,7 +48,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 				System.out.println("Reduce debit " + a.getCatego() + ":" + a.getYear() + "/" + a.getMonth() + " from "
 						+ a.getDebit_bud() + " to " + a.getDebit_ops() + " ?");
 
-				if (validate()) {
+				if (validate(a)) {
 					budgetService.updateDebit(a);
 				}
 			}
@@ -58,7 +58,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 				System.out.println("Reduce credit " + a.getCatego() + ":" + a.getYear() + "/" + a.getMonth() + " from "
 						+ a.getCredit_bud() + " to " + a.getCredit_ops() + " ?");
 
-				if (validate()) {
+				if (validate(a)) {
 					budgetService.updateCredit(a);
 				}
 
@@ -75,7 +75,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 					System.out.println("  " + OperationFormater.toString(o));
 				}
 
-				if (validate()) {
+				if (validate(a)) {
 					budgetService.createDebitBudgetFor(a);
 				}
 			}
@@ -83,14 +83,8 @@ public class HealthCheckController extends BusinessServiceAbstract {
 			if (a.getReason() == AlertType.CREDIT_NOT_BUDGETED) {
 				System.out.println("Create missing budget of " + a.getCredit_ops() + " for catego " + a.getCatego()
 						+ " : " + a.getYear() + "/" + a.getMonth() + " ?");
-				System.out.println("  Corresponding operations : ");
 
-				List<Operation> ops = operationDao.findByCategoYearMonth(a.getYear(), a.getMonth(), a.getCatego());
-				for (Operation o : ops) {
-					System.out.println("  " + OperationFormater.toString(o));
-				}
-
-				if (validate()) {
+				if (validate(a)) {
 					budgetService.creatCreditBudgetFor(a);
 				}
 			}
@@ -99,7 +93,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 				System.out.println("Increase " + a.getCatego() + ":" + a.getYear() + "/" + a.getMonth()
 						+ " budget from " + a.getDebit_bud() + " to " + a.getDebit_ops() + " ?");
 
-				if (validate()) {
+				if (validate(a)) {
 					budgetService.updateDebit(a);
 				}
 			}
@@ -108,7 +102,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 				System.out.println("Increase budget from " + a.getCredit_bud() + " to " + a.getCredit_ops() + " ?");
 				System.out.println("  " + a.getCatego() + " : " + a.getYear() + "/" + a.getMonth());
 
-				if (validate()) {
+				if (validate(a)) {
 					budgetService.updateCredit(a);
 				}
 			}
@@ -117,22 +111,38 @@ public class HealthCheckController extends BusinessServiceAbstract {
 
 	}
 
-	private boolean validate() {
+	private boolean validate(AnalysisFact _fact) {
 		Request r = new Request();
-		while (request(r))
-			;
-		return r.accept;
+		while (true) {
+			while (request(r))
+				;
+			if (r.action == RequestAction.LIST_OPERATIONS) {
+				System.out.println("  Corresponding operations : ");
+				List<Operation> ops = operationDao.findByCategoYearMonth(_fact.getYear(), _fact.getMonth(),
+						_fact.getCatego());
+				for (Operation o : ops) {
+					System.out.println("  " + OperationFormater.toString(o));
+				}
+			} else {
+				return r.action == RequestAction.ACCEPT;
+			}
+		}
 	}
 
 	private boolean request(Request _r) {
-		System.out.print("y/[n]>");
+		System.out.print("y/[n]/l>");
 		try {
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 			String s = bufferRead.readLine();
 
 			if (s.equals("y") || s.equals("Y")) {
-				_r.accept = true;
+				_r.action = RequestAction.ACCEPT;
 			}
+
+			if (s.equals("l") || s.equals("L")) {
+				_r.action = RequestAction.LIST_OPERATIONS;
+			}
+
 			return false;
 
 		} catch (Exception e) {
@@ -142,7 +152,12 @@ public class HealthCheckController extends BusinessServiceAbstract {
 	}
 
 	public class Request {
-		public boolean accept = false;
 
+		public RequestAction action = RequestAction.REJECT;
+
+	}
+
+	public enum RequestAction {
+		ACCEPT, LIST_OPERATIONS, REJECT
 	}
 }
