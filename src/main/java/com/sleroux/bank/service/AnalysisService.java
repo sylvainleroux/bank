@@ -41,7 +41,7 @@ public class AnalysisService {
 
 	protected void doAnalysis(AnalysisFact a, int _year, int _month) {
 
-		if (a.getCatego().toUpperCase().contains("SOLDE_INIT")) {
+		if (a.getCatego() != null && a.getCatego().toUpperCase().contains("SOLDE_INIT")) {
 			a.setReason(AlertType.NO_ALERT);
 			return;
 		}
