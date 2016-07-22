@@ -152,5 +152,42 @@ public class TestOperationDao {
 		Assert.assertEquals(200, list.get(0).getCredit().intValue());
 
 	}
+	
+	@Test
+	@Transactional
+	public void testFindOperationByCategoYearMonth() {
+
+		{
+			Operation o = OperationHelper.createCreditOperation();
+			o.setYear(2016);
+			o.setLibelle("Operation 1");
+			o.setMonthAdjusted(2);
+			o.setCatego("AVION");
+			o.setCredit(new BigDecimal("100.00"));
+			operationDao.create(o);
+		}
+		
+		{
+			Operation o = OperationHelper.createCreditOperation();
+			o.setYear(2016);
+			o.setMonthAdjusted(2);
+			o.setLibelle("Operation 2");
+			o.setCatego("AVION");
+			o.setCredit(new BigDecimal("100.00"));
+			operationDao.create(o);
+		}
+
+		{
+			Operation o = OperationHelper.createCreditOperation();
+			o.setYear(2016);
+			o.setMonthAdjusted(2);
+			o.setCatego("POMME");
+			o.setCredit(new BigDecimal("100.00"));
+			operationDao.create(o);
+		}
+		List<Operation> list = operationDao.findByCategoYearMonth(2016, 2, "AVION");
+		Assert.assertEquals(2, list.size());
+
+	}
 
 }

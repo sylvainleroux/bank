@@ -74,21 +74,27 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<AccountBalance> getSoldes() {
-		Query query = getCurrentSession().createSQLQuery("select * from bank.soldes").setResultTransformer(
-				Transformers.aliasToBean(AccountBalance.class));
+		Query query = getCurrentSession().createSQLQuery("select * from bank.soldes")
+				.setResultTransformer(Transformers.aliasToBean(AccountBalance.class));
 		return query.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<AggregatedOperations> findAggregatedYearMonth(int _year, int _month) {
-		Query query = getCurrentSession()
-				.createSQLQuery(
-						"select year, month, compte as account, catego, sum(credit) as credit, sum(debit) as debit from operation where year = :year and month = :month group by year, month, compte, catego");
+		Query query = getCurrentSession().createSQLQuery(
+				"select year, month, compte as account, catego, sum(credit) as credit, sum(debit) as debit from operation where year = :year and month = :month group by year, month, compte, catego");
 		query.setParameter("year", _year);
 		query.setParameter("month", _month);
 		query.setResultTransformer(Transformers.aliasToBean(AggregatedOperations.class));
 		return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Operation> findByCategoYearMonth(Integer _year, Integer _month, String _catego) {
+		return getCurrentSession().createQuery("from Operation where year=:year and month=:month and catego=:catego")
+				.setParameter("year", _year).setParameter("month", _month).setParameter("catego", _catego).list();
+
 	}
 
 }

@@ -22,6 +22,7 @@ public class BudgetService {
 		b.setMonth(_a.getMonth());
 		b.setCatego(_a.getCatego());
 		b.setDebit(_a.getDebit_ops());
+		b.setCompte("COURANT");
 		budgetDao.create(b);
 	}
 
@@ -32,6 +33,7 @@ public class BudgetService {
 		b.setMonth(_a.getMonth());
 		b.setCatego(_a.getCatego());
 		b.setCredit(_a.getCredit_ops());
+		b.setCompte("COURANT");
 		budgetDao.create(b);
 	}
 

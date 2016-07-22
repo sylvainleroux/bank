@@ -15,7 +15,7 @@ import com.sleroux.bank.model.AnalysisFact;
 public class AnalysisService {
 
 	@Autowired
-	AnalysisDao	analysisDao;
+	AnalysisDao analysisDao;
 
 	public int getNbFacts(int _year, int _month) {
 
@@ -40,6 +40,12 @@ public class AnalysisService {
 	}
 
 	protected void doAnalysis(AnalysisFact a, int _year, int _month) {
+
+		if (a.getCatego().toUpperCase().contains("SOLDE_INIT")) {
+			a.setReason(AlertType.NO_ALERT);
+			return;
+		}
+
 		if (notBudgetedDebit(a)) {
 			a.setReason(AlertType.DEBIT_NOT_BUDGETED);
 		}

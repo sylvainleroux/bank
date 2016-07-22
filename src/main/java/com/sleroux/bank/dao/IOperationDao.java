@@ -23,4 +23,6 @@ public interface IOperationDao extends IOperations<Operation> {
 
 	List<AggregatedOperations> findAggregatedYearMonth(int _year, int _month);
 
+	List<Operation> findByCategoYearMonth(Integer year, Integer month, String catego);
+
 }
