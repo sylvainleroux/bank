@@ -6,17 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.sleroux.bank.model.budget.BudgetKeys;
-import com.sleroux.bank.model.budget.BugdetMonth;
-import com.sleroux.bank.model.calc.Month;
+import com.sleroux.bank.model.budget.BudgetMonth;
 import com.sleroux.bank.model.calc.MonthAdjusted;
 
 public class ConsoleMonthBudgetPresenter implements MonitorInterface {
 
-	private Month					month;
-	private MonthAdjusted					monthAdjusted;
-	private BugdetMonth					monthBudget;
+	private MonthAdjusted				monthAdjusted;
+	private BudgetMonth					monthBudget;
 	//
-	private BudgetKeys						keyList;
+	private BudgetKeys					keyList;
 	private final static List<String>	discalifiedKeys	= Arrays.asList("LOYER", "AUTO", "CAUTIONS");
 
 	/*
@@ -25,15 +23,15 @@ public class ConsoleMonthBudgetPresenter implements MonitorInterface {
 	 * @see com.sleroux.bank.presentation.MonitorInterface#print()
 	 */
 	@Override
-	public void print(MonthAdjusted _monthAdjusted, Month _month, BugdetMonth _currentMonthBudget, BudgetKeys _list) {
+	public void print(MonthAdjusted _monthAdjusted, BudgetMonth _currentMonthBudget, BudgetKeys _list) {
 		keyList = _list;
 		monthBudget = _currentMonthBudget;
-		month = _month;
 		monthAdjusted = _monthAdjusted;
 		// CREDIT
 		System.out.printf("+---------------+----------+----------+----------+--------------------+\n");
-		System.out.printf("|%-15s|%-10s|%-10s|%-10s|%-20s|\n", (monthAdjusted.getMonth()) + "/" + monthAdjusted.getYear().getYear(), "  PREVIS.",
-				"  ACTUEL", "   DIFF", "       GRAPH");
+		System.out.printf("|%-15s|%-10s|%-10s|%-10s|%-20s|\n",
+				(monthAdjusted.getMonth()) + "/" + monthAdjusted.getYear().getYear(), "  PREVIS.", "  ACTUEL",
+				"   DIFF", "       GRAPH");
 		System.out.printf("+---------------+----------+----------+----------+--------------------+\n");
 		BigDecimal totalCredit = BigDecimal.ZERO;
 		for (String s : keyList.getCredit().keySet()) {
@@ -46,16 +44,16 @@ public class ConsoleMonthBudgetPresenter implements MonitorInterface {
 			totalDebit = printLine(s, monthBudget.getDebits()).add(totalDebit);
 		}
 		System.out.printf("+---------------+----------+----------+----------+--------------------+\n");
-		BigDecimal endOfPeriodSolde = monthBudget.getSolde().add(monthBudget.getTotalCredit()).subtract(monthBudget.getTotalDebit());
 		double graphValueCredit = totalCredit.doubleValue() * 100 / monthBudget.getTotalCredit().doubleValue();
-		System.out.printf("|%-15s|%10.2f|%10.2f|%10.2f|%s|\n", "CREDIT", monthBudget.getTotalCredit(), totalCredit, monthBudget
-				.getTotalCredit().subtract(totalCredit), graph(graphValueCredit));
+		System.out.printf("|%-15s|%10.2f|%10.2f|%10.2f|%s|\n", "CREDIT", monthBudget.getTotalCredit(), totalCredit,
+				monthBudget.getTotalCredit().subtract(totalCredit), graph(graphValueCredit));
 		double graphValueDebit = totalDebit.doubleValue() * 100 / monthBudget.getTotalDebit().doubleValue();
-		System.out.printf("|%-15s|%10.2f|%10.2f|%10.2f|%s|\n", "DEBIT", monthBudget.getTotalDebit(), totalDebit, monthBudget
-				.getTotalDebit().subtract(totalDebit), graph(graphValueDebit));
+		System.out.printf("|%-15s|%10.2f|%10.2f|%10.2f|%s|\n", "DEBIT", monthBudget.getTotalDebit(), totalDebit,
+				monthBudget.getTotalDebit().subtract(totalDebit), graph(graphValueDebit));
 		System.out.printf("+---------------+----------+----------+----------+--------------------+\n");
-		System.out.printf("|%-15s|%10.2f|%10.2f|%10.2f|                    |\n", "SOLDE", endOfPeriodSolde, month.getSolde(), month
-				.getSolde().subtract(endOfPeriodSolde));
+		System.out.printf("|%-15s|%10.2f|%10.2f|%10.2f|                    |\n", "SOLDE",
+				_currentMonthBudget.getEstimatedEndOfMonthBalance(), monthAdjusted.getBalance(),
+				monthAdjusted.getBalance().subtract(_currentMonthBudget.getEstimatedEndOfMonthBalance()));
 		System.out.printf("+---------------+----------+----------+----------+--------------------+\n");
 	}
 

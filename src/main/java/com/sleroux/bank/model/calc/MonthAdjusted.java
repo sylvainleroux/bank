@@ -16,6 +16,7 @@ public class MonthAdjusted implements Serializable {
 	private Year						year;
 	private int							month;
 	private HashMap<String, Category>	categories	= new LinkedHashMap<String, Category>();
+	private BigDecimal					balance;
 
 	public MonthAdjusted() {
 		// Empty
@@ -29,7 +30,7 @@ public class MonthAdjusted implements Serializable {
 		checkSumSolde = _checkSumSolde;
 	}
 
-	private BigDecimal	checkSumSolde;
+	private BigDecimal checkSumSolde;
 
 	public HashMap<String, Category> getCategories() {
 		return categories;
@@ -110,6 +111,14 @@ public class MonthAdjusted implements Serializable {
 			}
 		}
 		return checkSumSolde;
+	}
+
+	public BigDecimal getBalance() {
+		return balance;
+	}
+
+	public void setBalance(BigDecimal _balance) {
+		balance = _balance;
 	}
 
 }

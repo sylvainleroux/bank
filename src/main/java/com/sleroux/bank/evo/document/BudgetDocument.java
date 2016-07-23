@@ -157,7 +157,8 @@ public class BudgetDocument {
 
 			// Marker
 
-			if (cal.get(Calendar.MONTH) == now.get(Calendar.MONTH) && cal.get(Calendar.YEAR) == now.get(Calendar.YEAR)) {
+			if (cal.get(Calendar.MONTH) == now.get(Calendar.MONTH)
+					&& cal.get(Calendar.YEAR) == now.get(Calendar.YEAR)) {
 				CellStyle red = wb.createCellStyle();
 				red.setFillForegroundColor(HSSFColor.RED.index);
 				red.setFillPattern(CellStyle.SOLID_FOREGROUND);
@@ -170,8 +171,8 @@ public class BudgetDocument {
 
 			// Total
 			setCellFormula(ROW_TOTAL_1, i, columnName(i) + (totalIndex + 4));
-			setCellFormula(ROW_TOTAL_4, i,
-					"sum(" + ref(ROW_TOTAL_1 + 1, i) + ")+sum(" + ref(ROW_TOTAL_2 + 1, i) + ")+sum(" + ref(ROW_TOTAL_3 + 1, i) + ")");
+			setCellFormula(ROW_TOTAL_4, i, "sum(" + ref(ROW_TOTAL_1 + 1, i) + ")+sum(" + ref(ROW_TOTAL_2 + 1, i)
+					+ ")+sum(" + ref(ROW_TOTAL_3 + 1, i) + ")");
 
 		}
 
@@ -254,11 +255,7 @@ public class BudgetDocument {
 		String sumDebit = "SUM(" + cname + debitsRow + ":" + cname + (debitsRow + _monthDebits.size() - 1) + ")";
 		String total = cname + (rowTotal + 2) + "-" + cname + (rowTotal + 3);
 
-		if (_index > 1) {
-			total += "+" + columnName(_index - 1) + (rowTotal + 4);
-		} else {
-			total += "-15.18";
-		}
+		total += "+" + columnName(_index - 1) + (rowTotal + 4);
 
 		setCellFormula(rowTotal + 1, _index, sumCredit);
 		setCellFormula(rowTotal + 2, _index, sumDebit);
@@ -345,7 +342,7 @@ public class BudgetDocument {
 				formula.append(columnName(_index) + (getRowForKey(compte) + 4));
 			}
 		}
-		if (formula.length() == 0){
+		if (formula.length() == 0) {
 			formula.append("0");
 		}
 		setCellFormula(ROW_TOTAL_3, _index, formula.toString());
@@ -388,7 +385,8 @@ public class BudgetDocument {
 		return list;
 	}
 
-	public List<Budget> readOperations(int _year, int _month, int _index, List<String> _credits, List<String> _debits) throws Exception {
+	public List<Budget> readOperations(int _year, int _month, int _index, List<String> _credits, List<String> _debits)
+			throws Exception {
 		List<Budget> budgets = new ArrayList<>();
 
 		int rowCredit = getRowForKey("CREDIT") + 1;

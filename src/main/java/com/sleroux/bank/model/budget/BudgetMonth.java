@@ -4,31 +4,25 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @SuppressWarnings("serial")
-public class BugdetMonth implements Serializable {
+public class BudgetMonth implements Serializable {
 
 	private int							year;
 	private int							month;
 	// Calc
-	private BigDecimal					totalCredit	= new BigDecimal(0L);
-	private BigDecimal					totalDebit	= new BigDecimal(0L);
-	private BigDecimal					solde		= new BigDecimal(0L);
+	private BigDecimal					totalCredit					= new BigDecimal(0L);
+	private BigDecimal					totalDebit					= new BigDecimal(0L);
+	private BigDecimal					estimatedEndOfMonthBalance	= new BigDecimal(0L);
 	//
 	private static BudgetKeys			keyList;
 	//
-	private HashMap<String, BigDecimal>	credits		= new HashMap<String, BigDecimal>();
-	private HashMap<String, BigDecimal>	debits		= new HashMap<String, BigDecimal>();
+	private HashMap<String, BigDecimal>	credits						= new HashMap<String, BigDecimal>();
+	private HashMap<String, BigDecimal>	debits						= new HashMap<String, BigDecimal>();
 	//
 	private int							columnIndex;
 
-	public BugdetMonth() {
+	public BudgetMonth() {
 		// Empty
-	}
-
-	public void setSolde(BigDecimal _solde) {
-		solde = _solde;
 	}
 
 	public HashMap<String, BigDecimal> getCredits() {
@@ -95,17 +89,12 @@ public class BugdetMonth implements Serializable {
 		totalDebit = _totalDebit;
 	}
 
-	public BigDecimal getSolde() {
-		return solde;
+	public void setEstimatedEndOfMonthBalance(BigDecimal _estimatedEndOfMonthBalance) {
+		estimatedEndOfMonthBalance = _estimatedEndOfMonthBalance;
 	}
 
-	public void setFirstValue(BigDecimal _solde) {
-		solde = _solde;
-	}
-
-	@JsonIgnore
-	public BigDecimal getEndOfMonthSolde() {
-		return solde.add(totalCredit).add(totalDebit);
+	public BigDecimal getEstimatedEndOfMonthBalance() {
+		return estimatedEndOfMonthBalance;
 	}
 
 }
