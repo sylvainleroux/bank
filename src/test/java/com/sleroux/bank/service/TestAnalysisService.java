@@ -191,21 +191,6 @@ public class TestAnalysisService {
 
 	@Transactional
 	@Test
-	public void testSoldeInit() {
-
-		Operation o1 = OperationHelper.createDebitOperation(this.getClass());
-		o1.setMonthAdjusted(1);
-		o1.setYear(2010);
-		o1.setDebit(new BigDecimal(15.18));
-		o1.setCatego("autres.solde_init");
-		operationDao.create(o1);
-
-		List<AnalysisFact> list = as.getFacts(2015, 11);
-		Assert.assertEquals(0, list.size());
-	}
-
-	@Transactional
-	@Test
 	public void testBudgetFromLastMonthNotCompleted() {
 
 		Operation o1 = OperationHelper.createDebitOperation(this.getClass());
