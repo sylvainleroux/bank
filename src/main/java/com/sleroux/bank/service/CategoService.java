@@ -61,7 +61,7 @@ public class CategoService {
 			int opYear = c.get(Calendar.YEAR);
 			int opMonth = c.get(Calendar.MONTH) + 1;
 
-			// Shift salaire
+			// Shift salaire to next month
 			if (o.getCatego().equals("SALAIRE")) {
 				if (c.get(Calendar.DAY_OF_MONTH) >= 20) {
 					opMonth++;
@@ -134,9 +134,6 @@ public class CategoService {
 			}
 
 		} else {
-			for (String c : creditsCatego) {
-				System.out.println(c);
-			}
 			if (creditsCatego.contains(_categoName)) {
 				throw new ValidationException("This catego already exists for CREDITS operations");
 			}
