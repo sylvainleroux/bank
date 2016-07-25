@@ -38,6 +38,9 @@ public class HealthCheckController extends BusinessServiceAbstract {
 		Calendar c = Calendar.getInstance();
 
 		List<AnalysisFact> facts = analysisService.getFacts(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1);
+		if (facts.size() == 0){
+			System.out.println("Everything looks good!");
+		}
 		for (AnalysisFact a : facts) {
 
 			System.out.println("-----------------------------------------");
