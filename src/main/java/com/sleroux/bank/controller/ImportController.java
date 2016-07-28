@@ -23,6 +23,8 @@ public class ImportController extends BusinessServiceAbstract {
 
 		ConsoleAppHeader.printAppHeader("Import");
 		importService.importFiles(ImportType.CMB, extractService.getFilesCMB());
+		
+		importService.importFiles(ImportType.BPO, extractService.getFilesCMB());
 
 	}
 

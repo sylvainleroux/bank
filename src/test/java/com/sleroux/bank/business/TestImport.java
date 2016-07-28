@@ -54,8 +54,28 @@ public class TestImport {
 		List<Operation> list = operationDao.findAll();
 
 		Assert.assertEquals("[CMB|15/01/16|15/01/16|PRLV PayPal Europe S.a.r.l. et C|-12.86]", list.get(0).toString());
-		Assert.assertEquals("[CMB|23/12/15|22/12/15|CARTE 22/12 IKEA XXXXXXX0060/ DUPLICATE(2)|-75.40]", list.get(11).toString());
+		Assert.assertEquals("[CMB|23/12/15|22/12/15|CARTE 22/12 IKEA XXXXXXX0060/ DUPLICATE(2)|-75.40]",
+				list.get(11).toString());
 
+	}
+
+	@Test
+	@Transactional
+	public void testImportBPO() throws Exception {
+
+		List<String> files = new ArrayList<>();
+		String f = TestImport.class.getResource("BPO.txt").getFile();
+		files.add(new File(f).toString());
+
+		importService.importFiles(ImportType.BPO, files);
+
+		List<Operation> list = operationDao.findAll();
+
+		for (Operation o : list) {
+			// System.out.println(o.toString());
+		}
+		Assert.assertEquals("[BPO|27/07/16|27/07/16|VIR ABMLSJH POE 0HBLJZHS-TGHJ|18.57]", list.get(0).toString());
+		Assert.assertEquals("[BPO|26/07/16|26/07/16|VIR MOB AVLKJSH LKJHS|-95.45]", list.get(1).toString());
 	}
 
 }

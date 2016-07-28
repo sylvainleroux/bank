@@ -63,4 +63,18 @@ public class ExtractService {
 		return foundFiles;
 	}
 
+	public List<String> getFilesBPO() {
+		// Scan Downloads directory
+				List<String> foundFiles = new ArrayList<String>();
+				File f = new File(Config.getExtractDownloadPath());
+				String[] files = f.list();
+				for (int i = 0; i < files.length; i++) {
+					String filename = files[i];
+					if (filename.startsWith("BPO")) {
+						foundFiles.add(Config.getExtractDownloadPath() + File.separator + filename);
+					}
+				}
+				return foundFiles;
+	}
+
 }

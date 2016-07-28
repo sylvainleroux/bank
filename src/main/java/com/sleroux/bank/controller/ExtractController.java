@@ -34,16 +34,30 @@ public class ExtractController extends BusinessServiceAbstract {
 
 	@Override
 	public void run() throws Exception {
+		ImportReport reportBPO;
+		{
+			ConsoleAppHeader.printAppHeader("Extract BPO");
+			extractService.runExtract(Config.getImportCommandBPO());
+			List<String> files = extractService.getFilesBPO();
+			ConsoleAppHeader.printAppHeader("Import BPO");
 
-		ConsoleAppHeader.printAppHeader("Extract");
+			reportBPO = importService.importFiles(ImportType.BPO, files);
+			
+
+		}
 		
-		List<String> files = runExtract();
-		
-		ConsoleAppHeader.printAppHeader("Import");
-		
-		ImportReport report = importService.importFiles(ImportType.CMB, files);
-		ImportReportPresenter.displayReport(report);
-		
+		ImportReport reportCMB;
+		{
+			ConsoleAppHeader.printAppHeader("Extract CMB");
+			List<String> files = runExtract();
+			ConsoleAppHeader.printAppHeader("Import");
+			reportCMB = importService.importFiles(ImportType.CMB, files);
+		}
+
+		ImportReportPresenter.displayReport(reportCMB);
+		ImportReportPresenter.displayReport(reportBPO);
+	
+
 	}
 
 }
