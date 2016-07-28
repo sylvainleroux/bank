@@ -255,8 +255,11 @@ public class BudgetDocument {
 		String sumDebit = "SUM(" + cname + debitsRow + ":" + cname + (debitsRow + _monthDebits.size() - 1) + ")";
 		String total = cname + (rowTotal + 2) + "-" + cname + (rowTotal + 3);
 
-		total += "+" + columnName(_index - 1) + (rowTotal + 4);
 
+		if (_index > 1) {
+			total += "+" + columnName(_index - 1) + (rowTotal + 4);
+		} 		
+		
 		setCellFormula(rowTotal + 1, _index, sumCredit);
 		setCellFormula(rowTotal + 2, _index, sumDebit);
 		setCellFormula(rowTotal + 3, _index, total);
