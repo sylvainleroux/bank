@@ -1,9 +1,18 @@
 package com.sleroux.bank.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class AccountBalance {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@SuppressWarnings("serial")
+@Entity
+@Table(name = "imported_balance")
+public class AccountBalance implements Serializable {
+
+	@Id
 	private String		compte;
 	private BigDecimal	solde;
 

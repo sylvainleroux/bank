@@ -19,7 +19,7 @@ public class ExtractService {
 	@Autowired
 	IExtractHistoryDao	extractHistoryDao;
 
-	private Logger	logger	= Logger.getLogger(this.getClass());
+	private Logger		logger	= Logger.getLogger(this.getClass());
 
 	public void runExtract(String _command) {
 		File file = new File(Config.getImportCommandPath() + File.separator + _command);
@@ -65,16 +65,29 @@ public class ExtractService {
 
 	public List<String> getFilesBPO() {
 		// Scan Downloads directory
-				List<String> foundFiles = new ArrayList<String>();
-				File f = new File(Config.getExtractDownloadPath());
-				String[] files = f.list();
-				for (int i = 0; i < files.length; i++) {
-					String filename = files[i];
-					if (filename.startsWith("BPO")) {
-						foundFiles.add(Config.getExtractDownloadPath() + File.separator + filename);
-					}
-				}
-				return foundFiles;
+		List<String> foundFiles = new ArrayList<String>();
+		File f = new File(Config.getExtractDownloadPath());
+		String[] files = f.list();
+		for (int i = 0; i < files.length; i++) {
+			String filename = files[i];
+			if (filename.startsWith("BPO.")) {
+				foundFiles.add(Config.getExtractDownloadPath() + File.separator + filename);
+			}
+		}
+		return foundFiles;
+	}
+
+	public List<String> getBalanceFiles() {
+		List<String> foundFiles = new ArrayList<String>();
+		File f = new File(Config.getExtractDownloadPath());
+		String[] files = f.list();
+		for (int i = 0; i < files.length; i++) {
+			String filename = files[i];
+			if (filename.contains("_BALANCE")) {
+				foundFiles.add(Config.getExtractDownloadPath() + File.separator + filename);
+			}
+		}
+		return foundFiles;
 	}
 
 }

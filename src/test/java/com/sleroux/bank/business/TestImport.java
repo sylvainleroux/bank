@@ -16,6 +16,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sleroux.bank.TestConfig;
+import com.sleroux.bank.dao.IBalanceDao;
 import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.model.Operation;
 import com.sleroux.bank.service.ImportService;
@@ -40,6 +41,9 @@ public class TestImport {
 
 	@Autowired
 	IOperationDao	operationDao;
+
+	@Autowired
+	IBalanceDao		balanceDao;
 
 	@Test
 	@Transactional
@@ -74,8 +78,29 @@ public class TestImport {
 		for (Operation o : list) {
 			// System.out.println(o.toString());
 		}
-		Assert.assertEquals("[BPO|27/07/16|27/07/16|VIR ABMLSJH POE 0HBLJZHS-TGHJ|18.57]", list.get(0).toString());
-		Assert.assertEquals("[BPO|26/07/16|26/07/16|VIR MOB AVLKJSH LKJHS|-95.45]", list.get(1).toString());
+		Assert.assertEquals("[BPO|27/07/16|27/07/16|VIR ABMLSJH POE 0HBLJZHS-TGHJ 98HNB|18.57]",
+				list.get(0).toString());
+		Assert.assertEquals("[BPO|26/07/16|26/07/16|VIR MOB AVLKJSH LKJHS 9SKHS|-95.45]", list.get(1).toString());
+	}
+
+	@Test
+	@Transactional
+	public void testImportBalances() throws Exception {
+
+		List<String> files = new ArrayList<>();
+		String f = TestImport.class.getResource("BPO_BALANCE.json").getFile();
+		files.add(new File(f).toString());
+
+		importService.updateBalances(files);
+
+		Assert.assertEquals(1, balanceDao.findAll().size());
+
+		String f2 = TestImport.class.getResource("CMB_BALANCE.json").getFile();
+		files.add(new File(f2).toString());
+
+		importService.updateBalances(files);
+
+		Assert.assertEquals(3, balanceDao.findAll().size());
 	}
 
 }

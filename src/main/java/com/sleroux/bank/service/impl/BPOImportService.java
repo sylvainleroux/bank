@@ -83,6 +83,7 @@ public class BPOImportService {
 				File file = new File(f);
 				file.delete();
 			}
+
 		}
 
 		if (_report.getNbLines() > 0) {

@@ -56,6 +56,8 @@ public class ExtractController extends BusinessServiceAbstract {
 
 		ImportReportPresenter.displayReport(reportCMB);
 		ImportReportPresenter.displayReport(reportBPO);
+		
+		importService.updateBalances(extractService.getBalanceFiles());
 	
 
 	}
