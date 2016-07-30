@@ -1,7 +1,5 @@
 package com.sleroux.bank.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,42 +21,27 @@ public class ExtractController extends BusinessServiceAbstract {
 	@Autowired
 	ExtractService	extractService;
 
-	public List<String> runExtract() {
-
-		// Request CMB website
-		extractService.runExtract(Config.getImportCommandCMB());
-
-		// list files from download directory
-		return extractService.getFilesCMB();
-	}
-
 	@Override
 	public void run() throws Exception {
-		ImportReport reportBPO;
-		{
-			ConsoleAppHeader.printAppHeader("Extract BPO");
-			extractService.runExtract(Config.getImportCommandBPO());
-			List<String> files = extractService.getFilesBPO();
-			ConsoleAppHeader.printAppHeader("Import BPO");
 
-			reportBPO = importService.importFiles(ImportType.BPO, files);
-			
-
-		}
+		ConsoleAppHeader.printAppHeader("Extract BPO");
+		extractService.runExtract(Config.getImportCommandBPO());
 		
-		ImportReport reportCMB;
-		{
-			ConsoleAppHeader.printAppHeader("Extract CMB");
-			List<String> files = runExtract();
-			ConsoleAppHeader.printAppHeader("Import");
-			reportCMB = importService.importFiles(ImportType.CMB, files);
-		}
 
-		ImportReportPresenter.displayReport(reportCMB);
+		ConsoleAppHeader.printAppHeader("Extract CMB");
+		extractService.runExtract(Config.getImportCommandCMB());
+		
+		ConsoleAppHeader.printAppHeader("Import documents");
+		
+		ImportReport reportBPO = importService.importFiles(ImportType.BPO, extractService.getFilesBPO());
 		ImportReportPresenter.displayReport(reportBPO);
+		ImportReport reportCMB = importService.importFiles(ImportType.CMB, extractService.getFilesCMB());
+		ImportReportPresenter.displayReport(reportCMB);
 		
+		
+		ConsoleAppHeader.printAppHeader("Balances");
 		importService.updateBalances(extractService.getBalanceFiles());
-	
+
 
 	}
 

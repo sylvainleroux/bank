@@ -26,23 +26,31 @@ public class ExtractService {
 		ProcessBuilder builder = new ProcessBuilder(file.getAbsolutePath());
 		builder.directory(new File(Config.getImportCommandPath()));
 		builder.redirectErrorStream(true);
-
+		boolean first = true;
 		try {
 			Process p = builder.start();
 			Scanner s = new Scanner(p.getInputStream());
-			StringBuilder text = new StringBuilder();
 			while (s.hasNextLine()) {
-				String line = s.nextLine();
-				logger.info(line);
 
-				text.append(line);
-				text.append("\n");
+				String line = s.nextLine();
+				if (line.contains("[Done]")) {
+					System.out.print(" (" + line.replaceAll("\t\\[Done\\] in ", "") + ")");
+				} else {
+					if (first){
+						first = false;
+					}else{
+						System.out.print("\n");
+					}
+					System.out.print(line);
+				}
+
 			}
 			s.close();
+			System.out.print("\n");
 
 			int result = p.waitFor();
 
-			logger.info("Import complete, finished with code " + result);
+			logger.debug("Import complete, finished with code " + result);
 
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
