@@ -27,34 +27,34 @@ public class ConsoleMonthBudgetPresenter implements MonitorInterface {
 		keyList = _list;
 		monthBudget = _currentMonthBudget;
 		monthAdjusted = _monthAdjusted;
-		// CREDIT
-		System.out.printf("+---------------+----------+----------+----------+--------------------+\n");
-		System.out.printf("|%-15s|%-10s|%-10s|%-10s|%-20s|\n",
+		// CREDIT┌ ┐
+		System.out.printf("┌───────────────┬──────────┬──────────┬──────────┬────────────────────┐\n");
+		System.out.printf("│%-15s│%-10s│%-10s│%-10s│%-20s│\n",
 				(monthAdjusted.getMonth()) + "/" + monthAdjusted.getYear().getYear(), "  PREVIS.", "  ACTUEL",
 				"   DIFF", "       GRAPH");
-		System.out.printf("+---------------+----------+----------+----------+--------------------+\n");
+		System.out.printf("├───────────────┼──────────┼──────────┼──────────┼────────────────────┤\n");
 		BigDecimal totalCredit = BigDecimal.ZERO;
 		for (String s : keyList.getCredit().keySet()) {
 			totalCredit = printLine(s, monthBudget.getCredits()).add(totalCredit);
 		}
 		// DEBIT
-		System.out.printf("+---------------+----------+----------+----------+--------------------+\n");
+		System.out.printf("├───────────────┼──────────┼──────────┼──────────┼────────────────────┤\n");
 		BigDecimal totalDebit = BigDecimal.ZERO;
 		for (String s : keyList.getDebit().keySet()) {
 			totalDebit = printLine(s, monthBudget.getDebits()).add(totalDebit);
 		}
-		System.out.printf("+---------------+----------+----------+----------+--------------------+\n");
+		System.out.printf("├───────────────┼──────────┼──────────┼──────────┼────────────────────┤\n");
 		double graphValueCredit = totalCredit.doubleValue() * 100 / monthBudget.getTotalCredit().doubleValue();
-		System.out.printf("|%-15s|%10.2f|%10.2f|%10.2f|%s|\n", "CREDIT", monthBudget.getTotalCredit(), totalCredit,
+		System.out.printf("│%-15s│%10.2f│%10.2f│%10.2f│%s│\n", "CREDIT", monthBudget.getTotalCredit(), totalCredit,
 				monthBudget.getTotalCredit().subtract(totalCredit), graph(graphValueCredit));
 		double graphValueDebit = totalDebit.doubleValue() * 100 / monthBudget.getTotalDebit().doubleValue();
-		System.out.printf("|%-15s|%10.2f|%10.2f|%10.2f|%s|\n", "DEBIT", monthBudget.getTotalDebit(), totalDebit,
+		System.out.printf("│%-15s│%10.2f│%10.2f│%10.2f│%s│\n", "DEBIT", monthBudget.getTotalDebit(), totalDebit,
 				monthBudget.getTotalDebit().subtract(totalDebit), graph(graphValueDebit));
-		System.out.printf("+---------------+----------+----------+----------+--------------------+\n");
-		System.out.printf("|%-15s|%10.2f|%10.2f|%10.2f|                    |\n", "SOLDE",
+		System.out.printf("├───────────────┼──────────┼──────────┼──────────┼────────────────────┤\n");
+		System.out.printf("│%-15s│%10.2f│%10.2f│%10.2f│                    │\n", "SOLDE",
 				_currentMonthBudget.getEstimatedEndOfMonthBalance(), monthAdjusted.getBalance(),
 				monthAdjusted.getBalance().subtract(_currentMonthBudget.getEstimatedEndOfMonthBalance()));
-		System.out.printf("+---------------+----------+----------+----------+--------------------+\n");
+		System.out.printf("└───────────────┴──────────┴──────────┴──────────┴────────────────────┘\n");
 	}
 
 	private BigDecimal printLine(String s, HashMap<String, BigDecimal> budget) {
@@ -98,7 +98,7 @@ public class ConsoleMonthBudgetPresenter implements MonitorInterface {
 		}
 		if (rep.equals(BigDecimal.ZERO) && bud.equals(BigDecimal.ZERO))
 			return BigDecimal.ZERO;
-		System.out.printf("|%-15s|%10.2f|%10.2f|%10.2f|%s|\n", s, bud, rep, diff, ratio);
+		System.out.printf("│%-15s│%10.2f│%10.2f│%10.2f│%s│\n", s, bud, rep, diff, ratio);
 		if (reportValue == null) {
 			reportValue = BigDecimal.ZERO;
 		}
