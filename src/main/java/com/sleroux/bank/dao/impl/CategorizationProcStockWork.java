@@ -1,5 +1,6 @@
 package com.sleroux.bank.dao.impl;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,8 +23,8 @@ public class CategorizationProcStockWork implements Work {
 	@Override
 	public void execute(Connection _connection) throws SQLException {
 		java.sql.Statement st = _connection.createStatement();
-		
-		String sql = "CALL get_catego(\"" + op.getLibelle().replaceAll("'", "").replaceAll("\"", "") + "\")";
+		BigDecimal montant = op.getCredit().subtract(op.getDebit());
+		String sql = "CALL get_catego2(\"" + op.getLibelle().replaceAll("'", "").replaceAll("\"", "") + "\", '" + op.getCompte() + "'," + montant + ")";
 		ResultSet rs = st.executeQuery(sql);
 
 		while (rs.next()) {

@@ -72,8 +72,24 @@ public class CategoService {
 				}
 			}
 
+			// Shift VIR.* to next month
+			if (o.getCatego().startsWith("PLMT.")) {
+				if (c.get(Calendar.DAY_OF_MONTH) >= 20) {
+					System.out.println("### "
+							+ "Shift to following month ?");
+					if (validateYesNo()) {
+						opMonth++;
+						if (opMonth > 12) {
+							opMonth = 1;
+							opYear++;
+						}
+					}
+				}
+
+			}
+
 			o.setYear(opYear);
-			o.setMonthAdjusted((short)opMonth);
+			o.setMonthAdjusted((short) opMonth);
 
 			operationDao.update(o);
 
@@ -87,6 +103,32 @@ public class CategoService {
 
 	public List<String> getCategoSuggestionsFor(Operation o) {
 		return operationDao.getSuggestionsFor(o);
+	}
+
+	private boolean validateYesNo() {
+		String r = null;
+		while (r == null) {
+			 System.out.println("y/n >");
+
+			try {
+				BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+				String s = bufferRead.readLine();
+
+				if (s.equals("y") || s.equals("Y")) {
+					return true;
+				}
+
+				if (s.equals("n") || s.equals("N")) {
+					return false;
+				}
+				
+				System.out.println("Wrong value");
+
+			} catch (Exception e) {
+				//e.printStackTrace();
+			}
+		}
+		return false;
 	}
 
 	private boolean categoRequests(Operation _op, List<String> _suggest) throws SQLException {
