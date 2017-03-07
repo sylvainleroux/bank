@@ -108,7 +108,7 @@ public class BPOImportService {
 
 	private ExtractDocument readFile(String _file) throws Exception {
 
-		String accountNumber = "BPO";
+		String accountNumber = "BPO.COMPTE_CHEQUE";
 
 		final DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		mapper.setDateFormat(df);

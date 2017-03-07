@@ -58,11 +58,11 @@ public class ImportService {
 
 				for (AccountBalance b : balances) {
 					if (b.getCompte().equals("COMPTE CHEQUES 1")) {
-						b.setCompte("CMB");
+						b.setCompte("CMB.COMPTE_CHEQUE");
 					}
 
 					if (b.getCompte().equals("LIVRET BLEU")) {
-						b.setCompte("LB");
+						b.setCompte("CMB.LIVRET_CMB");
 					}
 
 					balanceDao.update(b);
