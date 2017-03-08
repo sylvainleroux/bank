@@ -52,7 +52,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 						+ a.getDebit_bud() + " to " + a.getDebit_ops() + " ?");
 
 				if (validate(a)) {
-					budgetService.updateDebit(a);
+					budgetService.createUpdateDebit(a);
 				}
 			}
 
@@ -62,7 +62,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 						+ a.getCredit_bud() + " to " + a.getCredit_ops() + " ?");
 
 				if (validate(a)) {
-					budgetService.updateCredit(a);
+					budgetService.createUpdateCredit(a);
 				}
 
 			}
@@ -79,7 +79,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 				}
 
 				if (validate(a)) {
-					budgetService.createDebitBudgetFor(a);
+					budgetService.createUpdateDebit(a);
 				}
 			}
 
@@ -88,7 +88,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 						+ " : " + a.getYear() + "/" + a.getMonth() + " ?");
 
 				if (validate(a)) {
-					budgetService.creatCreditBudgetFor(a);
+					budgetService.createUpdateCredit(a);
 				}
 			}
 
@@ -97,7 +97,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 						+ " budget from " + a.getDebit_bud() + " to " + a.getDebit_ops() + " ?");
 
 				if (validate(a)) {
-					budgetService.updateDebit(a);
+					budgetService.createUpdateDebit(a);
 				}
 			}
 
@@ -106,9 +106,10 @@ public class HealthCheckController extends BusinessServiceAbstract {
 				System.out.println("  " + a.getCatego() + " : " + a.getYear() + "/" + a.getMonth());
 
 				if (validate(a)) {
-					budgetService.updateCredit(a);
+					budgetService.createUpdateCredit(a);
 				}
 			}
+			
 
 		}
 

@@ -72,70 +72,26 @@ public class AnalysisService {
 
 		}
 
-		// Inconsistencies
-
-		if (categoHasDebitAndCredit(a)) {
-			a.setReason(AlertType.CATEGO_CONFLICT);
-		}
-
 	}
 
 	private boolean coolDebit(AnalysisFact _a) {
 		boolean r = true;
 		r = r && isNotNull(_a.getDebit_ops());
 		r = r && isNotNull(_a.getDebit_bud());
-		r = r && isUnset(_a.getCredit_ops());
-		r = r && isUnset(_a.getCredit_bud());
 		r = r && _a.getDebit_ops().compareTo(_a.getDebit_bud()) < 0;
 		return r;
 	}
 
 	private boolean coolCredit(AnalysisFact _a) {
 		boolean r = true;
-		r = r && isUnset(_a.getDebit_ops());
-		r = r && isUnset(_a.getDebit_bud());
 		r = r && isNotNull(_a.getCredit_ops());
 		r = r && isNotNull(_a.getCredit_bud());
 		r = r && _a.getCredit_ops().compareTo(_a.getCredit_bud()) < 0;
 		return r;
 	}
 
-	private boolean categoHasDebitAndCredit(AnalysisFact _a) {
-		boolean r1, r2, r3, r4;
-		{
-			boolean r = true;
-			r = r && isPositiveNotNull(_a.getDebit_ops());
-			r = r && isPositiveNotNull(_a.getCredit_ops());
-			r1 = r;
-		}
-		{
-			boolean r = true;
-			r = r && isPositiveNotNull(_a.getDebit_bud());
-			r = r && isPositiveNotNull(_a.getCredit_bud());
-			r2 = r;
-		}
-
-		{
-			boolean r = true;
-			r = r && isPositiveNotNull(_a.getDebit_ops());
-			r = r && isPositiveNotNull(_a.getCredit_bud());
-			r3 = r;
-		}
-
-		{
-			boolean r = true;
-			r = r && isPositiveNotNull(_a.getDebit_bud());
-			r = r && isPositiveNotNull(_a.getCredit_ops());
-			r4 = r;
-		}
-
-		return r1 || r2 || r3 || r4;
-	}
-
 	private boolean burnedBudgetCredit(AnalysisFact _a) {
 		boolean r = true;
-		r = r && isUnset(_a.getDebit_ops());
-		r = r && isUnset(_a.getDebit_bud());
 		r = r && isPositiveNotNull(_a.getCredit_ops());
 		r = r && isPositiveNotNull(_a.getCredit_bud());
 		r = r && _a.getCredit_ops().compareTo(_a.getCredit_bud()) > 0;
@@ -144,8 +100,6 @@ public class AnalysisService {
 
 	private boolean notBudgetedCredit(AnalysisFact _a) {
 		boolean r = true;
-		r = r && isUnset(_a.getDebit_ops());
-		r = r && isUnset(_a.getDebit_bud());
 		r = r && isPositiveNotNull(_a.getCredit_ops());
 		r = r && isUnset(_a.getCredit_bud());
 		return r;
@@ -155,8 +109,6 @@ public class AnalysisService {
 		boolean r = true;
 		r = r && isPositiveNotNull(_a.getDebit_ops());
 		r = r && isPositiveNotNull(_a.getDebit_bud());
-		r = r && isUnset(_a.getCredit_ops());
-		r = r && isUnset(_a.getCredit_bud());
 		r = r && _a.getDebit_ops().compareTo(_a.getDebit_bud()) > 0;
 		return r;
 	}
@@ -164,8 +116,6 @@ public class AnalysisService {
 	private boolean notBudgetedDebit(AnalysisFact _a) {
 		boolean r = true;
 		r &= isPositiveNotNull(_a.getDebit_ops());
-		r &= isUnset(_a.getCredit_ops());
-		r &= isUnset(_a.getCredit_bud());
 		r &= isUnset(_a.getDebit_bud());
 		return r;
 	}

@@ -35,7 +35,7 @@ public class CalcService {
 
 	private MonitorInterface			monitorInterface	= new ConsoleMonthBudgetPresenter();
 
-	private final static List<String>	ACCOUNTS			= Arrays.asList("COURANT", "CMB", "BPO");
+	private final static List<String>	ACCOUNTS			= Arrays.asList("COURANT", "CMB.COMPTE_CHEQUE", "BPO.COMPTE_CHEQUE");
 
 	public void run() throws Exception {
 
