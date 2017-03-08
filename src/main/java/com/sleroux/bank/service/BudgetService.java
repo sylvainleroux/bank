@@ -16,43 +16,37 @@ public class BudgetService {
 	IBudgetDao	budgetDao;
 
 	@Transactional
-	public void createDebitBudgetFor(AnalysisFact _a) {
-		Budget b = new Budget();
-		b.setYear(_a.getYear());
-		b.setMonth(_a.getMonth());
-		b.setCatego(_a.getCatego());
-		b.setDebit(_a.getDebit_ops());
-		b.setCompte("COURANT");
-		budgetDao.create(b);
-	}
-
-	@Transactional
-	public void creatCreditBudgetFor(AnalysisFact _a) {
-		Budget b = new Budget();
-		b.setYear(_a.getYear());
-		b.setMonth(_a.getMonth());
-		b.setCatego(_a.getCatego());
-		b.setCredit(_a.getCredit_ops());
-		b.setCompte("COURANT");
-		budgetDao.create(b);
-	}
-
-	@Transactional
-	public void updateDebit(AnalysisFact _a) {
+	public void createUpdateDebit(AnalysisFact _a) {
 		Budget b = budgetDao.findByYearMonthCatego(_a.getYear(), _a.getMonth(), _a.getCatego(), "COURANT");
 		if (b != null) {
 			b.setDebit(_a.getDebit_ops());
 			budgetDao.update(b);
+		}else{
+			b = new Budget();
+			b.setYear(_a.getYear());
+			b.setMonth(_a.getMonth());
+			b.setCatego(_a.getCatego());
+			b.setDebit(_a.getDebit_ops());
+			b.setCompte("COURANT");
+			budgetDao.create(b);
 		}
 	}
 
 	@Transactional
-	public void updateCredit(AnalysisFact _a) {
+	public void createUpdateCredit(AnalysisFact _a) {
 		Budget b = budgetDao.findByYearMonthCatego(_a.getYear(), _a.getMonth(), _a.getCatego(), "COURANT");
 		
 		if (b != null) {
 			b.setCredit(_a.getCredit_ops());
 			budgetDao.update(b);
+		}else{
+			b = new Budget();
+			b.setYear(_a.getYear());
+			b.setMonth(_a.getMonth());
+			b.setCatego(_a.getCatego());
+			b.setCredit(_a.getCredit_ops());
+			b.setCompte("COURANT");
+			budgetDao.create(b);
 		}
 	}
 

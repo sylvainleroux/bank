@@ -106,12 +106,12 @@ public class CMBImportService {
 
 	private ExtractDocument readFile(String _file) throws IOException {
 
-		String accountNumber = "CMB";
+		String accountNumber = "CMB.COMPTE_CHEQUE";
 		if (_file.contains("LB")) {
-			accountNumber = "LB";
+			accountNumber = "CMB.LIVRET_CMB";
 		}
 		if (_file.contains("PEL")) {
-			accountNumber = "PEL";
+			accountNumber = "CMB.PEL";
 		}
 
 		ExtractDocument report = new ExtractDocument();
