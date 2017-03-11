@@ -39,15 +39,6 @@ public class TestAnalysisReasons {
 	}
 
 	@Test
-	public void testCategoConflict() {
-		AnalysisFact fact = new AnalysisFact();
-		fact.setDebit_ops(m(10.2));
-		fact.setCredit_ops(m(10.2));
-		as.doAnalysis(fact, 2015, 12);
-		Assert.assertEquals(AlertType.CATEGO_CONFLICT, fact.getReason());
-	}
-
-	@Test
 	public void testBurnedDebitBudget() {
 
 		AnalysisFact fact = new AnalysisFact();
@@ -99,41 +90,7 @@ public class TestAnalysisReasons {
 		Assert.assertEquals(AlertType.CREDIT_NOT_BUDGETED, fact.getReason());
 	}
 
-	@Test
-	public void testConflict() {
-		AnalysisFact fact = new AnalysisFact();
-		fact.setCredit_ops(m(10.2));
-		fact.setDebit_ops(m(10.2));
-		as.doAnalysis(fact, 2015, 12);
-		Assert.assertEquals(AlertType.CATEGO_CONFLICT, fact.getReason());
-	}
 
-	@Test
-	public void testConflict2() {
-		AnalysisFact fact = new AnalysisFact();
-		fact.setDebit_bud(m(10.2));
-		fact.setCredit_bud(m(10.2));
-		as.doAnalysis(fact, 2015, 12);
-		Assert.assertEquals(AlertType.CATEGO_CONFLICT, fact.getReason());
-	}
-
-	@Test
-	public void testConflict3() {
-		AnalysisFact fact = new AnalysisFact();
-		fact.setDebit_ops(m(10.2));
-		fact.setCredit_bud(m(10.2));
-		as.doAnalysis(fact, 2015, 12);
-		Assert.assertEquals(AlertType.CATEGO_CONFLICT, fact.getReason());
-	}
-
-	@Test
-	public void testConflict4() {
-		AnalysisFact fact = new AnalysisFact();
-		fact.setDebit_bud(m(10.2));
-		fact.setCredit_ops(m(10.2));
-		as.doAnalysis(fact, 2015, 12);
-		Assert.assertEquals(AlertType.CATEGO_CONFLICT, fact.getReason());
-	}
 
 	private BigDecimal m(double _s) {
 		return new BigDecimal(_s).setScale(2, RoundingMode.CEILING);

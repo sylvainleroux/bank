@@ -31,7 +31,7 @@ public class OperationHelper {
 
 	public static Operation createDebitOperation(@SuppressWarnings("rawtypes") Class _class) {
 		Operation o = new Operation();
-		o.setCompte("BPO");
+		o.setCompte("CMB.COMPTE_CHEQUE");
 		o.setDateOperation(new Date());
 		o.setDateValeur(new Date());
 		o.setLibelle(_class.getName().toUpperCase().substring(_class.getName().lastIndexOf(".")+1) + " RANDOM CREDIT OPERATION "

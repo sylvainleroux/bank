@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -201,7 +202,7 @@ public class TestAnalysisService {
 		operationDao.create(o1);
 
 		Budget b1 = BudgetHelper.createDebit();
-		b1.setCompte("CMB");
+		b1.setCompte("CMB.COMPTE_CHEQUE");
 		b1.setYear(2016);
 		b1.setMonth(4);
 		b1.setCatego("CARBURANT");
@@ -210,6 +211,7 @@ public class TestAnalysisService {
 
 		List<AnalysisFact> list = as.getFacts(2016, 6);
 		Assert.assertEquals(1, list.size());
+		
 
 		Assert.assertEquals(AlertType.DEBIT_OVER_ESTIMATE, list.get(0).getReason());
 
