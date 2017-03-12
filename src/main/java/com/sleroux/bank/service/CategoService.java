@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sleroux.bank.dao.IOperationDao;
+import com.sleroux.bank.domain.SessionData;
 import com.sleroux.bank.model.Operation;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.util.formats.OperationFormater;
@@ -30,11 +31,14 @@ public class CategoService {
 	@Autowired
 	IOperationDao				operationDao;
 
+	@Autowired
+	SessionData					sessionData;
+
 	public void run() throws Exception {
 
-		List<Operation> operations = operationDao.findUncategorized();
-		debitsCatego = operationDao.getCategoriesDebit();
-		creditsCatego = operationDao.getCategoriesCredit();
+		List<Operation> operations = operationDao.findUncategorized(sessionData.getUserID());
+		debitsCatego = operationDao.getCategoriesDebit(sessionData.getUserID());
+		creditsCatego = operationDao.getCategoriesCredit(sessionData.getUserID());
 
 		if (operations.size() == 0) {
 			System.out.println("No operation to categorize");
@@ -75,8 +79,7 @@ public class CategoService {
 			// Shift VIR.* to next month
 			if (o.getCatego().startsWith("PLMT.")) {
 				if (c.get(Calendar.DAY_OF_MONTH) >= 20) {
-					System.out.println("### "
-							+ "Shift to following month ?");
+					System.out.println("### " + "Shift to following month ?");
 					if (validateYesNo()) {
 						opMonth++;
 						if (opMonth > 12) {
@@ -108,7 +111,7 @@ public class CategoService {
 	private boolean validateYesNo() {
 		String r = null;
 		while (r == null) {
-			 System.out.println("y/n >");
+			System.out.println("y/n >");
 
 			try {
 				BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
@@ -121,11 +124,11 @@ public class CategoService {
 				if (s.equals("n") || s.equals("N")) {
 					return false;
 				}
-				
+
 				System.out.println("Wrong value");
 
 			} catch (Exception e) {
-				//e.printStackTrace();
+				// e.printStackTrace();
 			}
 		}
 		return false;
@@ -203,7 +206,7 @@ public class CategoService {
 	}
 
 	public int getNonCategorized() {
-		return operationDao.findUncategorized().size();
+		return operationDao.findUncategorized(sessionData.getUserID()).size();
 	}
 
 }

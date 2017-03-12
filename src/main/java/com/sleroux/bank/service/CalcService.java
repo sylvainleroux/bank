@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.sleroux.bank.dao.IBudgetDao;
 import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.domain.AggregatedOperations;
+import com.sleroux.bank.domain.SessionData;
 import com.sleroux.bank.model.AccountBalance;
 import com.sleroux.bank.model.CalcResult;
 import com.sleroux.bank.model.budget.BudgetKeys;
@@ -33,9 +34,13 @@ public class CalcService {
 	@Autowired
 	IBudgetDao							budgetDao;
 
+	@Autowired
+	SessionData							sessionData;
+
 	private MonitorInterface			monitorInterface	= new ConsoleMonthBudgetPresenter();
 
-	private final static List<String>	ACCOUNTS			= Arrays.asList("COURANT", "CMB.COMPTE_CHEQUE", "BPO.COMPTE_CHEQUE");
+	private final static List<String>	ACCOUNTS			= Arrays.asList("COURANT", "CMB.COMPTE_CHEQUE",
+			"BPO.COMPTE_CHEQUE");
 
 	public void run() throws Exception {
 
@@ -43,15 +48,16 @@ public class CalcService {
 		int year = c.get(Calendar.YEAR);
 		int currentMonth = c.get(Calendar.MONTH) + 1;
 
-		List<AggregatedOperations> operations = operationDao.findAggregatedYearMonth(year, currentMonth);
-		List<AggregatedOperations> budget = budgetDao.findBudgetForMonth(year, currentMonth);
+		List<AggregatedOperations> operations = operationDao.findAggregatedYearMonth(year, currentMonth,
+				sessionData.getUserID());
+		List<AggregatedOperations> budget = budgetDao.findBudgetForMonth(year, currentMonth, sessionData.getUserID());
 
 		List<CalcResult> calc = buildReport(operations, budget);
 
 		MonthAdjusted monthAdjusted = createMonthAdjusted(calc, year, currentMonth);
 
 		// Calculate real balance
-		List<AccountBalance> balances = operationDao.getSoldes();
+		List<AccountBalance> balances = operationDao.getSoldes(sessionData.getUserID());
 		BigDecimal bal = new BigDecimal(0);
 		for (AccountBalance ab : balances) {
 			if (ACCOUNTS.contains(ab.getCompte())) {
@@ -61,7 +67,7 @@ public class CalcService {
 		monthAdjusted.setBalance(bal);
 
 		BudgetMonth budgetMonth = createBudgetMonth(calc);
-		budgetMonth.setEstimatedEndOfMonthBalance(budgetDao.getEstimatedEndOfMonthBalance(year, currentMonth));
+		budgetMonth.setEstimatedEndOfMonthBalance(budgetDao.getEstimatedEndOfMonthBalance(year, currentMonth, sessionData.getUserID()));
 
 		BudgetKeys keys = createKeys(calc);
 

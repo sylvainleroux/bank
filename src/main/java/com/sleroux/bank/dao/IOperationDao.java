@@ -11,18 +11,18 @@ public interface IOperationDao extends IOperations<Operation> {
 
 	int insertIgnore(Operation _o);
 
-	List<Operation> findUncategorized();
+	List<Operation> findUncategorized(int _userID);
 
-	List<String> getCategoriesDebit();
+	List<String> getCategoriesDebit(int _userID);
 
-	List<String> getCategoriesCredit();
+	List<String> getCategoriesCredit(int _userID);
 
 	List<String> getSuggestionsFor(Operation _o);
 
-	List<AccountBalance> getSoldes();
+	List<AccountBalance> getSoldes(int _userID);
 
-	List<AggregatedOperations> findAggregatedYearMonth(int _year, int _month);
+	List<AggregatedOperations> findAggregatedYearMonth(int _year, int _month, int _userID);
 
-	List<Operation> findByCategoYearMonth(Integer year, Integer month, String catego);
+	List<Operation> findByCategoYearMonth(Integer year, Integer month, String catego, int _userID);
 
 }

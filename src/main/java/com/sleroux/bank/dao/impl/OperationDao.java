@@ -41,21 +41,26 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Operation> findUncategorized() {
-		return getCurrentSession().createQuery("from Operation where catego is null").list();
+	public List<Operation> findUncategorized(int _userID) {
+		return getCurrentSession().createQuery("from Operation where catego is null and user_id = :user_id")
+				.setParameter("user_id", _userID).list();
 	}
 
 	@Override
-	public List<String> getCategoriesDebit() {
-		Query query = getCurrentSession().createQuery("select distinct catego from Operation where debit > 0");
+	public List<String> getCategoriesDebit(int _userID) {
+		Query query = getCurrentSession()
+				.createQuery("select distinct catego from Operation where debit > 0 and user_id = :user_id")
+				.setParameter("user_id", _userID);
 		@SuppressWarnings("unchecked")
 		List<String> list = query.list();
 		return list;
 	}
 
 	@Override
-	public List<String> getCategoriesCredit() {
-		Query query = getCurrentSession().createQuery("select distinct catego from Operation where credit > 0");
+	public List<String> getCategoriesCredit(int _userID) {
+		Query query = getCurrentSession()
+				.createQuery("select distinct catego from Operation where credit > 0 and user_id = :user_id")
+				.setParameter("user_id", _userID);
 		@SuppressWarnings("unchecked")
 		List<String> list = query.list();
 		return list;
@@ -73,27 +78,31 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<AccountBalance> getSoldes() {
-		Query query = getCurrentSession().createSQLQuery("select * from bank.soldes")
-				.setResultTransformer(Transformers.aliasToBean(AccountBalance.class));
+	public List<AccountBalance> getSoldes(int _userID) {
+		Query query = getCurrentSession().createSQLQuery("select * from bank.soldes where user_id = :user_id")
+				.setParameter("user_id", _userID).setResultTransformer(Transformers.aliasToBean(AccountBalance.class));
 		return query.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<AggregatedOperations> findAggregatedYearMonth(int _year, int _month) {
+	public List<AggregatedOperations> findAggregatedYearMonth(int _year, int _month, int _userID) {
 		Query query = getCurrentSession().createSQLQuery(
-				"select year, month, compte as account, catego, sum(credit) as credit, sum(debit) as debit from operation where year = :year and month = :month group by year, month, compte, catego");
+				"select year, month, compte as account, catego, sum(credit) as credit, sum(debit) as debit from operation where year = :year and month = :month and user_id = :user_id group by year, month, compte, catego");
 		query.setParameter("year", _year);
 		query.setParameter("month", _month);
+		query.setParameter("user_id", _userID);
 		query.setResultTransformer(Transformers.aliasToBean(AggregatedOperations.class));
 		return query.list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Operation> findByCategoYearMonth(Integer _year, Integer _month, String _catego) {
-		return getCurrentSession().createQuery("from Operation where year=:year and month=:month and catego=:catego")
-				.setParameter("year", _year).setParameter("month", _month).setParameter("catego", _catego).list();
+	public List<Operation> findByCategoYearMonth(Integer _year, Integer _month, String _catego, int _userID) {
+		return getCurrentSession()
+				.createQuery(
+						"from Operation where year=:year and month=:month and catego=:catego and user_id = :user_id")
+				.setParameter("year", _year).setParameter("month", _month).setParameter("catego", _catego)
+				.setParameter("user_id", _userID).list();
 
 	}
 

@@ -18,6 +18,9 @@ public class Budget implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected int			id;
+
+	@Column(name = "user_id")
+	protected int			userID;
 	protected int			year;
 	protected int			month;
 	protected String		catego;
@@ -91,10 +94,19 @@ public class Budget implements Serializable {
 	public void setCompte(String _compte) {
 		compte = _compte;
 	}
+	
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int _userID) {
+		userID = _userID;
+	}
 
 	@Override
 	public String toString() {
-		return "year:" + year + " month:" + month + " catego:" + catego + " debit:" + debit + " credit:" + credit + " compte:" + compte;
+		return "year:" + year + " month:" + month + " catego:" + catego + " debit:" + debit + " credit:" + credit
+				+ " compte:" + compte;
 	}
 
 }

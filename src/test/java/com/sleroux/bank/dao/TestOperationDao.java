@@ -24,11 +24,13 @@ import com.sleroux.bank.testutils.OperationHelper;
 @ContextConfiguration(classes = { TestConfig.class }, loader = AnnotationConfigContextLoader.class)
 public class TestOperationDao {
 
-	@Autowired
-	IOperationDao	operationDao;
+	private final static int	TEST_USER_ID	= 0;
 
 	@Autowired
-	CategoService	categoService;
+	IOperationDao				operationDao;
+
+	@Autowired
+	CategoService				categoService;
 
 	@Test
 	@Transactional
@@ -40,13 +42,13 @@ public class TestOperationDao {
 		List<Operation> list = operationDao.findAll();
 		Assert.assertEquals(1, list.size());
 
-		List<Operation> uncategorized = operationDao.findUncategorized();
+		List<Operation> uncategorized = operationDao.findUncategorized(TEST_USER_ID);
 		Assert.assertEquals(1, uncategorized.size());
 
 		o.setCatego("TEST_CATEGO");
 		operationDao.update(o);
 
-		List<Operation> uncategorized2 = operationDao.findUncategorized();
+		List<Operation> uncategorized2 = operationDao.findUncategorized(TEST_USER_ID);
 		Assert.assertEquals(0, uncategorized2.size());
 
 	}
@@ -58,9 +60,9 @@ public class TestOperationDao {
 		Operation o = OperationHelper.createCreditOperation();
 		operationDao.create(o);
 
-		List<String> credits = operationDao.getCategoriesCredit();
+		List<String> credits = operationDao.getCategoriesCredit(TEST_USER_ID);
 		Assert.assertEquals(1, credits.size());
-		List<String> debits = operationDao.getCategoriesDebit();
+		List<String> debits = operationDao.getCategoriesDebit(TEST_USER_ID);
 		Assert.assertEquals(0, debits.size());
 	}
 
@@ -71,9 +73,9 @@ public class TestOperationDao {
 		Operation o = OperationHelper.createDebitOperation();
 		operationDao.create(o);
 
-		List<String> credits = operationDao.getCategoriesCredit();
+		List<String> credits = operationDao.getCategoriesCredit(TEST_USER_ID);
 		Assert.assertEquals(0, credits.size());
-		List<String> debits = operationDao.getCategoriesDebit();
+		List<String> debits = operationDao.getCategoriesDebit(TEST_USER_ID);
 		Assert.assertEquals(1, debits.size());
 	}
 
@@ -109,7 +111,7 @@ public class TestOperationDao {
 			operationDao.create(o);
 		}
 
-		List<AccountBalance> list = operationDao.getSoldes();
+		List<AccountBalance> list = operationDao.getSoldes(TEST_USER_ID);
 		for (AccountBalance a : list) {
 			Assert.assertEquals(new BigDecimal("25").setScale(2), a.getSolde());
 		}
@@ -146,13 +148,13 @@ public class TestOperationDao {
 			o.setCredit(new BigDecimal("100.00"));
 			operationDao.create(o);
 		}
-		List<AggregatedOperations> list = operationDao.findAggregatedYearMonth(2016, 2);
+		List<AggregatedOperations> list = operationDao.findAggregatedYearMonth(2016, 2, TEST_USER_ID);
 
 		Assert.assertEquals(1, list.size());
 		Assert.assertEquals(200, list.get(0).getCredit().intValue());
 
 	}
-	
+
 	@Test
 	@Transactional
 	public void testFindOperationByCategoYearMonth() {
@@ -166,7 +168,7 @@ public class TestOperationDao {
 			o.setCredit(new BigDecimal("100.00"));
 			operationDao.create(o);
 		}
-		
+
 		{
 			Operation o = OperationHelper.createCreditOperation();
 			o.setYear(2016);
@@ -185,7 +187,7 @@ public class TestOperationDao {
 			o.setCredit(new BigDecimal("100.00"));
 			operationDao.create(o);
 		}
-		List<Operation> list = operationDao.findByCategoYearMonth(2016, 2, "AVION");
+		List<Operation> list = operationDao.findByCategoYearMonth(2016, 2, "AVION", TEST_USER_ID);
 		Assert.assertEquals(2, list.size());
 
 	}

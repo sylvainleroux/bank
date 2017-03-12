@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.dao.IBudgetDao;
+import com.sleroux.bank.domain.SessionData;
 import com.sleroux.bank.evo.document.BudgetDocument;
 import com.sleroux.bank.model.Budget;
 import com.sleroux.bank.model.budget.Changes;
@@ -22,6 +23,9 @@ public class FileToDB extends BusinessServiceAbstract {
 
 	@Autowired
 	IBudgetDao	budgetDao;
+
+	@Autowired
+	SessionData	sessionData;
 
 	@Override
 	@Transactional
@@ -54,36 +58,35 @@ public class FileToDB extends BusinessServiceAbstract {
 		}
 
 		System.out.println("-- New entries in Budget file : ");
-		List<Changes> added = budgetDao.getAdded();
+		List<Changes> added = budgetDao.getAdded(sessionData.getUserID());
 		for (Changes u : added) {
 			System.out.println(u);
-			budgetDao.saveChange(u);
+			budgetDao.saveChange(u, sessionData.getUserID());
 		}
-		if (added.size() == 0){
+		if (added.size() == 0) {
 			System.out.println("No additions");
 		}
 
 		System.out.println("-- Updated entries in Budget file :");
-		List<Changes> updated =budgetDao.getUpdated();
+		List<Changes> updated = budgetDao.getUpdated(sessionData.getUserID());
 		for (Changes u : updated) {
 			System.out.println(u);
-			budgetDao.saveChange(u);
+			budgetDao.saveChange(u, sessionData.getUserID());
 		}
-		if (updated.size() == 0){
+		if (updated.size() == 0) {
 			System.out.println("No updates");
 		}
 
 		System.out.println("-- Deleted entries in Budget file : ");
-		List<Changes> deleted = budgetDao.getDeleted();
+		List<Changes> deleted = budgetDao.getDeleted(sessionData.getUserID());
 		for (Changes u : deleted) {
 			System.out.println(u);
-			budgetDao.saveChange(u);
+			budgetDao.saveChange(u, sessionData.getUserID());
 		}
-		if (deleted.size() == 0){
+		if (deleted.size() == 0) {
 			System.out.println("No deletions");
 		}
 
 	}
-
 
 }

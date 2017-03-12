@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.domain.AlertType;
+import com.sleroux.bank.domain.SessionData;
 import com.sleroux.bank.model.AnalysisFact;
 import com.sleroux.bank.model.Operation;
 import com.sleroux.bank.service.AnalysisService;
@@ -23,22 +24,29 @@ import com.sleroux.bank.util.formats.OperationFormater;
 public class HealthCheckController extends BusinessServiceAbstract {
 
 	@Autowired
-	AnalysisService analysisService;
+	AnalysisService	analysisService;
 
 	@Autowired
-	BudgetService budgetService;
+	BudgetService	budgetService;
 
 	@Autowired
-	IOperationDao operationDao;
+	IOperationDao	operationDao;
+
+	@Autowired
+	SessionData		sessionData;
 
 	@Override
 	@Transactional
 	public void run() throws Exception {
 
+		if (sessionData.getUsername() == null) {
+			throw new SecurityException();
+		}
+
 		Calendar c = Calendar.getInstance();
 
 		List<AnalysisFact> facts = analysisService.getFacts(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1);
-		if (facts.size() == 0){
+		if (facts.size() == 0) {
 			System.out.println("Everything looks good!");
 		}
 		for (AnalysisFact a : facts) {
@@ -73,7 +81,8 @@ public class HealthCheckController extends BusinessServiceAbstract {
 						+ " : " + a.getYear() + "/" + a.getMonth() + " ?");
 				System.out.println("  Corresponding operations : ");
 
-				List<Operation> ops = operationDao.findByCategoYearMonth(a.getYear(), a.getMonth(), a.getCatego());
+				List<Operation> ops = operationDao.findByCategoYearMonth(a.getYear(), a.getMonth(), a.getCatego(),
+						sessionData.getUserID());
 				for (Operation o : ops) {
 					System.out.println("  " + OperationFormater.toString(o));
 				}
@@ -109,7 +118,6 @@ public class HealthCheckController extends BusinessServiceAbstract {
 					budgetService.createUpdateCredit(a);
 				}
 			}
-			
 
 		}
 
@@ -123,7 +131,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 			if (r.action == RequestAction.LIST_OPERATIONS) {
 				System.out.println("  Corresponding operations : ");
 				List<Operation> ops = operationDao.findByCategoYearMonth(_fact.getYear(), _fact.getMonth(),
-						_fact.getCatego());
+						_fact.getCatego(), sessionData.getUserID());
 				for (Operation o : ops) {
 					System.out.println("  " + OperationFormater.toString(o));
 				}

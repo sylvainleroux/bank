@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sleroux.bank.dao.IBudgetDao;
+import com.sleroux.bank.domain.SessionData;
 import com.sleroux.bank.model.AnalysisFact;
 import com.sleroux.bank.model.Budget;
 
@@ -15,13 +16,17 @@ public class BudgetService {
 	@Autowired
 	IBudgetDao	budgetDao;
 
+	@Autowired
+	SessionData	sessionData;
+
 	@Transactional
 	public void createUpdateDebit(AnalysisFact _a) {
-		Budget b = budgetDao.findByYearMonthCatego(_a.getYear(), _a.getMonth(), _a.getCatego(), "COURANT");
+		Budget b = budgetDao.findByYearMonthCatego(_a.getYear(), _a.getMonth(), _a.getCatego(), "COURANT",
+				sessionData.getUserID());
 		if (b != null) {
 			b.setDebit(_a.getDebit_ops());
 			budgetDao.update(b);
-		}else{
+		} else {
 			b = new Budget();
 			b.setYear(_a.getYear());
 			b.setMonth(_a.getMonth());
@@ -34,12 +39,13 @@ public class BudgetService {
 
 	@Transactional
 	public void createUpdateCredit(AnalysisFact _a) {
-		Budget b = budgetDao.findByYearMonthCatego(_a.getYear(), _a.getMonth(), _a.getCatego(), "COURANT");
-		
+		Budget b = budgetDao.findByYearMonthCatego(_a.getYear(), _a.getMonth(), _a.getCatego(), "COURANT",
+				sessionData.getUserID());
+
 		if (b != null) {
 			b.setCredit(_a.getCredit_ops());
 			budgetDao.update(b);
-		}else{
+		} else {
 			b = new Budget();
 			b.setYear(_a.getYear());
 			b.setMonth(_a.getMonth());

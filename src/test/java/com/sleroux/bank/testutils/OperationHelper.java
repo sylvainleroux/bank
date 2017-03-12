@@ -16,6 +16,7 @@ public class OperationHelper {
 		o.setDateValeur(new Date());
 		o.setLibelle("RANDOM CREDIT OPERATION " + Math.round(Math.random() * 100000) + "_" + new Date().getTime());
 		o.setCredit(new BigDecimal(1 + Math.round(Math.random() * 100)));
+		o.setUserID(0);
 		return o;
 	}
 
@@ -26,6 +27,7 @@ public class OperationHelper {
 		o.setDateValeur(new Date());
 		o.setLibelle("RANDOM CREDIT OPERATION " + Math.round(Math.random() * 100000) + "_" + new Date().getTime());
 		o.setDebit(new BigDecimal(1 + Math.round(Math.random() * 100)));
+		o.setUserID(0);
 		return o;
 	}
 
@@ -34,9 +36,10 @@ public class OperationHelper {
 		o.setCompte("CMB.COMPTE_CHEQUE");
 		o.setDateOperation(new Date());
 		o.setDateValeur(new Date());
-		o.setLibelle(_class.getName().toUpperCase().substring(_class.getName().lastIndexOf(".")+1) + " RANDOM CREDIT OPERATION "
-				+ Math.round(Math.random() * 100000) + "_" + new Date().getTime());
+		o.setLibelle(_class.getName().toUpperCase().substring(_class.getName().lastIndexOf(".") + 1)
+				+ " RANDOM CREDIT OPERATION " + Math.round(Math.random() * 100000) + "_" + new Date().getTime());
 		o.setDebit(new BigDecimal(1 + Math.round(Math.random() * 100)));
+		o.setUserID(0);
 		return o;
 	}
 

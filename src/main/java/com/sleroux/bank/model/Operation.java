@@ -24,6 +24,10 @@ public class Operation implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int			id;
+
+	@Column(name = "user_id")
+	private int			userID;
+
 	private String		compte;
 
 	@Column(name = "date_operation")
@@ -113,7 +117,8 @@ public class Operation implements Serializable {
 		String montant = credit.compareTo(BigDecimal.ZERO) > 0 ? credit.toString() : debit.negate().toString();
 
 		String sep = "|";
-		return "[" + compte + sep + formatDate(dateOperation) + sep + formatDate(dateValeur) + sep + libelle + sep + montant + "]";
+		return "[" + compte + sep + formatDate(dateOperation) + sep + formatDate(dateValeur) + sep + libelle + sep
+				+ montant + "]";
 
 	}
 
@@ -152,6 +157,14 @@ public class Operation implements Serializable {
 
 	public void setCredit(BigDecimal _credit) {
 		credit = _credit;
+	}
+
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int _userID) {
+		userID = _userID;
 	}
 
 }
