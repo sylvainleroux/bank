@@ -13,11 +13,14 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "extract")
-public class ExtractHistory  implements Serializable{
+public class ExtractHistory implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long	id;
+
+	@Column(name = "user_id")
+	private int		userID;
 
 	@Column(name = "extract_date")
 	private Date	extractDate;
@@ -38,4 +41,11 @@ public class ExtractHistory  implements Serializable{
 		extractDate = _extractDate;
 	}
 
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int _userID) {
+		userID = _userID;
+	}
 }

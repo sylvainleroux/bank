@@ -27,9 +27,14 @@ public class BankConfig {
 	public DataSource getDataSource() {
 		DriverManagerDataSource datasource = new DriverManagerDataSource();
 		datasource.setDriverClassName("com.mysql.jdbc.Driver");
-		datasource.setUrl(String.format("jdbc:mysql://%s:%s/bank", Config.getDBHost(), Config.getDBPort()));
-		datasource.setUsername(Config.getDBUser());
-		datasource.setPassword(Config.getDBPass());
+		
+//		datasource.setUrl(String.format("jdbc:mysql://%s:%s/bank", Config.getDBHost(), Config.getDBPort()));
+//		datasource.setUsername(Config.getDBUser());
+//		datasource.setPassword(Config.getDBPass());
+
+		datasource.setUrl(String.format("jdbc:mysql://%s:%s/bank", "localhost", Config.getDBPort()));
+		datasource.setUsername("root");
+		datasource.setPassword("");
 		return datasource;
 	}
 

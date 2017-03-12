@@ -19,10 +19,11 @@ public class ExtactHistoryDao extends AbstractHibernateDao<ExtractHistory> imple
 	}
 
 	@Override
-	public Date getLastExtractDate() {
+	public Date getLastExtractDate(int _userID) {
 
 		@SuppressWarnings("unchecked")
-		List<ExtractHistory> list = getCurrentSession().createQuery("from ExtractHistory order by extractDate desc").setMaxResults(1).list();
+		List<ExtractHistory> list = getCurrentSession().createQuery("from ExtractHistory where user_id=:user_id order by extractDate desc").
+		setParameter("user_id", _userID).setMaxResults(1).list();
 
 		if (list.size() == 0) {
 			return null;

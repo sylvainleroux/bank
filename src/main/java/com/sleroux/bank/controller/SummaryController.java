@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
+import com.sleroux.bank.domain.SessionData;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.service.AnalysisService;
 import com.sleroux.bank.service.CategoService;
@@ -29,11 +30,14 @@ public class SummaryController extends BusinessServiceAbstract {
 	@Autowired
 	AnalysisService			analysisService;
 
+	@Autowired
+	SessionData				sessionData;
+
 	@Override
 	@Transactional
 	public void run() throws Exception {
 		ConsoleAppHeader.printLine();
-		System.out.println("Last Import   : " + extractHistoryService.getFormattedImportDate());
+		System.out.println("Last Import   : " + extractHistoryService.getFormattedImportDate(sessionData.getUserID()));
 
 		printNonCategorized(categoService.getNonCategorized());
 		printHealthCheck();
@@ -46,7 +50,7 @@ public class SummaryController extends BusinessServiceAbstract {
 
 		Calendar c = Calendar.getInstance();
 
-		int nbFacts = analysisService.getNbFacts(c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1);
+		int nbFacts = analysisService.getNbFacts(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1);
 		String status = "OK";
 		if (nbFacts > 0) {
 			status = nbFacts + " alerts";

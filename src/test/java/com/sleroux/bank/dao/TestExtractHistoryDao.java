@@ -21,13 +21,13 @@ import com.sleroux.bank.model.ExtractHistory;
 public class TestExtractHistoryDao {
 
 	@Autowired
-	private IExtractHistoryDao	extractHistoryDao;
+	private IExtractHistoryDao extractHistoryDao;
 
 	@Test
 	@Transactional
 	public void getNoHistory() {
-
-		Date d = extractHistoryDao.getLastExtractDate();
+		int userID = 0;
+		Date d = extractHistoryDao.getLastExtractDate(userID);
 		Assert.assertNull(d);
 
 	}
@@ -36,18 +36,22 @@ public class TestExtractHistoryDao {
 	@Transactional
 	public void getHistory() {
 
+		int userID = 1;
+
 		Calendar c = Calendar.getInstance();
 		c.set(2015, 01, 01);
 		ExtractHistory e1 = new ExtractHistory();
 		e1.setExtractDate(c.getTime());
+		e1.setUserID(userID);
 		extractHistoryDao.create(e1);
 
 		c.set(2015, 02, 01);
 		ExtractHistory e2 = new ExtractHistory();
 		e2.setExtractDate(c.getTime());
+		e2.setUserID(userID);
 		extractHistoryDao.create(e2);
 
-		Date d = extractHistoryDao.getLastExtractDate();
+		Date d = extractHistoryDao.getLastExtractDate(userID);
 		Calendar c2 = Calendar.getInstance();
 		c2.setTime(d);
 		Assert.assertTrue(c.equals(c2));

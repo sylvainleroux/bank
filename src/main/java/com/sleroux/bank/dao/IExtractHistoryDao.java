@@ -7,5 +7,5 @@ import com.sleroux.bank.model.ExtractHistory;
 
 public interface IExtractHistoryDao extends IOperations<ExtractHistory> {
 
-	Date getLastExtractDate();
+	Date getLastExtractDate(int _userID);
 }
