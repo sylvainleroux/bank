@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,7 +12,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.stereotype.Component;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.console.Command;
 import com.sleroux.bank.controller.LoginController;
 import com.sleroux.bank.controller.UserAddController;
 import com.sleroux.bank.util.Config;
@@ -108,23 +105,6 @@ public class Console {
 
 	public static Console getInstance() {
 		return instance;
-	}
-
-	private List<Command> defineCommands() {
-
-		List<Command> list = new ArrayList<>();
-
-		Command exit = new Command();
-		exit.setName("exit");
-		exit.setCallback(() -> exit());
-		list.add(exit);
-
-		return list;
-
-	}
-
-	private final void exit() {
-		// Terminate application
 	}
 
 	private static void run(Class<? extends BusinessServiceAbstract> _clazz) {
