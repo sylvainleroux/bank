@@ -10,34 +10,34 @@ import com.sleroux.bank.model.budget.Changes;
 
 public interface IBudgetDao extends IOperations<Budget> {
 
-	List<String> getCredits(int _userID);
+	List<String> getCredits(long _userID);
 
-	List<String> getDebits(int _userID);
+	List<String> getDebits(long _userID);
 
-	List<Integer> getYears(int _userID);
+	List<Integer> getYears(long _userID);
 
-	List<String> getComptesEpargne(int _userID);
+	List<String> getComptesEpargne(long _userID);
 
-	List<Budget> getMonthDebits(Integer _year, int _month, int _userID);
+	List<Budget> getMonthDebits(Integer _year, int _month, long _userID);
 
-	List<Budget> getMonthCredits(Integer _year, int _month, int _userID);
+	List<Budget> getMonthCredits(Integer _year, int _month, long _userID);
 
-	Budget getBudgetForCompte(String _compte, Integer _year, int _month, int _userID);
+	Budget getBudgetForCompte(String _compte, Integer _year, int _month, long _userID);
 
 	void backupAndTruncate();
 
-	List<Changes> getAdded(int _userID);   
+	List<Changes> getAdded(long _userID);   
 
-	List<Changes> getUpdated(int _userID);
+	List<Changes> getUpdated(long _userID);
 
-	List<Changes> getDeleted(int _userID);
+	List<Changes> getDeleted(long _userID);
 
-	void saveChange(Changes _u, int _userID);
+	void saveChange(Changes _u, long _userID);
 
-	Budget findByYearMonthCatego(int _year, int _month, String _catego, String _compte, int _userID);
+	Budget findByYearMonthCatego(int _year, int _month, String _catego, String _compte, long _userID);
 
-	List<AggregatedOperations> findBudgetForMonth(int _year, int _month, int _userID);
+	List<AggregatedOperations> findBudgetForMonth(int _year, int _month, long _userID);
 
-	BigDecimal getEstimatedEndOfMonthBalance(int _year, int _month, int _userID);
+	BigDecimal getEstimatedEndOfMonthBalance(int _year, int _month, long _userID);
 
 }

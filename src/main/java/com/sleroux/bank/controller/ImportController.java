@@ -3,14 +3,13 @@ package com.sleroux.bank.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.service.ExtractService;
 import com.sleroux.bank.service.ImportService;
 import com.sleroux.bank.service.ImportType;
 
 @Component
-public class ImportController extends BusinessServiceAbstract {
+public class ImportController extends AbstractController {
 
 	@Autowired
 	ImportService	importService;
@@ -23,7 +22,7 @@ public class ImportController extends BusinessServiceAbstract {
 
 		ConsoleAppHeader.printAppHeader("Import");
 		importService.importFiles(ImportType.CMB, extractService.getFilesCMB());
-		
+
 		importService.importFiles(ImportType.BPO, extractService.getFilesCMB());
 
 	}

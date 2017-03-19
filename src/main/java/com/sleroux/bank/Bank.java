@@ -10,16 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
-import asg.cliche.CLIException;
-import asg.cliche.Command;
-import asg.cliche.Shell;
-import asg.cliche.ShellFactory;
-
-import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.business.tool.Setup;
-import com.sleroux.bank.business.tool.Test;
-import com.sleroux.bank.business.tool.UpdatePassword;
-import com.sleroux.bank.business.tool.Version;
+import com.sleroux.bank.controller.AbstractController;
 import com.sleroux.bank.controller.CalcController;
 import com.sleroux.bank.controller.CategoController;
 import com.sleroux.bank.controller.DBToFile;
@@ -29,7 +20,13 @@ import com.sleroux.bank.controller.HealthCheckController;
 import com.sleroux.bank.controller.ImportController;
 import com.sleroux.bank.controller.SoldeController;
 import com.sleroux.bank.controller.SummaryController;
+import com.sleroux.bank.controller.Version;
 import com.sleroux.bank.util.Config;
+
+import asg.cliche.CLIException;
+import asg.cliche.Command;
+import asg.cliche.Shell;
+import asg.cliche.ShellFactory;
 
 @Component
 public class Bank {
@@ -37,8 +34,8 @@ public class Bank {
 	private static Bank					instance;
 	private static ApplicationContext	applicationContext;
 
-	public static void main(String[] args) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, IOException, CLIException {
+	public static void main(String[] args) throws NoSuchMethodException, SecurityException, InstantiationException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, CLIException {
 
 		Config.loadProperties();
 
@@ -95,16 +92,6 @@ public class Bank {
 		return instance;
 	}
 
-	@Command(name = "setup", description = "run intial setup")
-	public void setup() {
-		run(Setup.class);
-	}
-
-	@Command(name = "password", abbrev = "pwd", description = "Configure/update password")
-	public void updatePassword() {
-		run(UpdatePassword.class);
-	}
-
 	@Command(name = "calc", abbrev = "c", description = "Calculate monthly summary")
 	public void calc() {
 		run(CalcController.class);
@@ -140,11 +127,6 @@ public class Bank {
 		run(Version.class);
 	}
 
-	@Command(name = "test-config", description = "Test configuration")
-	public void testConfig() {
-		run(Test.class);
-	}
-
 	@Command(name = "solde", abbrev = "s", description = "Display balance for all accounts")
 	public void balance() {
 		run(SoldeController.class);
@@ -155,9 +137,9 @@ public class Bank {
 		run(HealthCheckController.class);
 	}
 
-	private void run(Class<? extends BusinessServiceAbstract> _clazz) {
+	private void run(Class<? extends AbstractController> _clazz) {
 
-		BusinessServiceAbstract service = applicationContext.getBean(_clazz);
+		AbstractController service = applicationContext.getBean(_clazz);
 		try {
 			service.run();
 		} catch (Exception e) {

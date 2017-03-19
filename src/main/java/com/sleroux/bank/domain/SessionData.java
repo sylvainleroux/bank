@@ -7,13 +7,14 @@ public class SessionData {
 	private String	username;
 	private String	password;
 	private String	cmbLogin;
-	private int		userID;
 
-	public int getUserID() {
+	private long userID;
+	
+	public long getUserID() {
 		return userID;
 	}
 
-	public void setUserID(int _userID) {
+	public void setUserID(long _userID) {
 		userID = _userID;
 	}
 

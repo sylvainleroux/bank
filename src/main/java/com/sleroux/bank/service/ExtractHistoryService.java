@@ -21,7 +21,7 @@ public class ExtractHistoryService {
 	}
 
 	@Transactional
-	public String getFormattedImportDate(int _userID) {
+	public String getFormattedImportDate(long _userID) {
 
 		PrettyTime p = new PrettyTime(new Locale("en"));
 		Date d = extractHistoryDao.getLastExtractDate(_userID);

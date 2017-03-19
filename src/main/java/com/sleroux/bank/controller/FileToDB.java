@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.dao.IBudgetDao;
 import com.sleroux.bank.domain.SessionData;
 import com.sleroux.bank.evo.document.BudgetDocument;
@@ -19,7 +18,7 @@ import com.sleroux.bank.util.Config;
 
 @Service
 @Lazy
-public class FileToDB extends BusinessServiceAbstract {
+public class FileToDB extends AbstractController {
 
 	@Autowired
 	IBudgetDao	budgetDao;

@@ -7,7 +7,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.domain.SessionData;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.service.AnalysisService;
@@ -16,7 +15,7 @@ import com.sleroux.bank.service.ExtractHistoryService;
 import com.sleroux.bank.service.SoldeService;
 
 @Controller
-public class SummaryController extends BusinessServiceAbstract {
+public class SummaryController extends AbstractController {
 
 	@Autowired
 	ExtractHistoryService	extractHistoryService;

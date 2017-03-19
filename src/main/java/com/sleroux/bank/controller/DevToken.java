@@ -1,26 +1,21 @@
 package com.sleroux.bank.controller;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import com.sleroux.bank.service.CalcService;
+import com.sleroux.bank.service.AuthTokenService;
 
 @Lazy
 @Controller
-public class CalcController extends AbstractController {
+public class DevToken extends AbstractController {
 
 	@Autowired
-	CalcService calcService;
+	AuthTokenService authTokenService;
 
 	@Override
-	@Transactional
 	public void run() throws Exception {
-
-		calcService.run();
-
+		System.out.println(authTokenService.createAuthencationToken("",""));
 	}
 
 }

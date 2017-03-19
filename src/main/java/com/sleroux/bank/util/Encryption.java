@@ -1,6 +1,7 @@
 package com.sleroux.bank.util;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -10,8 +11,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
 
 public class Encryption {
 
@@ -57,6 +60,35 @@ public class Encryption {
 		}
 
 		return sb.toString();
+	}
+
+	public static String mysqlAesDecrypt(String _payload, String _key) throws Exception {
+		final Cipher decryptCipher = Cipher.getInstance("AES");
+		decryptCipher.init(Cipher.DECRYPT_MODE, generateMySQLAESKey(_key, "UTF-8"));
+		return new String(decryptCipher.doFinal(Hex.decodeHex(_payload.toCharArray())));
+		 
+	}
+
+	public static String mysqlAesEncrypt(String _payload, String _key) throws Exception {
+		final Cipher encryptCipher = Cipher.getInstance("AES");
+		encryptCipher.init(Cipher.ENCRYPT_MODE, generateMySQLAESKey(_key, "UTF-8"));
+		return new String(Hex.encodeHex(encryptCipher.doFinal(_payload.getBytes("UTF-8")))).toUpperCase();
+	}
+
+	public static SecretKeySpec generateMySQLAESKey(final String key, final String encoding) {
+		try {
+			final byte[] finalKey = new byte[16];
+			int i = 0;
+			for (byte b : key.getBytes(encoding))
+				finalKey[i++ % 16] ^= b;
+			return new SecretKeySpec(finalKey, "AES");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static String encryptionSalt() {
+		return "panda2017";
 	}
 
 }

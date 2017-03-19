@@ -1,32 +1,25 @@
 package com.sleroux.bank.controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
-import com.sleroux.bank.business.BusinessServiceAbstract;
+import com.sleroux.bank.controller.account.AccountController;
 import com.sleroux.bank.domain.SessionData;
 import com.sleroux.bank.model.User;
 import com.sleroux.bank.service.AuthenticationService;
 
 @Controller
-public class LoginController extends BusinessServiceAbstract {
+public class LoginController extends AbstractController {
 
 	@Autowired
-	AuthenticationService		authenticationService;
-
-	private ApplicationContext	context;
+	AuthenticationService	authenticationService;
 
 	@Autowired
-	private SessionData			sessionData;
+	private SessionData		sessionData;
 
 	@Override
-	public void run(ApplicationContext _applicationContext) throws Exception {
-		context = _applicationContext;
+	public void run() throws Exception {
+
 		String username = null;
 		String password = null;
 
@@ -36,8 +29,13 @@ public class LoginController extends BusinessServiceAbstract {
 
 		while (retry-- > 0) {
 
-			username = prompt("Username: ");
-			password = prompt("Password: ");
+			if (retry == 2 && sessionData.getUsername() != null) {
+				username = sessionData.getUsername();
+				password = sessionData.getPassword();
+			} else {
+				username = prompt("Username: ");
+				password = prompt("Password: ");
+			}
 
 			try {
 				user = authenticationService.tryAuthentication(username, password);
@@ -46,7 +44,6 @@ public class LoginController extends BusinessServiceAbstract {
 					sessionData.setUserID(user.getId());
 					sessionData.setUsername(user.getUsername());
 					sessionData.setPassword(password);
-					sessionData.setCmbLogin(user.getCmbLogin());
 					break;
 				}
 
@@ -73,12 +70,18 @@ public class LoginController extends BusinessServiceAbstract {
 			System.out.println("    5:check");
 			System.out.println("    6:db2file");
 			System.out.println("    7:file2db");
-			System.out.println("    9:exit");
+			System.out.println("    8:dev-token");
+			System.out.println("    9:comptes");
+			System.out.println("    0:logout");
 			System.out.println("--------------------------------------------------------------------------------");
 
 			int suggestedAction = 1;
 			// _username + "@bank[1]>
 			String cmd = prompt(String.format("%s@bank[%d]> ", sessionData.getUsername(), suggestedAction));
+
+			if (cmd.equals("")) {
+				cmd = "1";
+			}
 
 			if (cmd.equals("1")) {
 				run(SoldeController.class);
@@ -92,40 +95,28 @@ public class LoginController extends BusinessServiceAbstract {
 				run(ExtractController.class);
 			}
 
+			if (cmd.equals("4")) {
+				run(CategoController.class);
+			}
+
+			if (cmd.equals("5")) {
+				run(HealthCheckController.class);
+			}
+
+			if (cmd.equals("8")) {
+				run(DevToken.class);
+			}
+
 			if (cmd.equals("9")) {
+				run(AccountController.class);
+			}
+
+			if (cmd.equals("0")) {
 				break;
 			}
 
 		}
 
-	}
-
-	private String prompt(String _prompt) {
-		System.out.print(_prompt);
-		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-		String p = null;
-		try {
-			p = bufferRead.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return p;
-	}
-
-	private void run(Class<? extends BusinessServiceAbstract> _clazz) {
-
-		BusinessServiceAbstract service = context.getBean(_clazz);
-		try {
-			service.run();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	@Override
-	public void run() throws Exception {
-		// Do not implement
 	}
 
 	public class Command {

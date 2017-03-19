@@ -28,7 +28,6 @@ public class TestUserDao {
 		User user = new User();
 		user.setUsername("avion");
 		user.setPasswordEnc("avion");
-		user.setCmbLogin("avion");
 
 		userDao.create(user);
 

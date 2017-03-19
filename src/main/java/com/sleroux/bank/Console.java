@@ -1,8 +1,6 @@
 package com.sleroux.bank;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,9 +9,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
-import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.controller.LoginController;
-import com.sleroux.bank.controller.UserAddController;
+import com.sleroux.bank.controller.AbstractController;
+import com.sleroux.bank.controller.BankController;
 import com.sleroux.bank.util.Config;
 
 import asg.cliche.CLIException;
@@ -21,7 +18,7 @@ import asg.cliche.CLIException;
 @Component
 public class Console {
 
-	private static Console				instance;
+	private static AbstractController	console;
 	private static ApplicationContext	applicationContext;
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException, InstantiationException,
@@ -53,68 +50,14 @@ public class Console {
 		} catch (Exception e) {
 
 		}
-		instance = applicationContext.getBean(Console.class);
+		console = applicationContext.getBean(BankController.class);
 		t.cancel();
 
-		// Application is loaded, start prompt
-		firstPrompt();
-
-	}
-
-	private static void firstPrompt() {
-
-		System.out.println("Bank version: xxx");
-
-		while (true) {
-			System.out.println("--------------------------------------------------------------------------------");
-			System.out.println("    1:login");
-			System.out.println("    2:create new user");
-			System.out.println("    3:exit");
-			System.out.println("--------------------------------------------------------------------------------");
-			System.out.print("bank[1]> ");
-			String prompt = prompt();
-			if (prompt.equals("")) {
-				prompt = "1";
-			}
-			if (prompt.equals("1")) {
-				run(LoginController.class);
-				// exit app when completed
-				break;
-			}
-			if (prompt.equals("2")) {
-				run(UserAddController.class);
-			}
-			if (prompt.equals("3")) {
-				break;
-			}
-
-		}
-
-	}
-
-	private static String prompt() {
-		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-		String p = null;
 		try {
-			p = bufferRead.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return p;
-	}
-
-	public static Console getInstance() {
-		return instance;
-	}
-
-	private static void run(Class<? extends BusinessServiceAbstract> _clazz) {
-
-		BusinessServiceAbstract service = applicationContext.getBean(_clazz);
-		try {
-			service.run(applicationContext);
+			console.run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
+
 }

@@ -48,9 +48,17 @@ public class CalcService {
 		int year = c.get(Calendar.YEAR);
 		int currentMonth = c.get(Calendar.MONTH) + 1;
 
+		System.out.println("year:" + year);
+		System.out.println("month:" + currentMonth);
+
 		List<AggregatedOperations> operations = operationDao.findAggregatedYearMonth(year, currentMonth,
 				sessionData.getUserID());
+
+		System.out.println(operations.size());
+
 		List<AggregatedOperations> budget = budgetDao.findBudgetForMonth(year, currentMonth, sessionData.getUserID());
+
+		System.out.println(budget.size());
 
 		List<CalcResult> calc = buildReport(operations, budget);
 
@@ -67,7 +75,8 @@ public class CalcService {
 		monthAdjusted.setBalance(bal);
 
 		BudgetMonth budgetMonth = createBudgetMonth(calc);
-		budgetMonth.setEstimatedEndOfMonthBalance(budgetDao.getEstimatedEndOfMonthBalance(year, currentMonth, sessionData.getUserID()));
+		budgetMonth.setEstimatedEndOfMonthBalance(
+				budgetDao.getEstimatedEndOfMonthBalance(year, currentMonth, sessionData.getUserID()));
 
 		BudgetKeys keys = createKeys(calc);
 

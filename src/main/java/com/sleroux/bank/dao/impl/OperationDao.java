@@ -41,13 +41,13 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Operation> findUncategorized(int _userID) {
+	public List<Operation> findUncategorized(long _userID) {
 		return getCurrentSession().createQuery("from Operation where catego is null and user_id = :user_id")
 				.setParameter("user_id", _userID).list();
 	}
 
 	@Override
-	public List<String> getCategoriesDebit(int _userID) {
+	public List<String> getCategoriesDebit(long _userID) {
 		Query query = getCurrentSession()
 				.createQuery("select distinct catego from Operation where debit > 0 and user_id = :user_id")
 				.setParameter("user_id", _userID);
@@ -57,7 +57,7 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 	}
 
 	@Override
-	public List<String> getCategoriesCredit(int _userID) {
+	public List<String> getCategoriesCredit(long _userID) {
 		Query query = getCurrentSession()
 				.createQuery("select distinct catego from Operation where credit > 0 and user_id = :user_id")
 				.setParameter("user_id", _userID);
@@ -78,7 +78,7 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<AccountBalance> getSoldes(int _userID) {
+	public List<AccountBalance> getSoldes(long _userID) {
 		Query query = getCurrentSession().createSQLQuery("select * from bank.soldes where user_id = :user_id")
 				.setParameter("user_id", _userID).setResultTransformer(Transformers.aliasToBean(AccountBalance.class));
 		return query.list();
@@ -86,7 +86,7 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<AggregatedOperations> findAggregatedYearMonth(int _year, int _month, int _userID) {
+	public List<AggregatedOperations> findAggregatedYearMonth(int _year, int _month, long _userID) {
 		Query query = getCurrentSession().createSQLQuery(
 				"select year, month, compte as account, catego, sum(credit) as credit, sum(debit) as debit from operation where year = :year and month = :month and user_id = :user_id group by year, month, compte, catego");
 		query.setParameter("year", _year);
@@ -97,7 +97,7 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Operation> findByCategoYearMonth(Integer _year, Integer _month, String _catego, int _userID) {
+	public List<Operation> findByCategoYearMonth(Integer _year, Integer _month, String _catego, long _userID) {
 		return getCurrentSession()
 				.createQuery(
 						"from Operation where year=:year and month=:month and catego=:catego and user_id = :user_id")

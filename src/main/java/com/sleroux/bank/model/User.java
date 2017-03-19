@@ -16,30 +16,20 @@ public class User implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected int	id;
+	@Column(columnDefinition = "INT")
+	protected long	id;
 
 	@Column(length = 20)
 	private String	username;
 
-	@Column(length=40, name= "password_enc")
-	private String passwordEnc;
-	
-	@Column(name="cmb_login")
-	private String cmbLogin;
+	@Column(length = 40, name = "password_enc")
+	private String	passwordEnc;
 
-	public String getCmbLogin() {
-		return cmbLogin;
-	}
-
-	public void setCmbLogin(String _cmbLogin) {
-		cmbLogin = _cmbLogin;
-	}
-
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int _id) {
+	public void setId(long _id) {
 		id = _id;
 	}
 
@@ -58,7 +48,5 @@ public class User implements Serializable {
 	public void setPasswordEnc(String _passwordEnc) {
 		passwordEnc = _passwordEnc;
 	}
-	
+
 }
-
-

@@ -5,11 +5,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.service.UserService;
 
 @Controller
-public class UserListController extends BusinessServiceAbstract {
+public class UserListController extends AbstractController {
 
 	@Autowired
 	UserService userService;

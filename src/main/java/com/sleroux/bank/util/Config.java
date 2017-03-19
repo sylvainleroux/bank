@@ -209,14 +209,6 @@ public class Config {
 		return getProperty("IMPORT_COMMAND_PATH");
 	}
 	
-	public static String getImportCommandCMB() {
-		return getProperty("IMPORT_COMMAND_CMB");
-	}
-	
-	public static String getImportCommandBPO() {
-		return getProperty("IMPORT_COMMAND_BPO");
-	}
-
 	// Prefix imported files with IMPORTED_
 	public static boolean getArchiveImportFiles() {
 		

@@ -4,15 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.service.SoldeService;
 
 @Controller
-public class SoldeController extends BusinessServiceAbstract {
+public class SoldeController extends AbstractController {
 
 	@Autowired
-	SoldeService	soldeService;
+	SoldeService soldeService;
 
 	@Override
 	@Transactional(readOnly = true)

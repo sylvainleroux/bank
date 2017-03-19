@@ -17,6 +17,10 @@ public class UserService {
 	@Autowired
 	IUserDao userDao;
 
+	public User getUser(long _userID) {
+		return userDao.findOne(_userID);
+	}
+
 	public void listUsers() {
 
 		List<User> users = userDao.findAll();
@@ -28,14 +32,14 @@ public class UserService {
 	}
 
 	@Transactional
-	public void addUser(String _username, String _password, String _cmbLogin) throws Exception {
+	public User addUser(String _username, String _password) throws Exception {
 
 		User user = new User();
 		user.setUsername(_username);
-		user.setCmbLogin(_cmbLogin);
 		user.setPasswordEnc(Encryption.sha1(_password + "bank123"));
-
 		userDao.create(user);
+
+		return userDao.getUserByUsername(_username);
 
 	}
 

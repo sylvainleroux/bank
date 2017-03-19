@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.domain.AlertType;
 import com.sleroux.bank.domain.SessionData;
@@ -21,7 +20,7 @@ import com.sleroux.bank.service.BudgetService;
 import com.sleroux.bank.util.formats.OperationFormater;
 
 @Controller
-public class HealthCheckController extends BusinessServiceAbstract {
+public class HealthCheckController extends AbstractController {
 
 	@Autowired
 	AnalysisService	analysisService;
