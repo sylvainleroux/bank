@@ -31,10 +31,9 @@ public class BankController extends AbstractController {
 			if (prompt.equals("3")) {
 				run(Version.class);
 			}
-			if (prompt.equals("3")) {
+			if (prompt.equals("0")) {
 				break;
 			}
-
 		}
 
 	}

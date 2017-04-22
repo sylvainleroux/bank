@@ -11,12 +11,14 @@ import com.sleroux.bank.service.impl.BPOOperation;
 public class ExtractData {
 
 	@JsonProperty("export_type")
-	private String exportType = "";
-	private List<String>	files	= new ArrayList<>();
-	private String			cookie	= "";
-	private String			referer	= "";
-	private List<Balance>	balance	= new ArrayList<>();
-	private List<BPOOperation> content = new ArrayList<>();
+	private String				exportType	= "";
+	private List<String>		files		= new ArrayList<>();
+	private String				cookie		= "";
+	private String				referer		= "";
+	private List<Balance>		balance		= new ArrayList<>();
+	private List<BPOOperation>	content		= new ArrayList<>();
+
+	private String				rawOutput	= "";
 
 	public List<String> getFiles() {
 		return files;
@@ -64,6 +66,14 @@ public class ExtractData {
 
 	public void setContent(List<BPOOperation> _content) {
 		content = _content;
+	}
+
+	public void setRawOutput(String _rawOutput) {
+		rawOutput = _rawOutput;
+	}
+
+	public String getRawOutput() {
+		return rawOutput;
 	}
 
 }

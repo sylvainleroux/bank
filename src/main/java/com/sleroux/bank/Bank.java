@@ -17,7 +17,6 @@ import com.sleroux.bank.controller.DBToFile;
 import com.sleroux.bank.controller.ExtractController;
 import com.sleroux.bank.controller.FileToDB;
 import com.sleroux.bank.controller.HealthCheckController;
-import com.sleroux.bank.controller.ImportController;
 import com.sleroux.bank.controller.SoldeController;
 import com.sleroux.bank.controller.SummaryController;
 import com.sleroux.bank.controller.Version;
@@ -105,11 +104,6 @@ public class Bank {
 	@Command(name = "extract", description = "extract from bank website")
 	public void bankExtract() {
 		run(ExtractController.class);
-	}
-
-	@Command(name = "import", description = "import from bank website")
-	public void bankImport() {
-		run(ImportController.class);
 	}
 
 	@Command(name = "file2db", description = "Store Excel document into MySQL")
