@@ -167,23 +167,6 @@ public class CategoService {
 			throw new ValidationException("Catego name is too short");
 		}
 
-		if (_op.getCredit().compareTo(BigDecimal.ZERO) > 0) {
-			if (debitsCatego.contains(_categoName)) {
-				throw new ValidationException("This catego already exists for DEBITS operations");
-			}
-			if (creditsCatego.contains(_categoName)) {
-				creditsCatego.add(_categoName);
-			}
-
-		} else {
-			if (creditsCatego.contains(_categoName)) {
-				throw new ValidationException("This catego already exists for CREDITS operations");
-			}
-			if (!creditsCatego.contains(_categoName)) {
-				debitsCatego.add(_categoName);
-			}
-		}
-
 	}
 
 	public List<String> getDebitsCatego() {
