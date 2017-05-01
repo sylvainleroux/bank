@@ -24,18 +24,18 @@ public class BudgetDao extends AbstractHibernateDao<Budget> implements IBudgetDa
 	}
 
 	@Override
-	public List<String> getCredits() {
+	public List<String> getCredits(String _compte) {
 		Query q = getCurrentSession().createQuery(
 				"select distinct catego from Budget where credit > 0 and compte = :compte order by catego");
-		q.setParameter("compte", "COURANT");
+		q.setParameter("compte", _compte);
 		return q.list();
 	}
 
 	@Override
-	public List<String> getDebits() {
+	public List<String> getDebits(String _compte) {
 		Query q = getCurrentSession()
 				.createQuery("select distinct catego from Budget where debit > 0 and compte = :compte order by catego");
-		q.setParameter("compte", "COURANT");
+		q.setParameter("compte", _compte);
 		return q.list();
 	}
 
@@ -46,27 +46,20 @@ public class BudgetDao extends AbstractHibernateDao<Budget> implements IBudgetDa
 	}
 
 	@Override
-	public List<String> getComptesEpargne() {
-		String sql = "select distinct compte from Budget where compte <> 'COURANT' order by compte";
-		return getCurrentSession().createQuery(sql).list();
-	}
-
-	@Override
-	public List<Budget> getMonthDebits(Integer _year, int _month) {
-		Query q = getCurrentSession().createSQLQuery("call bank.getMonthDebits(:year,:month)");
+	public List<Budget> getMonthDebits(String _compte, Integer _year, int _month) {
+		Query q = getCurrentSession().createQuery("from Budget where compte = :compte and year = :year and month = :month and debit > 0 order by catego");
+		q.setParameter("compte", _compte);
 		q.setParameter("year", _year);
 		q.setParameter("month", _month);
-		q.setResultTransformer(Transformers.aliasToBean(Budget.class));
-
 		return q.list();
 	}
 
 	@Override
-	public List<Budget> getMonthCredits(Integer _year, int _month) {
-		Query q = getCurrentSession().createSQLQuery("call bank.getMonthCredits(:year,:month)");
+	public List<Budget> getMonthCredits(String _compte, Integer _year, int _month) {
+		Query q = getCurrentSession().createQuery("from Budget where compte = :compte and year = :year and month = :month and credit > 0 order by catego");
+		q.setParameter("compte", _compte);
 		q.setParameter("year", _year);
 		q.setParameter("month", _month);
-		q.setResultTransformer(Transformers.aliasToBean(Budget.class));
 		return q.list();
 	}
 
@@ -173,7 +166,7 @@ public class BudgetDao extends AbstractHibernateDao<Budget> implements IBudgetDa
 		query.setParameter("year", _year);
 		query.setParameter("month", _month);
 		BigDecimal result = (BigDecimal) query.uniqueResult();
-		if (result == null){
+		if (result == null) {
 			return new BigDecimal(0);
 		}
 		return result;

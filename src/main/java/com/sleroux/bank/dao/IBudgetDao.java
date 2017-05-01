@@ -10,17 +10,15 @@ import com.sleroux.bank.model.budget.Changes;
 
 public interface IBudgetDao extends IOperations<Budget> {
 
-	List<String> getCredits();
+	List<String> getCredits(String _compte);
 
-	List<String> getDebits();
+	List<String> getDebits(String _compte);
 
 	List<Integer> getYears();
 
-	List<String> getComptesEpargne();
+	List<Budget> getMonthDebits(String _compte, Integer _year, int _month);
 
-	List<Budget> getMonthDebits(Integer _year, int _month);
-
-	List<Budget> getMonthCredits(Integer _year, int _month);
+	List<Budget> getMonthCredits(String _compte, Integer _year, int _month);
 
 	Budget getBudgetForCompte(String _compte, Integer _year, int _month);
 
@@ -39,5 +37,6 @@ public interface IBudgetDao extends IOperations<Budget> {
 	List<AggregatedOperations> findBudgetForMonth(int _year, int _month);
 
 	BigDecimal getEstimatedEndOfMonthBalance(int _year, int _month);
+
 
 }

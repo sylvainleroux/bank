@@ -71,7 +71,7 @@ public class TestBudgetDao {
 			budgetDao.create(b);
 		}
 
-		List<String> list = budgetDao.getCredits();
+		List<String> list = budgetDao.getCredits("COURANT");
 		Assert.assertEquals(2, list.size());
 	}
 
@@ -103,7 +103,7 @@ public class TestBudgetDao {
 			budgetDao.create(b);
 		}
 
-		List<String> list = budgetDao.getDebits();
+		List<String> list = budgetDao.getDebits("COURANT");
 		Assert.assertEquals(2, list.size());
 	}
 
@@ -121,7 +121,7 @@ public class TestBudgetDao {
 			budgetDao.create(b);
 		}
 
-		List<Budget> list = budgetDao.getMonthDebits(2015, 2);
+		List<Budget> list = budgetDao.getMonthDebits("COURANT", 2015, 2);
 		Assert.assertEquals(1, list.size());
 		Assert.assertEquals(1000, list.get(0).getDebit().intValue());
 	}
@@ -140,7 +140,7 @@ public class TestBudgetDao {
 			budgetDao.create(b);
 		}
 
-		List<Budget> list = budgetDao.getMonthCredits(2015, 2);
+		List<Budget> list = budgetDao.getMonthCredits("COURANT", 2015, 2);
 		Assert.assertEquals(1, list.size());
 		Assert.assertEquals(1000, list.get(0).getCredit().intValue());
 	}
@@ -242,7 +242,7 @@ public class TestBudgetDao {
 			b.setCredit(new BigDecimal("500"));
 			budgetDao.create(b);
 		}
-		
+
 		{
 			Budget b = BudgetHelper.createCredit();
 			b.setMonth(2);
@@ -253,12 +253,11 @@ public class TestBudgetDao {
 			budgetDao.create(b);
 		}
 
-
 		BigDecimal balance = budgetDao.getEstimatedEndOfMonthBalance(2016, 1);
 		Assert.assertEquals(500, balance.intValue());
 
 	}
-	
+
 	@Test
 	@Transactional
 	public void testGetEstimatedEndOfMonthBalance2() {
@@ -271,7 +270,7 @@ public class TestBudgetDao {
 			b.setCredit(new BigDecimal("500"));
 			budgetDao.create(b);
 		}
-		
+
 		{
 			Budget b = BudgetHelper.createCredit();
 			b.setMonth(2);
@@ -282,12 +281,11 @@ public class TestBudgetDao {
 			budgetDao.create(b);
 		}
 
-
 		BigDecimal balance = budgetDao.getEstimatedEndOfMonthBalance(2016, 2);
 		Assert.assertEquals(600, balance.intValue());
 
 	}
-	
+
 	@Test
 	@Transactional
 	public void testGetEstimatedEndOfMonthBalance3() {
@@ -295,4 +293,6 @@ public class TestBudgetDao {
 		Assert.assertNotNull(balance);
 
 	}
+
+
 }

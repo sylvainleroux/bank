@@ -32,18 +32,22 @@ public class FileToDB extends BusinessServiceAbstract {
 		BudgetDocument document = new BudgetDocument(Config.getBudgetDocument());
 
 		List<Integer> years = document.getYears();
+		/*
 		List<String> credits = document.getCredits();
 		List<String> debits = document.getDebits();
 		List<String> comptes = document.getComptesEpargne();
+		*/
 
 		List<Budget> budgets = new ArrayList<>();
 		int index = 1;
 		for (int year : years) {
 			for (int month = 1; month <= 12; month++) {
+				/*
 				budgets.addAll(document.readOperations(year, month, index, credits, debits));
 				for (String compte : comptes) {
 					budgets.addAll(document.readComptesEpargnes(year, month, index, compte));
 				}
+				*/
 				index++;
 			}
 		}
