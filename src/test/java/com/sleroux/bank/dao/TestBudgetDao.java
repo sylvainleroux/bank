@@ -121,7 +121,7 @@ public class TestBudgetDao {
 			budgetDao.create(b);
 		}
 
-		List<Budget> list = budgetDao.getMonthDebits("COURANT", 2015, 2);
+		List<Budget> list = budgetDao.getMonth("COURANT", 2015, 2);
 		Assert.assertEquals(1, list.size());
 		Assert.assertEquals(1000, list.get(0).getDebit().intValue());
 	}
@@ -140,28 +140,9 @@ public class TestBudgetDao {
 			budgetDao.create(b);
 		}
 
-		List<Budget> list = budgetDao.getMonthCredits("COURANT", 2015, 2);
+		List<Budget> list = budgetDao.getMonth("COURANT", 2015, 2);
 		Assert.assertEquals(1, list.size());
 		Assert.assertEquals(1000, list.get(0).getCredit().intValue());
-	}
-
-	@Test
-	@Transactional
-	public void getGetBudgetForCompte() {
-
-		{
-			Budget b = BudgetHelper.createCredit();
-			b.setMonth(2);
-			b.setYear(2015);
-			b.setCatego("VIR.CC");
-			b.setCompte("PEL");
-			b.setCredit(new BigDecimal("1000"));
-			budgetDao.create(b);
-		}
-
-		Budget budget = budgetDao.getBudgetForCompte("PEL", 2015, 2);
-		Assert.assertNotNull(budget);
-		Assert.assertEquals(1000, budget.getCredit().intValue());
 	}
 
 	@Test

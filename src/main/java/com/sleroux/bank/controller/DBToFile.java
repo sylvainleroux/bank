@@ -1,5 +1,6 @@
 package com.sleroux.bank.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.dao.IBudgetDao;
 import com.sleroux.bank.dao.ICompteDao;
+import com.sleroux.bank.domain.BudgetIndex;
 import com.sleroux.bank.evo.document.BudgetDocument;
 import com.sleroux.bank.evo.document.BudgetDocument.BudgetDocumentCompte;
-import com.sleroux.bank.model.Budget;
 import com.sleroux.bank.model.Compte;
 import com.sleroux.bank.presentation.ConsoleAppHeader;
 import com.sleroux.bank.util.Config;
@@ -32,31 +33,32 @@ public class DBToFile extends BusinessServiceAbstract {
 	public void run() throws Exception {
 		ConsoleAppHeader.printAppHeader("Write Budget");
 
+		Date start = new Date();
+
 		BudgetDocument document = new BudgetDocument(Config.getBudgetDocumentTemplate());
 
-		List<Integer> years = budgetDao.getYears();
-		List<Compte> comptes = compteDao.findAll();
-
-		document.writeYears(years);
+		BudgetIndex index = new BudgetIndex(budgetDao.findAll());
+		index.firstYear(2017);
 		
+		
+		
+		List<Compte> comptes = compteDao.findAll();
+		document.writeYears(index.getYears());
+
 		for (Compte compte : comptes) {
 			List<String> credits = budgetDao.getCredits(compte.getNom());
 			List<String> debits = budgetDao.getDebits(compte.getNom());
 			BudgetDocumentCompte budgetDocumentCompte = document.addCompte(compte.getNom(), credits, debits,
 					compte.getType());
 
-			for (int year : years) {
+			for (int year : index.getYears()) {
 				for (int month = 0; month < 12; month++) {
-
-					List<Budget> monthCredits = budgetDao.getMonthCredits(compte.getNom(), year, month + 1);
-					List<Budget> monthDebits = budgetDao.getMonthDebits(compte.getNom(), year, month + 1);
-
-					budgetDocumentCompte.addMonthData(year, month, monthCredits, monthDebits);
+					budgetDocumentCompte.addMonthData(year, month, index.find(year, month + 1, compte.getNom()));
 				}
 			}
 		}
 
-		for (int year : years) {
+		for (int year : index.getYears()) {
 			for (int month = 0; month < 12; month++) {
 				document.summary(year, month);
 			}
@@ -65,6 +67,9 @@ public class DBToFile extends BusinessServiceAbstract {
 		document.clearTemplate();
 
 		document.close();
+
+		long nanos = new Date().getTime() - start.getTime();
+		System.out.println("Completed in " + nanos + " ms");
 
 	}
 

@@ -46,32 +46,13 @@ public class BudgetDao extends AbstractHibernateDao<Budget> implements IBudgetDa
 	}
 
 	@Override
-	public List<Budget> getMonthDebits(String _compte, Integer _year, int _month) {
-		Query q = getCurrentSession().createQuery("from Budget where compte = :compte and year = :year and month = :month and debit > 0 order by catego");
+	public List<Budget> getMonth(String _compte, Integer _year, int _month) {
+		Query q = getCurrentSession()
+				.createQuery("from Budget where year = :year and month = :month and compte = :compte order by catego");
 		q.setParameter("compte", _compte);
 		q.setParameter("year", _year);
 		q.setParameter("month", _month);
 		return q.list();
-	}
-
-	@Override
-	public List<Budget> getMonthCredits(String _compte, Integer _year, int _month) {
-		Query q = getCurrentSession().createQuery("from Budget where compte = :compte and year = :year and month = :month and credit > 0 order by catego");
-		q.setParameter("compte", _compte);
-		q.setParameter("year", _year);
-		q.setParameter("month", _month);
-		return q.list();
-	}
-
-	@Override
-	public Budget getBudgetForCompte(String _compte, Integer _year, int _month) {
-		Query q = getCurrentSession().createSQLQuery(
-				"select sum(debit) debit,sum(credit) credit from budget where compte = :compte and year= :year and month = :month");
-		q.setParameter("compte", _compte);
-		q.setParameter("year", _year);
-		q.setParameter("month", _month);
-		q.setResultTransformer(Transformers.aliasToBean(Budget.class));
-		return (Budget) q.list().get(0);
 	}
 
 	@Override

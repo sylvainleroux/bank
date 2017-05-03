@@ -16,11 +16,9 @@ public interface IBudgetDao extends IOperations<Budget> {
 
 	List<Integer> getYears();
 
-	List<Budget> getMonthDebits(String _compte, Integer _year, int _month);
+	List<Budget> getMonth(String _compte, Integer _year, int _month);
 
-	List<Budget> getMonthCredits(String _compte, Integer _year, int _month);
 
-	Budget getBudgetForCompte(String _compte, Integer _year, int _month);
 
 	void backupAndTruncate();
 

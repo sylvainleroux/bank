@@ -49,6 +49,10 @@ public class BudgetDocument {
 	private final static short			COL_0					= 0;
 	private final static short			COL_1					= 1;
 
+	private final static String			DEBIT					= "DEBIT";
+	private final static String			CREDIT					= "CREDIT";
+	private final static String			SOLDE_INIT				= "SOLDE_INIT";
+
 	private int							firstYear				= 0;
 
 	private List<BudgetDocumentCompte>	checking				= new ArrayList<>();
@@ -111,7 +115,8 @@ public class BudgetDocument {
 	public void summary(int _year, int _month) {
 		int col = (_year - firstYear) * 12 + _month + 1;
 
-		CellStyle style = getCell(ROW_TOTAL, COL_1).getCellStyle();
+		CellStyle styleTotal = getCell(ROW_TOTAL, COL_1).getCellStyle();
+		CellStyle style = getCell(ROW_CHECKING, COL_1).getCellStyle();
 
 		String formulaTotal = "SUM(0";
 		String formulaChecking = "SUM(0";
@@ -147,7 +152,7 @@ public class BudgetDocument {
 
 		c = getCell(ROW_TOTAL, col);
 		c.setCellFormula(formulaTotal);
-		c.setCellStyle(style);
+		c.setCellStyle(styleTotal);
 
 		c = getCell(ROW_CHECKING, col);
 		c.setCellFormula(formulaChecking);
@@ -184,12 +189,16 @@ public class BudgetDocument {
 
 			lineCredits = line;
 			Cell credit = getCell(line++, COL_0);
-			credit.setCellValue("CREDIT");
+			credit.setCellValue(CREDIT);
 			credit.setCellStyle(getCell(ROW_TEMPLATE_SUBTOTAL, COL_0).getCellStyle());
 
 			CellStyle style = getCell(ROW_TEMPLATE_CATEGO, COL_0).getCellStyle();
 
 			for (String s : _credits) {
+
+				if (s.equals(SOLDE_INIT)) {
+					continue;
+				}
 
 				credits.put(s, line);
 
@@ -200,10 +209,14 @@ public class BudgetDocument {
 
 			lineDebits = line;
 			Cell debit = getCell(line++, COL_0);
-			debit.setCellValue("DEBIT");
+			debit.setCellValue(DEBIT);
 			debit.setCellStyle(getCell(ROW_TEMPLATE_SUBTOTAL, COL_0).getCellStyle());
 
 			for (String s : _debits) {
+
+				if (s.equals(SOLDE_INIT)) {
+					continue;
+				}
 
 				debits.put(s, line);
 
@@ -213,7 +226,7 @@ public class BudgetDocument {
 			}
 		}
 
-		public void addMonthData(Integer _year, int _month, List<Budget> _monthCredits, List<Budget> _monthDebits) {
+		public void addMonthData(Integer _year, int _month, List<Budget> _budgets) {
 
 			if (firstYear == 0) {
 				firstYear = _year;
@@ -223,6 +236,7 @@ public class BudgetDocument {
 
 			CellStyle cellStyle = getCell(ROW_TEMPLATE_SUBTOTAL + 1, COL_1).getCellStyle();
 
+			BigDecimal soldeInit = BigDecimal.ZERO;
 			Cell c;
 
 			c = getCell(lineFirst, col);
@@ -235,8 +249,14 @@ public class BudgetDocument {
 				getCell(i + 1 + lineCredits, col).setCellStyle(cellStyle);
 			}
 
-			for (Budget b : _monthCredits) {
-				getCell(credits.get(b.getCatego()), col).setCellValue(b.getCredit().doubleValue());
+			for (Budget b : _budgets) {
+				if (b.getCatego().equals(SOLDE_INIT)) {
+					soldeInit = soldeInit.add(b.getCredit());
+					continue;
+				}
+				if (b.getCredit().compareTo(BigDecimal.ZERO) > 0) {
+					getCell(credits.get(b.getCatego()), col).setCellValue(b.getCredit().doubleValue());
+				}
 
 			}
 
@@ -247,8 +267,14 @@ public class BudgetDocument {
 				getCell(i + 1 + lineDebits, col).setCellStyle(cellStyle);
 			}
 
-			for (Budget b : _monthDebits) {
-				getCell(debits.get(b.getCatego()), col).setCellValue(b.getDebit().doubleValue());
+			for (Budget b : _budgets) {
+				if (b.getCatego().equals(SOLDE_INIT)) {
+					soldeInit = soldeInit.subtract(b.getDebit());
+					continue;
+				}
+				if (b.getDebit().compareTo(BigDecimal.ZERO) > 0) {
+					getCell(debits.get(b.getCatego()), col).setCellValue(b.getDebit().doubleValue());
+				}
 			}
 
 			// Tolal
@@ -258,6 +284,10 @@ public class BudgetDocument {
 					+ ")";
 			String sumDebit = "SUM(" + cname + (lineDebits + 2) + ":" + cname + (lineDebits + debits.size() + 1) + ")";
 			String total = cname + (lineCredits + 1) + "-" + cname + (lineDebits + 1);
+
+			if (soldeInit.compareTo(BigDecimal.ZERO) != 0) {
+				total = soldeInit.doubleValue() + " + " + total;
+			}
 
 			if (col > 1) {
 				total += "+" + columnName(col - 1) + (lineFirst + 1);
@@ -321,8 +351,6 @@ public class BudgetDocument {
 
 	}
 
-	// --- Reviewed methods above this line ---
-
 	private void setCellFormula(int _row, int _column, String _formula) {
 		if (_formula == null) {
 			return;
@@ -368,6 +396,8 @@ public class BudgetDocument {
 			col = col + 12;
 		}
 
+		firstYear = list.get(0);
+
 		return list;
 	}
 
@@ -376,7 +406,7 @@ public class BudgetDocument {
 		if (c.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
 			return new BigDecimal(c.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
 		}
-		return null;
+		return BigDecimal.ZERO;
 	}
 
 	public void clearTemplate() {
@@ -396,6 +426,111 @@ public class BudgetDocument {
 				sheet.removeRow(removingRow);
 			}
 		}
+	}
+
+	public List<BudgetDocumentCompteReader> getComptes() {
+		List<BudgetDocumentCompteReader> comptes = new ArrayList<>();
+
+		boolean blankLine = false;
+		Cell c;
+		String s;
+		BudgetDocumentCompteReader cr = null;
+		List<String> catego = new ArrayList<>();
+		for (int row = ROW_CHECKING + 1; row <= sheet.getLastRowNum(); row++) {
+			c = getCell(row, COL_0);
+			s = c.getStringCellValue();
+			if (s.trim().equals("")) {
+				if (cr != null) {
+					// Flush debits
+					cr.debits.addAll(catego);
+					catego.clear();
+				}
+
+				blankLine = true;
+				continue;
+			}
+
+			if (s.trim().equals(CREDIT)) {
+				cr.rowCredits = row;
+				continue;
+			}
+
+			if (s.trim().equals(DEBIT)) {
+				cr.rowDebits = row;
+				// Flush credits
+				if (cr != null) {
+					cr.credits.addAll(catego);
+					catego.clear();
+				}
+				continue;
+			}
+
+			if (blankLine) {
+				cr = new BudgetDocumentCompteReader();
+				cr.compte = s;
+				cr.row = row;
+				comptes.add(cr);
+				blankLine = false;
+				continue;
+			}
+
+			catego.add(s);
+
+		}
+
+		return comptes;
+	}
+
+	public class BudgetDocumentCompteReader {
+		String			compte;
+		int				row;
+		int				rowCredits;
+		int				rowDebits;
+		List<String>	credits	= new ArrayList<>();
+		List<String>	debits	= new ArrayList<>();
+
+		public List<Budget> getBudget(int _year, int _month) {
+			HashMap<String, Budget> list = new HashMap<>();
+
+			int col = (_year - firstYear) * 12 + _month;
+			Budget b;
+			BigDecimal v;
+			for (int i = 0; i < credits.size(); i++) {
+				b = list.get(credits.get(i));
+				if (b == null) {
+					b = new Budget();
+					b.setCatego(credits.get(i));
+					b.setYear(_year);
+					b.setMonth(_month);
+					b.setCompte(compte);
+					list.put(credits.get(i), b);
+				}
+
+				int row = rowCredits + 1 + i;
+				v = getCellValue(row, col);
+				b.setCredit(v);
+			}
+
+			for (int i = 0; i < debits.size(); i++) {
+				b = list.get(debits.get(i));
+				if (b == null) {
+					b = new Budget();
+					b.setCatego(debits.get(i));
+					b.setYear(_year);
+					b.setMonth(_month);
+					b.setCompte(compte);
+					list.put(debits.get(i), b);
+				}
+
+				int row = rowDebits + 1 + i;
+				v = getCellValue(row, col);
+				b.setDebit(v);
+			}
+
+			return new ArrayList<>(list.values());
+
+		}
+
 	}
 
 }
