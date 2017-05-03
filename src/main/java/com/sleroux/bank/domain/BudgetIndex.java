@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.sleroux.bank.model.Budget;
 
@@ -15,12 +16,28 @@ import com.sleroux.bank.model.Budget;
 public class BudgetIndex {
 
 	public List<String> getCredits(String _compte) {
-		return map.values().stream().map(y -> y.getCredits(_compte)).collect(ArrayList::new, List::addAll,
-				List::addAll);
+		Stream<List<String>> stream = map.values().stream().map(y -> y.getCredits(_compte));
+		return stream.reduce(new ArrayList<String>(), (a, b) -> {
+			for (String s : b){
+				if (! a.contains(s)){
+					a.add(s);
+				}
+			}
+			return a;
+		});
+
 	}
 
 	public List<String> getDebits(String _compte) {
-		return map.values().stream().map(y -> y.getDebits(_compte)).collect(ArrayList::new, List::addAll, List::addAll);
+		Stream<List<String>> stream = map.values().stream().map(y -> y.getDebits(_compte));
+		return stream.reduce(new ArrayList<String>(), (a, b) -> {
+			for (String s : b){
+				if (! a.contains(s)){
+					a.add(s);
+				}
+			}
+			return a;
+		});
 	}
 
 	public class Year extends LinkedHashMap<Integer, Month> {

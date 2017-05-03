@@ -1,6 +1,7 @@
 package com.sleroux.bank;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -79,35 +80,56 @@ public class TestBuildIndex {
 	@Test
 	public void testCredits() {
 
-		Budget a = new Budget();
-		a.setYear(2017);
-		a.setMonth(5);
-		a.setCompte("Test");
-		a.setCatego("TEST_CAT");
-		a.setCredit(new BigDecimal("10"));
+		ArrayList<Budget> list = new ArrayList<>();
 
-		Budget b = new Budget();
-		b.setYear(2017);
-		b.setMonth(5);
-		b.setCompte("Test");
-		b.setCatego("TEST_CAT2");
-		b.setCredit(new BigDecimal("34"));
+		{
+			Budget a = new Budget();
+			a.setYear(2017);
+			a.setMonth(5);
+			a.setCompte("Test");
+			a.setCatego("TEST_CAT");
+			a.setCredit(new BigDecimal("10"));
+			list.add(a);
+		}
+		{
+			Budget a = new Budget();
+			a.setYear(2017);
+			a.setMonth(6);
+			a.setCompte("Test");
+			a.setCatego("TEST_CAT");
+			a.setCredit(new BigDecimal("10"));
+			list.add(a);
+		}
 
-		Budget c = new Budget();
-		c.setYear(2017);
-		c.setMonth(5);
-		c.setCompte("Test3");
-		c.setCatego("TEST3_CAT2");
-		c.setCredit(new BigDecimal("100"));
+		{
+			Budget b = new Budget();
+			b.setYear(2017);
+			b.setMonth(5);
+			b.setCompte("Test");
+			b.setCatego("TEST_CAT2");
+			b.setCredit(new BigDecimal("34"));
+			list.add(b);
+		}
+		{
+			Budget c = new Budget();
+			c.setYear(2017);
+			c.setMonth(5);
+			c.setCompte("Test3");
+			c.setCatego("TEST3_CAT2");
+			c.setCredit(new BigDecimal("100"));
+			list.add(c);
+		}
+		{
+			Budget d = new Budget();
+			d.setYear(2017);
+			d.setMonth(6);
+			d.setCompte("Test3");
+			d.setCatego("TEST3_CAT3");
+			d.setCredit(new BigDecimal("100"));
+			list.add(d);
+		}
 
-		Budget d = new Budget();
-		d.setYear(2017);
-		d.setMonth(6);
-		d.setCompte("Test3");
-		d.setCatego("TEST3_CAT3");
-		d.setCredit(new BigDecimal("100"));
-
-		BudgetIndex index = new BudgetIndex(Arrays.asList(a, b, c, d));
+		BudgetIndex index = new BudgetIndex(list);
 		Assert.assertEquals(2, index.getCredits("Test").size());
 		Assert.assertEquals(2, index.getCredits("Test3").size());
 		Assert.assertEquals(0, index.getDebits("Test3").size());
