@@ -51,6 +51,10 @@ public class DBToFile extends BusinessServiceAbstract {
 			credits = index.getCredits(compte.getNom());
 			debits = index.getDebits(compte.getNom());
 
+			if (credits.size() + debits.size() == 0){
+				continue;
+			}
+			
 			BudgetDocumentCompte budgetDocumentCompte = document.addCompte(compte.getNom(), credits, debits,
 					compte.getType());
 

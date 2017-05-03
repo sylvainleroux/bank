@@ -213,7 +213,6 @@ public class BudgetDocument {
 			debit.setCellStyle(getCell(ROW_TEMPLATE_SUBTOTAL, COL_0).getCellStyle());
 
 			for (String s : _debits) {
-
 				if (s.equals(SOLDE_INIT)) {
 					continue;
 				}
@@ -280,9 +279,15 @@ public class BudgetDocument {
 			// Tolal
 			String cname = columnName(col);
 
-			String sumCredit = "SUM(" + cname + (lineCredits + 2) + ":" + cname + (lineCredits + credits.size() + 1)
-					+ ")";
-			String sumDebit = "SUM(" + cname + (lineDebits + 2) + ":" + cname + (lineDebits + debits.size() + 1) + ")";
+			String sumCredit = "0";
+			if (credits.size() > 0) {
+				sumCredit = "SUM(" + cname + (lineCredits + 2) + ":" + cname + (lineCredits + credits.size() + 1) + ")";
+			}
+
+			String sumDebit = "0";
+			if (debits.size() > 0) {
+				sumDebit = "SUM(" + cname + (lineDebits + 2) + ":" + cname + (lineDebits + debits.size() + 1) + ")";
+			}
 			String total = cname + (lineCredits + 1) + "-" + cname + (lineDebits + 1);
 
 			if (soldeInit.compareTo(BigDecimal.ZERO) != 0) {

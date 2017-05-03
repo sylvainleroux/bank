@@ -75,7 +75,7 @@ public class FileToDB extends BusinessServiceAbstract {
 				}
 
 				if (b.getCredit().equals(BigDecimal.ZERO) && b.getDebit().equals(BigDecimal.ZERO)) {
-					budgetDao.delete(b);
+					budgetDao.delete(dbMatch);
 				}
 
 			}

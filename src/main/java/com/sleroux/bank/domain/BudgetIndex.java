@@ -15,11 +15,13 @@ import com.sleroux.bank.model.Budget;
 @SuppressWarnings("serial")
 public class BudgetIndex {
 
+	private final static String SOLDE_INIT = "SOLDE_INIT";
+
 	public List<String> getCredits(String _compte) {
 		Stream<List<String>> stream = map.values().stream().map(y -> y.getCredits(_compte));
 		return stream.reduce(new ArrayList<String>(), (a, b) -> {
-			for (String s : b){
-				if (! a.contains(s)){
+			for (String s : b) {
+				if (!a.contains(s)) {
 					a.add(s);
 				}
 			}
@@ -31,8 +33,8 @@ public class BudgetIndex {
 	public List<String> getDebits(String _compte) {
 		Stream<List<String>> stream = map.values().stream().map(y -> y.getDebits(_compte));
 		return stream.reduce(new ArrayList<String>(), (a, b) -> {
-			for (String s : b){
-				if (! a.contains(s)){
+			for (String s : b) {
+				if (!a.contains(s)) {
 					a.add(s);
 				}
 			}
@@ -80,7 +82,7 @@ public class BudgetIndex {
 					this.get(key).addSoldeInit(value);
 				} else {
 					Compte c = new Compte();
-					c.put("SOLDE_INIT", createSoldeInit(value));
+					c.put(SOLDE_INIT, createSoldeInit(value));
 					this.put(key, c);
 				}
 			});
@@ -113,11 +115,11 @@ public class BudgetIndex {
 				return;
 			}
 
-			Budget soldeInit = this.get("SOLDE_INIT");
+			Budget soldeInit = this.get(SOLDE_INIT);
 			if (soldeInit == null) {
-				this.put("SOLDE_INIT", createSoldeInit(_value));
+				this.put(SOLDE_INIT, createSoldeInit(_value));
 			} else {
-				this.put("SOLDE_INIT", augmentSoldeInit(soldeInit, _value));
+				this.put(SOLDE_INIT, augmentSoldeInit(soldeInit, _value));
 			}
 		}
 
@@ -127,7 +129,7 @@ public class BudgetIndex {
 		}
 
 		public List<String> getDebits() {
-			return this.values().stream().filter(budget -> budget.getCredit().compareTo(BigDecimal.ZERO) < 0)
+			return this.values().stream().filter(budget -> budget.getDebit().compareTo(BigDecimal.ZERO) > 0)
 					.map(budget -> budget.getCatego()).collect(Collectors.toList());
 		}
 
@@ -135,7 +137,7 @@ public class BudgetIndex {
 
 	private Budget createSoldeInit(BigDecimal _value) {
 		Budget b = new Budget();
-		b.setCatego("SOLDE_INIT");
+		b.setCatego(SOLDE_INIT);
 		if (_value.compareTo(BigDecimal.ZERO) > 0) {
 			b.setCredit(_value);
 		} else {
