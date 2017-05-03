@@ -18,8 +18,6 @@ public interface IBudgetDao extends IOperations<Budget> {
 
 	List<Budget> getMonth(String _compte, Integer _year, int _month);
 
-
-
 	void backupAndTruncate();
 
 	List<Changes> getAdded();
@@ -35,6 +33,5 @@ public interface IBudgetDao extends IOperations<Budget> {
 	List<AggregatedOperations> findBudgetForMonth(int _year, int _month);
 
 	BigDecimal getEstimatedEndOfMonthBalance(int _year, int _month);
-
 
 }

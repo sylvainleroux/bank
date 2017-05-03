@@ -9,7 +9,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -29,13 +28,13 @@ import com.sleroux.bank.testutils.OperationHelper;
 public class TestAnalysisService {
 
 	@Autowired
-	AnalysisService as;
+	AnalysisService	as;
 
 	@Autowired
-	IOperationDao operationDao;
+	IOperationDao	operationDao;
 
 	@Autowired
-	IBudgetDao budgetDao;
+	IBudgetDao		budgetDao;
 
 	@Transactional
 	@Test
@@ -211,7 +210,6 @@ public class TestAnalysisService {
 
 		List<AnalysisFact> list = as.getFacts(2016, 6);
 		Assert.assertEquals(1, list.size());
-		
 
 		Assert.assertEquals(AlertType.DEBIT_OVER_ESTIMATE, list.get(0).getReason());
 

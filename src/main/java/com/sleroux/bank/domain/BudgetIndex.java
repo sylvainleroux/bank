@@ -14,6 +14,15 @@ import com.sleroux.bank.model.Budget;
 @SuppressWarnings("serial")
 public class BudgetIndex {
 
+	public List<String> getCredits(String _compte) {
+		return map.values().stream().map(y -> y.getCredits(_compte)).collect(ArrayList::new, List::addAll,
+				List::addAll);
+	}
+
+	public List<String> getDebits(String _compte) {
+		return map.values().stream().map(y -> y.getDebits(_compte)).collect(ArrayList::new, List::addAll, List::addAll);
+	}
+
 	public class Year extends LinkedHashMap<Integer, Month> {
 
 		public HashMap<String, BigDecimal> reduce() {
@@ -28,6 +37,16 @@ public class BudgetIndex {
 				}
 				return a;
 			});
+		}
+
+		public List<String> getCredits(String _compte) {
+			return this.values().stream().map(m -> m.getCredits(_compte)).collect(ArrayList::new, List::addAll,
+					List::addAll);
+		}
+
+		public List<String> getDebits(String _compte) {
+			return this.values().stream().map(m -> m.getDebits(_compte)).collect(ArrayList::new, List::addAll,
+					List::addAll);
 		}
 	}
 
@@ -50,6 +69,18 @@ public class BudgetIndex {
 			});
 		}
 
+		public List<String> getCredits(String _compte) {
+			return this.entrySet().stream().filter(e -> e.getKey().equals(_compte)).map(e -> {
+				return e.getValue();
+			}).map(Compte::getCredits).collect(ArrayList::new, List::addAll, List::addAll);
+		}
+
+		public List<String> getDebits(String _compte) {
+			return this.entrySet().stream().filter(e -> e.getKey().equals(_compte)).map(e -> {
+				return e.getValue();
+			}).map(Compte::getDebits).collect(ArrayList::new, List::addAll, List::addAll);
+		}
+
 	}
 
 	private class Compte extends LinkedHashMap<String, Budget> {
@@ -60,17 +91,27 @@ public class BudgetIndex {
 		}
 
 		public void addSoldeInit(BigDecimal _value) {
-			
-			if (_value.intValue() == 0){
+
+			if (_value.intValue() == 0) {
 				return;
 			}
-			
+
 			Budget soldeInit = this.get("SOLDE_INIT");
 			if (soldeInit == null) {
 				this.put("SOLDE_INIT", createSoldeInit(_value));
 			} else {
 				this.put("SOLDE_INIT", augmentSoldeInit(soldeInit, _value));
 			}
+		}
+
+		public List<String> getCredits() {
+			return this.values().stream().filter(budget -> budget.getCredit().compareTo(BigDecimal.ZERO) > 0)
+					.map(budget -> budget.getCatego()).collect(Collectors.toList());
+		}
+
+		public List<String> getDebits() {
+			return this.values().stream().filter(budget -> budget.getCredit().compareTo(BigDecimal.ZERO) < 0)
+					.map(budget -> budget.getCatego()).collect(Collectors.toList());
 		}
 
 	}

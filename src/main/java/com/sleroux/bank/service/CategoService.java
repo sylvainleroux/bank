@@ -3,7 +3,6 @@ package com.sleroux.bank.service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -75,8 +74,7 @@ public class CategoService {
 			// Shift VIR.* to next month
 			if (o.getCatego().startsWith("PLMT.")) {
 				if (c.get(Calendar.DAY_OF_MONTH) >= 20) {
-					System.out.println("### "
-							+ "Shift to following month ?");
+					System.out.println("### " + "Shift to following month ?");
 					if (validateYesNo()) {
 						opMonth++;
 						if (opMonth > 12) {
@@ -108,7 +106,7 @@ public class CategoService {
 	private boolean validateYesNo() {
 		String r = null;
 		while (r == null) {
-			 System.out.println("y/n >");
+			System.out.println("y/n >");
 
 			try {
 				BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
@@ -121,11 +119,11 @@ public class CategoService {
 				if (s.equals("n") || s.equals("N")) {
 					return false;
 				}
-				
+
 				System.out.println("Wrong value");
 
 			} catch (Exception e) {
-				//e.printStackTrace();
+				// e.printStackTrace();
 			}
 		}
 		return false;

@@ -39,15 +39,18 @@ public class DBToFile extends BusinessServiceAbstract {
 
 		BudgetIndex index = new BudgetIndex(budgetDao.findAll());
 		index.firstYear(2017);
-		
-		
-		
+
 		List<Compte> comptes = compteDao.findAll();
 		document.writeYears(index.getYears());
 
 		for (Compte compte : comptes) {
-			List<String> credits = budgetDao.getCredits(compte.getNom());
-			List<String> debits = budgetDao.getDebits(compte.getNom());
+
+			List<String> credits;
+			List<String> debits;
+
+			credits = index.getCredits(compte.getNom());
+			debits = index.getDebits(compte.getNom());
+
 			BudgetDocumentCompte budgetDocumentCompte = document.addCompte(compte.getNom(), credits, debits,
 					compte.getType());
 
