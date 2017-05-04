@@ -6,27 +6,10 @@ import java.util.List;
 import com.sleroux.bank.dao.common.IOperations;
 import com.sleroux.bank.domain.AggregatedOperations;
 import com.sleroux.bank.model.Budget;
-import com.sleroux.bank.model.budget.Changes;
 
 public interface IBudgetDao extends IOperations<Budget> {
 
-	List<String> getCredits(String _compte);
-
-	List<String> getDebits(String _compte);
-
-	List<Integer> getYears();
-
-	List<Budget> getMonth(String _compte, Integer _year, int _month);
-
 	void backupAndTruncate();
-
-	List<Changes> getAdded();
-
-	List<Changes> getUpdated();
-
-	List<Changes> getDeleted();
-
-	void saveChange(Changes _u);
 
 	Budget findByYearMonthCatego(int _year, int _month, String _catego, String _compte);
 

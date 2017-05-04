@@ -51,7 +51,8 @@ public class FileToDB extends BusinessServiceAbstract {
 		for (Budget b : budgets) {
 			Budget dbMatch = index.find(b);
 			if (dbMatch == null) {
-				if (b.getCredit().equals(BigDecimal.ZERO) && b.getDebit().equals(BigDecimal.ZERO)) {
+				if (b.getCredit().setScale(2).equals(BigDecimal.ZERO.setScale(2))
+						&& b.getDebit().setScale(2).equals(BigDecimal.ZERO.setScale(2))) {
 					continue;
 				}
 				System.out.println("new " + b);
@@ -61,21 +62,25 @@ public class FileToDB extends BusinessServiceAbstract {
 				boolean update = false;
 
 				if (!b.getCredit().setScale(2).equals(dbMatch.getCredit().setScale(2))) {
-					System.out.println("Credit updated : " + b + " | " + dbMatch);
-					update = true;
+					if (b.getCredit().compareTo(BigDecimal.ZERO) > 0) {
+						System.out.println("Credit updated : " + b + " | " + dbMatch);
+						update = true;
+					}
 				}
 
 				if (!b.getDebit().setScale(2).equals(dbMatch.getDebit().setScale(2))) {
-					System.out.println("Debit updated : " + b + " | " + dbMatch);
-					update = true;
+					if (b.getDebit().compareTo(BigDecimal.ZERO) > 0) {
+						System.out.println("Debit updated : " + b + " | " + dbMatch);
+						update = true;
+					}
 				}
 
-				if (update) {
-					budgetDao.update(b);
-				}
-
-				if (b.getCredit().equals(BigDecimal.ZERO) && b.getDebit().equals(BigDecimal.ZERO)) {
+				if (b.getCredit().setScale(2).equals(BigDecimal.ZERO.setScale(2))
+						&& b.getDebit().setScale(2).equals(BigDecimal.ZERO.setScale(2))) {
+					System.out.println("Debit and credit are zero, deleting line");
 					budgetDao.delete(dbMatch);
+				} else if (update) {
+					budgetDao.update(b);
 				}
 
 			}

@@ -26,7 +26,7 @@ public class BudgetIndex {
 				}
 			}
 			return a;
-		});
+		}).stream().sorted((a, b) -> a.compareTo(b)).collect(Collectors.toList());
 
 	}
 
@@ -39,7 +39,7 @@ public class BudgetIndex {
 				}
 			}
 			return a;
-		});
+		}).stream().sorted((a, b) -> a.compareTo(b)).collect(Collectors.toList());
 	}
 
 	public class Year extends LinkedHashMap<Integer, Month> {

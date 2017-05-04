@@ -11,7 +11,6 @@ import com.sleroux.bank.dao.IBudgetDao;
 import com.sleroux.bank.dao.common.AbstractHibernateDao;
 import com.sleroux.bank.domain.AggregatedOperations;
 import com.sleroux.bank.model.Budget;
-import com.sleroux.bank.model.budget.Changes;
 
 @SuppressWarnings("unchecked")
 @Repository
@@ -24,38 +23,6 @@ public class BudgetDao extends AbstractHibernateDao<Budget> implements IBudgetDa
 	}
 
 	@Override
-	public List<String> getCredits(String _compte) {
-		Query q = getCurrentSession().createQuery(
-				"select distinct catego from Budget where credit > 0 and compte = :compte order by catego");
-		q.setParameter("compte", _compte);
-		return q.list();
-	}
-
-	@Override
-	public List<String> getDebits(String _compte) {
-		Query q = getCurrentSession()
-				.createQuery("select distinct catego from Budget where debit > 0 and compte = :compte order by catego");
-		q.setParameter("compte", _compte);
-		return q.list();
-	}
-
-	@Override
-	public List<Integer> getYears() {
-		String sql = "select distinct year from Budget order by year";
-		return getCurrentSession().createQuery(sql).list();
-	}
-
-	@Override
-	public List<Budget> getMonth(String _compte, Integer _year, int _month) {
-		Query q = getCurrentSession()
-				.createQuery("from Budget where year = :year and month = :month and compte = :compte order by catego");
-		q.setParameter("compte", _compte);
-		q.setParameter("year", _year);
-		q.setParameter("month", _month);
-		return q.list();
-	}
-
-	@Override
 	public void backupAndTruncate() {
 		getCurrentSession()
 				.createSQLQuery(
@@ -63,61 +30,6 @@ public class BudgetDao extends AbstractHibernateDao<Budget> implements IBudgetDa
 				.executeUpdate();
 
 		getCurrentSession().createSQLQuery("truncate table bank.budget").executeUpdate();
-
-	}
-
-	@Override
-	public List<Changes> getAdded() {
-		String sql = "select a.id as id, a.year as year, a.month as month, a.catego as catego, a.debit as debit, a.credit as credit, a.compte as compte, a.notes as notes from budget a left join (select * from budget_backup inner join (select max(timestamp) last_backup from budget_backup) t on t.last_backup = timestamp) b on a.year = b.year and a.month = b.month and a.catego = b.catego and a.compte = b.compte where  b.timestamp is null";
-		Query q = getCurrentSession().createSQLQuery(sql);
-		q.setResultTransformer(Transformers.aliasToBean(Changes.class));
-		return q.list();
-	}
-
-	@Override
-	public List<Changes> getUpdated() {
-		String sql = "select a.year year, a.month month, a.catego catego, a.compte compte, a.debit debit, a.credit credit, a.notes, b.debit oldDebit, b.credit oldCredit from budget a inner join budget_backup b on a.year = b.year and a.month = b.month and a.catego = b.catego and a.compte = b.compte inner join (select max(timestamp) last_backup from budget_backup) t on b.timestamp = t.last_backup where a.debit <> b.debit or a.credit <> b.credit;";
-		Query q = getCurrentSession().createSQLQuery(sql);
-		q.setResultTransformer(Transformers.aliasToBean(Changes.class));
-		return q.list();
-	}
-
-	@Override
-	public List<Changes> getDeleted() {
-		String sql = "select a.year, a.month, a.catego, a.compte, a.debit, a.credit, a.notes from budget_backup a inner join (select max(timestamp) last_backup from budget_backup) t on a.timestamp = t.last_backup left join budget b on a.year = b.year and a.month = b.month and a.catego = b.catego and a.compte = b.compte where  b.id is null";
-		Query q = getCurrentSession().createSQLQuery(sql);
-		q.setResultTransformer(Transformers.aliasToBean(Changes.class));
-		return q.list();
-	}
-
-	@Override
-	public void saveChange(Changes _change) {
-
-		StringBuilder sql = new StringBuilder();
-		sql.append(
-				"insert into bank.budget_changes (year, month, catego, compte, type, prev_value, new_value) values (");
-		sql.append(_change.getYear());
-		sql.append(",");
-		sql.append(_change.getMonth());
-		sql.append(",");
-		sql.append("\"");
-		sql.append(_change.getCatego());
-		sql.append("\"");
-		sql.append(",");
-		sql.append("\"");
-		sql.append(_change.getCompte());
-		sql.append("\"");
-		sql.append(",");
-		sql.append("\"");
-		sql.append((_change.isCredit() ? "CREDIT" : "DEBIT"));
-		sql.append("\"");
-		sql.append(",");
-		sql.append(_change.isCredit() ? _change.getOldCredit() : _change.getOldDebit());
-		sql.append(",");
-		sql.append(_change.isCredit() ? _change.getCredit() : _change.getDebit());
-		sql.append(")");
-
-		getCurrentSession().createSQLQuery(sql.toString()).executeUpdate();
 
 	}
 

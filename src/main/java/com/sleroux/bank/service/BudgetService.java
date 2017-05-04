@@ -17,7 +17,7 @@ public class BudgetService {
 
 	@Transactional
 	public void createUpdateDebit(AnalysisFact _a) {
-		Budget b = budgetDao.findByYearMonthCatego(_a.getYear(), _a.getMonth(), _a.getCatego(), "COURANT");
+		Budget b = budgetDao.findByYearMonthCatego(_a.getYear(), _a.getMonth(), _a.getCatego(), _a.getCompte());
 		if (b != null) {
 			b.setDebit(_a.getDebit_ops());
 			budgetDao.update(b);
@@ -27,14 +27,14 @@ public class BudgetService {
 			b.setMonth(_a.getMonth());
 			b.setCatego(_a.getCatego());
 			b.setDebit(_a.getDebit_ops());
-			b.setCompte("COURANT");
+			b.setCompte(_a.getCompte());
 			budgetDao.create(b);
 		}
 	}
 
 	@Transactional
 	public void createUpdateCredit(AnalysisFact _a) {
-		Budget b = budgetDao.findByYearMonthCatego(_a.getYear(), _a.getMonth(), _a.getCatego(), "COURANT");
+		Budget b = budgetDao.findByYearMonthCatego(_a.getYear(), _a.getMonth(), _a.getCatego(), _a.getCompte());
 		
 		if (b != null) {
 			b.setCredit(_a.getCredit_ops());
@@ -45,7 +45,7 @@ public class BudgetService {
 			b.setMonth(_a.getMonth());
 			b.setCatego(_a.getCatego());
 			b.setCredit(_a.getCredit_ops());
-			b.setCompte("COURANT");
+			b.setCompte(_a.getCompte());
 			budgetDao.create(b);
 		}
 	}

@@ -22,11 +22,15 @@ public class SoldeService {
 		BigDecimal total = new BigDecimal(0);
 		List<AccountBalance> accounts = operationDao.getSoldes();
 		for (AccountBalance c : accounts) {
-			System.out.printf("%-10s: %14s\n", c.getCompte(), formater.format(c.getSolde()));
+			if (! (c.getSolde().compareTo(BigDecimal.ZERO) > 0)) {
+				continue;
+			}
+
+			System.out.printf("%-20s: %14s\n", c.getCompte(), formater.format(c.getSolde()));
 			total = total.add(c.getSolde());
 		}
-		System.out.println("--------------------------");
-		System.out.printf("%-10s: %14s\n","Total", formater.format(total));
+		System.out.println("------------------------------------");
+		System.out.printf("%-20s: %14s\n", "Total", formater.format(total));
 
 	}
 

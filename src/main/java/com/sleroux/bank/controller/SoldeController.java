@@ -12,12 +12,12 @@ import com.sleroux.bank.service.SoldeService;
 public class SoldeController extends BusinessServiceAbstract {
 
 	@Autowired
-	SoldeService	soldeService;
+	SoldeService soldeService;
 
 	@Override
 	@Transactional(readOnly = true)
 	public void run() throws Exception {
-		ConsoleAppHeader.printAppHeader("Balances");
+		ConsoleAppHeader.printAppHeader("Soldes");
 
 		soldeService.run();
 	}

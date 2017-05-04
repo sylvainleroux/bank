@@ -10,6 +10,7 @@ public class AnalysisFact {
 	private Integer		year;
 	private Integer		month;
 	private String		catego;
+	private String		compte;
 
 	private BigDecimal	credit_ops;
 	private BigDecimal	debit_ops;
@@ -17,7 +18,6 @@ public class AnalysisFact {
 	private BigDecimal	credit_bud;
 	private BigDecimal	debit_bud;
 
-	private String		notes;
 	private BigInteger	flag;
 
 	private AlertType	alertType	= AlertType.UNDEFINED;
@@ -86,12 +86,12 @@ public class AnalysisFact {
 		debit_bud = _debit_bud;
 	}
 
-	public String getNotes() {
-		return notes;
+	public String getCompte() {
+		return compte;
 	}
 
-	public void setNotes(String _notes) {
-		notes = _notes;
+	public void setCompte(String _compte) {
+		compte = _compte;
 	}
 
 	public BigInteger getFlag() {
@@ -104,8 +104,8 @@ public class AnalysisFact {
 
 	public String toString() {
 
-		return String.format("%d/%02d:%s DEBIT[%.2f|%.2f] CREDIT[%.2f|%.2f] %s", year, month, catego, debit_ops, debit_bud, credit_ops,
-				credit_bud, alertType.toString());
+		return String.format("%d/%02d:%s DEBIT[%.2f|%.2f] CREDIT[%.2f|%.2f] %s", year, month, catego, debit_ops,
+				debit_bud, credit_ops, credit_bud, alertType.toString());
 	}
 
 }
