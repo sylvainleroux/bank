@@ -19,9 +19,9 @@ public class BudgetCalc extends HashMap<String, BudgetCalcCompte> {
 			}
 
 			if (o.getCredit().compareTo(BigDecimal.ZERO) > 0) {
-				CategoList list = compte.get(0);
+				BudgetCalcCategoList list = compte.get(0);
 				if (list == null) {
-					list = new CategoList();
+					list = new BudgetCalcCategoList();
 					compte.put(0, list);
 				}
 
@@ -35,9 +35,9 @@ public class BudgetCalc extends HashMap<String, BudgetCalcCompte> {
 			}
 
 			if (o.getDebit().compareTo(BigDecimal.ZERO) > 0) {
-				CategoList list = compte.get(1);
+				BudgetCalcCategoList list = compte.get(1);
 				if (list == null) {
-					list = new CategoList();
+					list = new BudgetCalcCategoList();
 					compte.put(1, list);
 				}
 
@@ -62,9 +62,9 @@ public class BudgetCalc extends HashMap<String, BudgetCalcCompte> {
 				this.put(b.getCompte(), compte);
 			}
 			if (b.getCredit().compareTo(BigDecimal.ZERO) > 0) {
-				CategoList list = compte.get(0);
+				BudgetCalcCategoList list = compte.get(0);
 				if (list == null) {
-					list = new CategoList();
+					list = new BudgetCalcCategoList();
 					compte.put(0, list);
 				}
 
@@ -79,9 +79,9 @@ public class BudgetCalc extends HashMap<String, BudgetCalcCompte> {
 			}
 
 			if (b.getDebit().compareTo(BigDecimal.ZERO) > 0) {
-				CategoList list = compte.get(1);
+				BudgetCalcCategoList list = compte.get(1);
 				if (list == null) {
-					list = new CategoList();
+					list = new BudgetCalcCategoList();
 					compte.put(1, list);
 				}
 
