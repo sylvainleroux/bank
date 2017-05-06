@@ -21,7 +21,7 @@ public class TestBudgetCalc {
 		calc.setBudget(Arrays.asList(createBudget("T_COMPTE", "10", null, "T_CATEGO"),
 				createBudget("T_COMPTE", "10", null, "T_CATEGO")));
 
-		BudgetCalcCatego c = calc.get("T_COMPTE").get(true).get("T_CATEGO");
+		BudgetCalcCatego c = calc.get("T_COMPTE").get(0).get("T_CATEGO");
 		Assert.assertEquals(new BigDecimal("20.00"), c.getOperation());
 		Assert.assertEquals(new BigDecimal("20.00"), c.getBudget());
 
@@ -39,7 +39,7 @@ public class TestBudgetCalc {
 
 		System.out.println(calc);
 
-		BudgetCalcCatego c = calc.get("T_COMPTE").get(true).get("T_CATEGO");
+		BudgetCalcCatego c = calc.get("T_COMPTE").get(0).get("T_CATEGO");
 		Assert.assertEquals(new BigDecimal("20.00"), c.getOperation());
 		Assert.assertEquals(new BigDecimal("20.00"), c.getBudget());
 

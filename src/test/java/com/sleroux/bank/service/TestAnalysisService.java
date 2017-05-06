@@ -73,6 +73,10 @@ public class TestAnalysisService {
 		b1.setDebit(new BigDecimal(100));
 		budgetDao.create(b1);
 
+		// Fix weird transaction behavior
+		Budget b = budgetDao.findByYearMonthCatego(2015, 12, "TEST_CATEGO", "CMB");
+		Assert.assertNotNull(b);
+
 		List<AnalysisFact> list = as.getFacts(2015, 12);
 		Assert.assertEquals(0, list.size());
 
@@ -121,6 +125,10 @@ public class TestAnalysisService {
 		b1.setCatego("TEST_CATEGO");
 		b1.setDebit(new BigDecimal(100));
 		budgetDao.create(b1);
+		
+		// Fix weird transaction behavior
+		Budget b = budgetDao.findByYearMonthCatego(2015, 12, "TEST_CATEGO", "CMB");
+		Assert.assertNotNull(b);
 
 		List<AnalysisFact> list = as.getFacts(2015, 12);
 		Assert.assertEquals(0, list.size());
@@ -211,6 +219,10 @@ public class TestAnalysisService {
 		b1.setCatego("CARBURANT");
 		b1.setDebit(new BigDecimal(100));
 		budgetDao.create(b1);
+
+		// Fix weird transaction behavior
+		Budget b = budgetDao.findByYearMonthCatego(2016, 4, "CARBURANT", "CMB.COMPTE_CHEQUE");
+		Assert.assertNotNull(b);
 
 		List<AnalysisFact> list = as.getFacts(2016, 6);
 		Assert.assertEquals(1, list.size());

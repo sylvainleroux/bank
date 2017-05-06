@@ -58,33 +58,7 @@ public class TestBudgetDao {
 		Assert.assertNull(b);
 	}
 
-	@Test
-	@Transactional
-	public void testGetEstimatedEndOfMonthBalance() {
-		{
-			Budget b = BudgetHelper.createCredit();
-			b.setMonth(1);
-			b.setYear(2016);
-			b.setCatego("SOLDE.INIT");
-			b.setCompte("COURANT");
-			b.setCredit(new BigDecimal("500"));
-			budgetDao.create(b);
-		}
-
-		{
-			Budget b = BudgetHelper.createCredit();
-			b.setMonth(2);
-			b.setYear(2016);
-			b.setCatego("SOLDE.INIT");
-			b.setCompte("COURANT");
-			b.setCredit(new BigDecimal("100"));
-			budgetDao.create(b);
-		}
-
-		BigDecimal balance = budgetDao.getEstimatedEndOfMonthBalance(2016, 1);
-		Assert.assertEquals(500, balance.intValue());
-
-	}
+	
 
 	@Test
 	@Transactional
@@ -109,16 +83,6 @@ public class TestBudgetDao {
 			budgetDao.create(b);
 		}
 
-		BigDecimal balance = budgetDao.getEstimatedEndOfMonthBalance(2016, 2);
-		Assert.assertEquals(600, balance.intValue());
-
-	}
-
-	@Test
-	@Transactional
-	public void testGetEstimatedEndOfMonthBalance3() {
-		BigDecimal balance = budgetDao.getEstimatedEndOfMonthBalance(2016, 2);
-		Assert.assertNotNull(balance);
 
 	}
 

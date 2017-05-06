@@ -46,17 +46,4 @@ public class BudgetDao extends AbstractHibernateDao<Budget> implements IBudgetDa
 				.setParameter("catego", _catego).uniqueResult();
 	}
 
-	@Override
-	public BigDecimal getEstimatedEndOfMonthBalance(int _year, int _month) {
-		Query query = getCurrentSession().createSQLQuery(
-				"select sum(credit) - sum(debit)  from budget where compte = 'COURANT' and date(concat(year,'-', month,'-',1)) <=  date(concat(:year,'-',:month,'-',1))");
-		query.setParameter("year", _year);
-		query.setParameter("month", _month);
-		BigDecimal result = (BigDecimal) query.uniqueResult();
-		if (result == null) {
-			return new BigDecimal(0);
-		}
-		return result;
-	}
-
 }
