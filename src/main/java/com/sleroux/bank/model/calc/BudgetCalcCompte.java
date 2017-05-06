@@ -1,8 +1,8 @@
 package com.sleroux.bank.model.calc;
 
-import java.util.LinkedHashMap;
+import java.util.TreeMap;
 
 @SuppressWarnings("serial")
-public class BudgetCalcCompte extends LinkedHashMap<Boolean, CategoList> {
+public class BudgetCalcCompte extends TreeMap<Integer, CategoList> {
 
 }

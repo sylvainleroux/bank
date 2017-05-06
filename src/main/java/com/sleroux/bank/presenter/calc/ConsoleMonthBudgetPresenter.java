@@ -4,7 +4,6 @@ import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import com.sleroux.bank.model.calc.BudgetCalc;
 
@@ -31,12 +30,11 @@ public class ConsoleMonthBudgetPresenter implements MonitorInterface {
 
 			prHeader(Arrays.asList(compte, "   BUDGET", "   ACTUEL", "       GRAPH"));
 
-			entry.getValue().entrySet().stream().sorted(Map.Entry.comparingByKey((a, b) -> -1)).forEachOrdered(en -> {
+			entry.getValue().forEach((index, categolist) -> {
 				prTable("├", "┼", "┤");
 
-				en.getValue().entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(e -> {
-					pr(e.getKey(), e.getValue().getOperation(), e.getValue().getBudget(), en.getKey());
-
+				categolist.forEach((catego, data) -> {
+					pr(catego, data.getOperation(), data.getBudget(), index);
 				});
 
 			});
@@ -61,13 +59,13 @@ public class ConsoleMonthBudgetPresenter implements MonitorInterface {
 						0, 0, 0, 0).replaceAll("0", "─"));
 	}
 
-	private void pr(String _catego, BigDecimal operation, BigDecimal budget, Boolean _isCredit) {
+	private void pr(String _catego, BigDecimal operation, BigDecimal budget, Integer _isCredit) {
 
 		double ratioDouble = operation.doubleValue() * 100 / budget.doubleValue();
 		// Calc ratio
 		String ratio = graph(ratioDouble);
 		out.printf("│%-" + (columCatego - 1) + "s%s|%" + (columnDebit) + ".2f│%" + (columnDebit) + ".2f│%s│\n", _catego,
-				_isCredit ? "+" : "-", budget, operation, ratio);
+				_isCredit == 0 ? "+" : "-", budget, operation, ratio);
 	}
 
 	public static String graph(double ratioDouble) {

@@ -102,10 +102,12 @@ public class AnalysisFact {
 		flag = _flag;
 	}
 
+	@Override
 	public String toString() {
-
-		return String.format("%d/%02d:%s DEBIT[%.2f|%.2f] CREDIT[%.2f|%.2f] %s", year, month, catego, debit_ops,
-				debit_bud, credit_ops, credit_bud, alertType.toString());
+		return "AnalysisFact [year=" + year + ", month=" + month + ", catego=" + catego + ", compte=" + compte
+				+ ", credit_ops=" + credit_ops + ", debit_ops=" + debit_ops + ", credit_bud=" + credit_bud
+				+ ", debit_bud=" + debit_bud + ", flag=" + flag + ", alertType=" + alertType + "]";
 	}
+
 
 }

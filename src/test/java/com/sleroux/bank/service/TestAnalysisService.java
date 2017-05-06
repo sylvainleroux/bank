@@ -58,6 +58,7 @@ public class TestAnalysisService {
 	public void testMatchingOperation() {
 
 		Operation o1 = OperationHelper.createDebitOperation(this.getClass());
+		o1.setCompte("CMB");
 		o1.setMonthAdjusted(12);
 		o1.setYear(2015);
 		o1.setDebit(new BigDecimal(100));
@@ -106,6 +107,7 @@ public class TestAnalysisService {
 	public void testCoolBudget() {
 
 		Operation o1 = OperationHelper.createDebitOperation(this.getClass());
+		o1.setCompte("CMB");
 		o1.setMonthAdjusted(12);
 		o1.setYear(2015);
 		o1.setDebit(new BigDecimal(20));
@@ -195,6 +197,7 @@ public class TestAnalysisService {
 	public void testBudgetFromLastMonthNotCompleted() {
 
 		Operation o1 = OperationHelper.createDebitOperation(this.getClass());
+		o1.setCompte("CMB.COMPTE_CHEQUE");
 		o1.setMonthAdjusted(4);
 		o1.setYear(2016);
 		o1.setDebit(new BigDecimal(98.58));
