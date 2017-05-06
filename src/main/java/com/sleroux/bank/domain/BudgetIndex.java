@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.sleroux.bank.model.Budget;
+import com.sleroux.bank.model.budget.Budget;
 
 @SuppressWarnings("serial")
 public class BudgetIndex {

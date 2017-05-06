@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import com.sleroux.bank.domain.ImportReport;
 import com.sleroux.bank.domain.ImportReportFile;
-import com.sleroux.bank.presentation.ImportReportPresenter;
+import com.sleroux.bank.service.extract.ImportReportPresenter;
 
 public class TestImportReportPresenter {
 

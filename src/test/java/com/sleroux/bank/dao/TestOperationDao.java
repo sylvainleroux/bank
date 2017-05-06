@@ -14,9 +14,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import com.sleroux.bank.TestConfig;
-import com.sleroux.bank.domain.AggregatedOperations;
-import com.sleroux.bank.model.AccountBalance;
-import com.sleroux.bank.model.Operation;
+import com.sleroux.bank.model.balance.AccountBalance;
+import com.sleroux.bank.model.operation.Operation;
 import com.sleroux.bank.service.CategoService;
 import com.sleroux.bank.testutils.OperationHelper;
 
@@ -127,34 +126,6 @@ public class TestOperationDao {
 
 	@Test
 	@Transactional
-	public void testRetrieveAggregatedOperationsForMonth() {
-
-		{
-			Operation o = OperationHelper.createCreditOperation();
-			o.setYear(2016);
-			o.setMonthAdjusted(2);
-			o.setCatego("AVION");
-			o.setCredit(new BigDecimal("100.00"));
-			operationDao.create(o);
-		}
-
-		{
-			Operation o = OperationHelper.createCreditOperation();
-			o.setYear(2016);
-			o.setMonthAdjusted(2);
-			o.setCatego("AVION");
-			o.setCredit(new BigDecimal("100.00"));
-			operationDao.create(o);
-		}
-		List<AggregatedOperations> list = operationDao.findAggregatedYearMonth(2016, 2);
-
-		Assert.assertEquals(1, list.size());
-		Assert.assertEquals(200, list.get(0).getCredit().intValue());
-
-	}
-	
-	@Test
-	@Transactional
 	public void testFindOperationByCategoYearMonth() {
 
 		{
@@ -166,7 +137,7 @@ public class TestOperationDao {
 			o.setCredit(new BigDecimal("100.00"));
 			operationDao.create(o);
 		}
-		
+
 		{
 			Operation o = OperationHelper.createCreditOperation();
 			o.setYear(2016);

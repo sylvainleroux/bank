@@ -22,9 +22,9 @@ import com.sleroux.bank.dao.IExtractHistoryDao;
 import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.domain.ImportReport;
 import com.sleroux.bank.domain.ImportReportFile;
-import com.sleroux.bank.model.ExtractHistory;
-import com.sleroux.bank.model.Operation;
-import com.sleroux.bank.model.fileimport.ExtractDocument;
+import com.sleroux.bank.model.extract.ExtractDocument;
+import com.sleroux.bank.model.extract.ExtractHistory;
+import com.sleroux.bank.model.operation.Operation;
 import com.sleroux.bank.service.ImportType;
 import com.sleroux.bank.util.Config;
 

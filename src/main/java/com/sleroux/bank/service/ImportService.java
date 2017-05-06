@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sleroux.bank.dao.IBalanceDao;
 import com.sleroux.bank.domain.ImportReport;
-import com.sleroux.bank.model.AccountBalance;
+import com.sleroux.bank.model.balance.AccountBalance;
 import com.sleroux.bank.service.impl.BPOImportService;
 import com.sleroux.bank.service.impl.CMBImportService;
 

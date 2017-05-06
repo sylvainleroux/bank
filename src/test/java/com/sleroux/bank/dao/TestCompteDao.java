@@ -12,7 +12,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sleroux.bank.TestConfig;
-import com.sleroux.bank.model.Compte;
+import com.sleroux.bank.model.compte.Compte;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestConfig.class }, loader = AnnotationConfigContextLoader.class)

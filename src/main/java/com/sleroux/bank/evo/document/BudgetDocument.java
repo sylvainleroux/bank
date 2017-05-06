@@ -24,7 +24,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
-import com.sleroux.bank.model.Budget;
+import com.sleroux.bank.model.budget.Budget;
 import com.sleroux.bank.util.Config;
 
 public class BudgetDocument {
@@ -433,6 +433,10 @@ public class BudgetDocument {
 		}
 	}
 
+	public enum Mode {
+		NONE, DEBIT, CREDIT
+	}
+
 	public List<BudgetDocumentCompteReader> getComptes() {
 		List<BudgetDocumentCompteReader> comptes = new ArrayList<>();
 
@@ -440,6 +444,8 @@ public class BudgetDocument {
 		Cell c;
 		String s;
 		BudgetDocumentCompteReader cr = null;
+		Mode m = Mode.NONE;
+
 		List<String> catego = new ArrayList<>();
 		for (int row = ROW_CHECKING + 1; row <= sheet.getLastRowNum(); row++) {
 			c = getCell(row, COL_0);
@@ -447,7 +453,11 @@ public class BudgetDocument {
 			if (s.trim().equals("")) {
 				if (cr != null) {
 					// Flush debits
-					cr.debits.addAll(catego);
+					if (m == Mode.DEBIT) {
+						cr.debits.addAll(catego);
+					} else if (m == Mode.CREDIT) {
+						cr.credits.addAll(catego);
+					}
 					catego.clear();
 				}
 
@@ -456,6 +466,7 @@ public class BudgetDocument {
 			}
 
 			if (s.trim().equals(CREDIT)) {
+				m = Mode.CREDIT;
 				cr.rowCredits = row;
 				continue;
 			}
@@ -463,10 +474,11 @@ public class BudgetDocument {
 			if (s.trim().equals(DEBIT)) {
 				cr.rowDebits = row;
 				// Flush credits
-				if (cr != null) {
+				if (cr != null && m == Mode.CREDIT) {
 					cr.credits.addAll(catego);
 					catego.clear();
 				}
+				m = Mode.DEBIT;
 				continue;
 			}
 
@@ -483,10 +495,24 @@ public class BudgetDocument {
 
 		}
 
+		if (cr != null) {
+			if (m == Mode.DEBIT) {
+				cr.debits.addAll(catego);
+			} else if (m == Mode.CREDIT) {
+				cr.credits.addAll(catego);
+			}
+		}
+
 		return comptes;
 	}
 
 	public class BudgetDocumentCompteReader {
+		@Override
+		public String toString() {
+			return "BudgetDocumentCompteReader [compte=" + compte + ", row=" + row + ", rowCredits=" + rowCredits
+					+ ", rowDebits=" + rowDebits + ", credits=" + credits + ", debits=" + debits + "]";
+		}
+
 		String			compte;
 		int				row;
 		int				rowCredits;
@@ -516,6 +542,8 @@ public class BudgetDocument {
 				b.setCredit(v);
 			}
 
+			int maxRow = 0;
+
 			for (int i = 0; i < debits.size(); i++) {
 				b = list.get(debits.get(i));
 				if (b == null) {
@@ -530,7 +558,11 @@ public class BudgetDocument {
 				int row = rowDebits + 1 + i;
 				v = getCellValue(row, col);
 				b.setDebit(v);
+
+				maxRow = Math.max(maxRow, row);
 			}
+
+			// System.out.println(maxRow);
 
 			return new ArrayList<>(list.values());
 

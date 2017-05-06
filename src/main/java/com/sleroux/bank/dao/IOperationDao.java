@@ -3,9 +3,8 @@ package com.sleroux.bank.dao;
 import java.util.List;
 
 import com.sleroux.bank.dao.common.IOperations;
-import com.sleroux.bank.domain.AggregatedOperations;
-import com.sleroux.bank.model.AccountBalance;
-import com.sleroux.bank.model.Operation;
+import com.sleroux.bank.model.balance.AccountBalance;
+import com.sleroux.bank.model.operation.Operation;
 
 public interface IOperationDao extends IOperations<Operation> {
 
@@ -21,8 +20,8 @@ public interface IOperationDao extends IOperations<Operation> {
 
 	List<AccountBalance> getSoldes();
 
-	List<AggregatedOperations> findAggregatedYearMonth(int _year, int _month);
-
 	List<Operation> findByCategoYearMonth(Integer year, Integer month, String catego);
+
+	List<Operation> findByYearMonth(int _year, int _month);
 
 }

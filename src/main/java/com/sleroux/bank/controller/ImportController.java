@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.presentation.ConsoleAppHeader;
+import com.sleroux.bank.presenter.common.ConsoleAppHeader;
 import com.sleroux.bank.service.ExtractService;
 import com.sleroux.bank.service.ImportService;
 import com.sleroux.bank.service.ImportType;

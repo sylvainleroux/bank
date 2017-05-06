@@ -16,7 +16,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import com.sleroux.bank.TestConfig;
 import com.sleroux.bank.dao.IOperationDao;
-import com.sleroux.bank.model.Operation;
+import com.sleroux.bank.model.operation.Operation;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestConfig.class }, loader = AnnotationConfigContextLoader.class)

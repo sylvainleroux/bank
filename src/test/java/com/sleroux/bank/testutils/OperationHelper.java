@@ -3,7 +3,7 @@ package com.sleroux.bank.testutils;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.sleroux.bank.model.Operation;
+import com.sleroux.bank.model.operation.Operation;
 
 public class OperationHelper {
 

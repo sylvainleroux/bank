@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sleroux.bank.dao.IOperationDao;
-import com.sleroux.bank.model.AccountBalance;
+import com.sleroux.bank.model.balance.AccountBalance;
 
 @Service
 public class SoldeService {

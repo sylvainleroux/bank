@@ -5,7 +5,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.presentation.ConsoleAppHeader;
+import com.sleroux.bank.presenter.common.ConsoleAppHeader;
 import com.sleroux.bank.util.Config;
 
 public class Test extends BusinessServiceAbstract {

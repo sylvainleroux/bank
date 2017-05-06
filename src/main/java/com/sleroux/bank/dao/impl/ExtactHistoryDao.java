@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sleroux.bank.dao.IExtractHistoryDao;
 import com.sleroux.bank.dao.common.AbstractHibernateDao;
-import com.sleroux.bank.model.ExtractHistory;
+import com.sleroux.bank.model.extract.ExtractHistory;
 
 @Repository
 public class ExtactHistoryDao extends AbstractHibernateDao<ExtractHistory> implements IExtractHistoryDao {

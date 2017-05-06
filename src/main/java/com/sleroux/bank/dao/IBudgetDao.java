@@ -4,16 +4,15 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.sleroux.bank.dao.common.IOperations;
-import com.sleroux.bank.domain.AggregatedOperations;
-import com.sleroux.bank.model.Budget;
+import com.sleroux.bank.model.budget.Budget;
 
 public interface IBudgetDao extends IOperations<Budget> {
 
 	void backupAndTruncate();
 
-	Budget findByYearMonthCatego(int _year, int _month, String _catego, String _compte);
+	List<Budget> findByYearMonth(int _year, int _month);
 
-	List<AggregatedOperations> findBudgetForMonth(int _year, int _month);
+	Budget findByYearMonthCatego(int _year, int _month, String _catego, String _compte);
 
 	BigDecimal getEstimatedEndOfMonthBalance(int _year, int _month);
 

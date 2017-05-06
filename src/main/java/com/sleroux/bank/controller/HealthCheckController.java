@@ -13,10 +13,10 @@ import org.springframework.stereotype.Controller;
 import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.domain.AlertType;
-import com.sleroux.bank.model.AnalysisFact;
-import com.sleroux.bank.model.Operation;
-import com.sleroux.bank.service.AnalysisService;
+import com.sleroux.bank.model.analysis.AnalysisFact;
+import com.sleroux.bank.model.operation.Operation;
 import com.sleroux.bank.service.BudgetService;
+import com.sleroux.bank.service.analysis.AnalysisService;
 import com.sleroux.bank.util.formats.OperationFormater;
 
 @Controller

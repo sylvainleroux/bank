@@ -14,8 +14,8 @@ import com.sleroux.bank.dao.ICompteDao;
 import com.sleroux.bank.domain.BudgetIndex;
 import com.sleroux.bank.evo.document.BudgetDocument;
 import com.sleroux.bank.evo.document.BudgetDocument.BudgetDocumentCompte;
-import com.sleroux.bank.model.Compte;
-import com.sleroux.bank.presentation.ConsoleAppHeader;
+import com.sleroux.bank.model.compte.Compte;
+import com.sleroux.bank.presenter.common.ConsoleAppHeader;
 import com.sleroux.bank.util.Config;
 
 @Service

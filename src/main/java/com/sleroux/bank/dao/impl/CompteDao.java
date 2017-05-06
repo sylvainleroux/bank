@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sleroux.bank.dao.ICompteDao;
 import com.sleroux.bank.dao.common.AbstractHibernateDao;
-import com.sleroux.bank.model.Compte;
+import com.sleroux.bank.model.compte.Compte;
 
 @Repository
 public class CompteDao extends AbstractHibernateDao<Compte> implements ICompteDao {

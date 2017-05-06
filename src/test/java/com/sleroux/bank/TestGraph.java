@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.sleroux.bank.presentation.ConsoleMonthBudgetPresenter;
+import com.sleroux.bank.presenter.calc.ConsoleMonthBudgetPresenter;
 
 public class TestGraph {
 

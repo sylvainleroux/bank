@@ -2,7 +2,7 @@ package com.sleroux.bank.testutils;
 
 import java.math.BigDecimal;
 
-import com.sleroux.bank.model.Budget;
+import com.sleroux.bank.model.budget.Budget;
 
 public class BudgetHelper {
 

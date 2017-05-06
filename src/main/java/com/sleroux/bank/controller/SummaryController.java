@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.presentation.ConsoleAppHeader;
-import com.sleroux.bank.service.AnalysisService;
+import com.sleroux.bank.presenter.common.ConsoleAppHeader;
 import com.sleroux.bank.service.CategoService;
 import com.sleroux.bank.service.ExtractHistoryService;
 import com.sleroux.bank.service.SoldeService;
+import com.sleroux.bank.service.analysis.AnalysisService;
 
 @Controller
 public class SummaryController extends BusinessServiceAbstract {

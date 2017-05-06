@@ -17,9 +17,10 @@ import com.sleroux.bank.TestConfig;
 import com.sleroux.bank.dao.IBudgetDao;
 import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.domain.AlertType;
-import com.sleroux.bank.model.AnalysisFact;
-import com.sleroux.bank.model.Budget;
-import com.sleroux.bank.model.Operation;
+import com.sleroux.bank.model.analysis.AnalysisFact;
+import com.sleroux.bank.model.budget.Budget;
+import com.sleroux.bank.model.operation.Operation;
+import com.sleroux.bank.service.analysis.AnalysisService;
 import com.sleroux.bank.testutils.BudgetHelper;
 import com.sleroux.bank.testutils.OperationHelper;
 

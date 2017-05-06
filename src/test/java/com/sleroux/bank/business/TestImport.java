@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sleroux.bank.TestConfig;
 import com.sleroux.bank.dao.IBalanceDao;
 import com.sleroux.bank.dao.IOperationDao;
-import com.sleroux.bank.model.Operation;
+import com.sleroux.bank.model.operation.Operation;
 import com.sleroux.bank.service.ImportService;
 import com.sleroux.bank.service.ImportType;
 import com.sleroux.bank.util.Config;
@@ -57,7 +57,8 @@ public class TestImport {
 
 		List<Operation> list = operationDao.findAll();
 
-		Assert.assertEquals("[CMB.COMPTE_CHEQUE|15/01/16|15/01/16|PRLV PayPal Europe S.a.r.l. et C|-12.86]", list.get(0).toString());
+		Assert.assertEquals("[CMB.COMPTE_CHEQUE|15/01/16|15/01/16|PRLV PayPal Europe S.a.r.l. et C|-12.86]",
+				list.get(0).toString());
 		Assert.assertEquals("[CMB.COMPTE_CHEQUE|23/12/15|22/12/15|CARTE 22/12 IKEA XXXXXXX0060/ DUPLICATE(2)|-75.40]",
 				list.get(11).toString());
 
@@ -75,12 +76,10 @@ public class TestImport {
 
 		List<Operation> list = operationDao.findAll();
 
-		for (Operation o : list) {
-			// System.out.println(o.toString());
-		}
 		Assert.assertEquals("[BPO.COMPTE_CHEQUE|27/07/16|27/07/16|VIR ABMLSJH POE 0HBLJZHS-TGHJ 98HNB|18.57]",
 				list.get(0).toString());
-		Assert.assertEquals("[BPO.COMPTE_CHEQUE|26/07/16|26/07/16|VIR MOB AVLKJSH LKJHS 9SKHS|-95.45]", list.get(1).toString());
+		Assert.assertEquals("[BPO.COMPTE_CHEQUE|26/07/16|26/07/16|VIR MOB AVLKJSH LKJHS 9SKHS|-95.45]",
+				list.get(1).toString());
 	}
 
 	@Test

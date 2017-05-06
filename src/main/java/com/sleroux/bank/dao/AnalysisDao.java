@@ -9,7 +9,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.sleroux.bank.model.AnalysisFact;
+import com.sleroux.bank.model.analysis.AnalysisFact;
 
 @Repository
 public class AnalysisDao {

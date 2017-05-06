@@ -9,9 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.dao.common.AbstractHibernateDao;
-import com.sleroux.bank.domain.AggregatedOperations;
-import com.sleroux.bank.model.AccountBalance;
-import com.sleroux.bank.model.Operation;
+import com.sleroux.bank.model.balance.AccountBalance;
+import com.sleroux.bank.model.operation.Operation;
 
 @Repository
 public class OperationDao extends AbstractHibernateDao<Operation> implements IOperationDao {
@@ -20,6 +19,13 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 		super();
 
 		setClazz(Operation.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Operation> findByYearMonth(int _year, int _month) {
+		return getCurrentSession().createQuery("from Operation where year = :year and month = :month")
+				.setParameter("year", _year).setParameter("month", _month).list();
 	}
 
 	@Override
@@ -76,17 +82,6 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 	public List<AccountBalance> getSoldes() {
 		Query query = getCurrentSession().createSQLQuery("select * from bank.soldes")
 				.setResultTransformer(Transformers.aliasToBean(AccountBalance.class));
-		return query.list();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<AggregatedOperations> findAggregatedYearMonth(int _year, int _month) {
-		Query query = getCurrentSession().createSQLQuery(
-				"select year, month, compte as account, catego, sum(credit) as credit, sum(debit) as debit from operation where year = :year and month = :month group by year, month, compte, catego");
-		query.setParameter("year", _year);
-		query.setParameter("month", _month);
-		query.setResultTransformer(Transformers.aliasToBean(AggregatedOperations.class));
 		return query.list();
 	}
 

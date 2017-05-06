@@ -14,7 +14,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import com.sleroux.bank.TestConfig;
 import com.sleroux.bank.dao.IOperationDao;
-import com.sleroux.bank.model.Operation;
+import com.sleroux.bank.model.operation.Operation;
 import com.sleroux.bank.service.CategoService;
 import com.sleroux.bank.testutils.OperationHelper;
 

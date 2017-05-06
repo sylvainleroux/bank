@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.sleroux.bank.domain.BudgetIndex;
-import com.sleroux.bank.model.Budget;
+import com.sleroux.bank.model.budget.Budget;
 
 public class TestBuildIndex {
 

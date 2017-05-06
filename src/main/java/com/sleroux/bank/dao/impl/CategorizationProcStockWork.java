@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.hibernate.jdbc.Work;
 
-import com.sleroux.bank.model.Operation;
+import com.sleroux.bank.model.operation.Operation;
 
 public class CategorizationProcStockWork implements Work {
 	Operation		op;

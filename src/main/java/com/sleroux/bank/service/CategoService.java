@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sleroux.bank.dao.IOperationDao;
-import com.sleroux.bank.model.Operation;
-import com.sleroux.bank.presentation.ConsoleAppHeader;
+import com.sleroux.bank.model.operation.Operation;
+import com.sleroux.bank.presenter.common.ConsoleAppHeader;
 import com.sleroux.bank.util.formats.OperationFormater;
 
 @Service
