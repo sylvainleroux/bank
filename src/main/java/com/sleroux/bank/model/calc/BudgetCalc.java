@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
+import com.sleroux.bank.model.balance.AccountBalance;
 import com.sleroux.bank.model.budget.Budget;
 import com.sleroux.bank.model.operation.Operation;
 
@@ -96,6 +97,17 @@ public class BudgetCalc extends HashMap<String, BudgetCalcCompte> {
 			}
 
 		}
+	}
+
+	public void setSoldes(List<AccountBalance> _soldes) {
+		_soldes.stream().forEach(accountBalance -> {
+			BudgetCalcCompte compte = this.get(accountBalance.getCompte());
+			if (compte != null) {
+				compte.setBalances(accountBalance.getSolde());
+			}
+
+		});
+
 	}
 
 }

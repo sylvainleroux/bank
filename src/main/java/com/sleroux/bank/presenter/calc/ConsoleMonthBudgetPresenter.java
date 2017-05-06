@@ -22,15 +22,14 @@ public class ConsoleMonthBudgetPresenter implements MonitorInterface {
 	@Override
 	public void printCalc(BudgetCalc _budgetCalc) {
 
-		_budgetCalc.entrySet().stream().forEach(entry -> {
+		_budgetCalc.forEach((compte, lists) -> {
 
-			String compte = entry.getKey();
 			System.out.println("");
 			prTable("┌", "┬", "┐");
 
 			prHeader(Arrays.asList(compte, "   BUDGET", "   ACTUEL", "       GRAPH"));
 
-			entry.getValue().forEach((index, categolist) -> {
+			lists.forEach((index, categolist) -> {
 				prTable("├", "┼", "┤");
 
 				categolist.forEach((catego, data) -> {
@@ -38,6 +37,11 @@ public class ConsoleMonthBudgetPresenter implements MonitorInterface {
 				});
 
 			});
+
+			prTable("├", "┼", "┤");
+
+			pr("SOLDE", lists.getSolde(), lists.getSoldeBudget(), null);
+
 			prTable("└", "┴", "┘");
 
 		});
@@ -62,10 +66,14 @@ public class ConsoleMonthBudgetPresenter implements MonitorInterface {
 	private void pr(String _catego, BigDecimal operation, BigDecimal budget, Integer _isCredit) {
 
 		double ratioDouble = operation.doubleValue() * 100 / budget.doubleValue();
-		// Calc ratio
-		String ratio = graph(ratioDouble);
+		String ratio = "                    ";
+		String sign = "=";
+		if (_isCredit != null) {
+			sign = _isCredit == 0 ? "+" : "-";
+			ratio = graph(ratioDouble);
+		} 
 		out.printf("│%-" + (columCatego - 1) + "s%s|%" + (columnDebit) + ".2f│%" + (columnDebit) + ".2f│%s│\n", _catego,
-				_isCredit == 0 ? "+" : "-", budget, operation, ratio);
+				sign, budget, operation, ratio);
 	}
 
 	public static String graph(double ratioDouble) {

@@ -12,18 +12,22 @@ import com.sleroux.bank.model.calc.BudgetCalc;
 import com.sleroux.bank.presenter.calc.ConsoleMonthBudgetPresenter;
 import com.sleroux.bank.presenter.calc.MonitorInterface;
 import com.sleroux.bank.service.BudgetService;
+import com.sleroux.bank.service.SoldeService;
 import com.sleroux.bank.service.operation.OperationService;
 
 @Controller
 public class CalcController extends BusinessServiceAbstract {
 
-	@Autowired 
-	BudgetService budgetService;
-	
 	@Autowired
-	OperationService operationService;
-	
-	private MonitorInterface monitorInterface = new ConsoleMonthBudgetPresenter(System.out);
+	BudgetService				budgetService;
+
+	@Autowired
+	OperationService			operationService;
+
+	@Autowired
+	SoldeService				soldeService;
+
+	private MonitorInterface	monitorInterface	= new ConsoleMonthBudgetPresenter(System.out);
 
 	public class CaclInputParams {
 		int	year;
@@ -44,8 +48,9 @@ public class CalcController extends BusinessServiceAbstract {
 
 		BudgetCalc budgetCalc = new BudgetCalc();
 		budgetCalc.setOperations(operationService.getOperations(pr.year, pr.month));
-		budgetCalc.setBudget(budgetService.getBudget(pr.year,pr.month));
-
+		budgetCalc.setBudget(budgetService.getBudget(pr.year, pr.month));
+		budgetCalc.setSoldes(soldeService.getSoldes());
+		
 		monitorInterface.printCalc(budgetCalc);
 
 	}

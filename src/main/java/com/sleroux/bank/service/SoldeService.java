@@ -34,4 +34,8 @@ public class SoldeService {
 
 	}
 
+	public List<AccountBalance>  getSoldes() {
+		return operationDao.getSoldes();
+	}
+
 }
