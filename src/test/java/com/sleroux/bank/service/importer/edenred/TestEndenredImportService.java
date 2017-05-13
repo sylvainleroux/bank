@@ -67,7 +67,7 @@ public class TestEndenredImportService {
 		List<Operation> operations = operationDao.findAll();
 
 		Assert.assertEquals(
-				"[EDENRED.TICKET_RESAURANT|29/04/17|29/04/17|15h11 - AVION 0373499 150 ROUTE DE XXXXX 29000 QUIMPER|-19.00]",
+				"[EDENRED.TICKET_RESTO|29/04/17|29/04/17|15h11 - AVION 0373499 150 ROUTE DE XXXXX 29000 QUIMPER|-19.00]",
 				operations.get(0).toString());
 		Assert.assertEquals(16, report.getNbLines());
 		Assert.assertEquals(16, report.getNewLines());
@@ -82,7 +82,7 @@ public class TestEndenredImportService {
 		Date d = mdf.parse("29/04/2017");
 
 		Operation o = new Operation();
-		o.setCompte("EDENRED.TICKET_RESAURANT");
+		o.setCompte("EDENRED.TICKET_RESTO");
 		o.setLibelle("15h11 - AVION 0373499 150 ROUTE DE XXXXX 29000 QUIMPER");
 		o.setDebit(new BigDecimal("19.00"));
 		o.setDateOperation(d);
@@ -98,7 +98,7 @@ public class TestEndenredImportService {
 		List<Operation> operations = operationDao.findAll();
 
 		Assert.assertEquals(
-				"[EDENRED.TICKET_RESAURANT|29/04/17|29/04/17|15h11 - AVION 0373499 150 ROUTE DE XXXXX 29000 QUIMPER|-19.00]",
+				"[EDENRED.TICKET_RESTO|29/04/17|29/04/17|15h11 - AVION 0373499 150 ROUTE DE XXXXX 29000 QUIMPER|-19.00]",
 				operations.get(0).toString());
 		Assert.assertEquals(16, report.getNbLines());
 		Assert.assertEquals(15, report.getNewLines());
