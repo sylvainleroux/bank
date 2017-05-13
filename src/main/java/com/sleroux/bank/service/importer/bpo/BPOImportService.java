@@ -1,4 +1,4 @@
-package com.sleroux.bank.service.impl;
+package com.sleroux.bank.service.importer.bpo;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +25,7 @@ import com.sleroux.bank.domain.ImportReportFile;
 import com.sleroux.bank.model.extract.ExtractDocument;
 import com.sleroux.bank.model.extract.ExtractHistory;
 import com.sleroux.bank.model.operation.Operation;
-import com.sleroux.bank.service.ImportType;
+import com.sleroux.bank.service.importer.ImportType;
 import com.sleroux.bank.util.Config;
 
 @Service
@@ -49,7 +49,7 @@ public class BPOImportService {
 		for (String f : _files) {
 
 			ImportReportFile rf = new ImportReportFile();
-			rf.setImportType(IMPORT_TYPE.toString());
+			rf.setImportType(IMPORT_TYPE);
 			rf.setFilename(f);
 			_report.getReportFiles().add(rf);
 

@@ -1,4 +1,4 @@
-package com.sleroux.bank.service;
+package com.sleroux.bank.service.importer;
 
 import java.io.File;
 import java.util.List;
@@ -15,8 +15,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sleroux.bank.dao.IBalanceDao;
 import com.sleroux.bank.domain.ImportReport;
 import com.sleroux.bank.model.balance.AccountBalance;
-import com.sleroux.bank.service.impl.BPOImportService;
-import com.sleroux.bank.service.impl.CMBImportService;
+import com.sleroux.bank.service.importer.bpo.BPOImportService;
+import com.sleroux.bank.service.importer.cmb.CMBImportService;
+import com.sleroux.bank.service.importer.edenred.EndenredImportService;
 
 @Service
 public class ImportService {
@@ -41,6 +42,10 @@ public class ImportService {
 
 		if (_type == ImportType.BPO) {
 			ctx.getBean(BPOImportService.class).importFiles(_files, report);
+		}
+		
+		if (_type == ImportType.EDENRED){
+			ctx.getBean(EndenredImportService.class).importFiles(_files, report);
 		}
 
 		return report;

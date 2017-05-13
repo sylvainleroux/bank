@@ -110,7 +110,8 @@ public class Operation implements Serializable {
 
 	@Transient
 	public String toString() {
-		String montant = credit.compareTo(BigDecimal.ZERO) > 0 ? credit.toString() : debit.negate().toString();
+		String montant = credit.compareTo(BigDecimal.ZERO) > 0 ? "+" + credit.toString()
+				: "-" + debit.toString();
 
 		String sep = "|";
 		return "[" + compte + sep + formatDate(dateOperation) + sep + formatDate(dateValeur) + sep + libelle + sep

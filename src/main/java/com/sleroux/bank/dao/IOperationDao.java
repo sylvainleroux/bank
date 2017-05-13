@@ -20,7 +20,7 @@ public interface IOperationDao extends IOperations<Operation> {
 
 	List<AccountBalance> getSoldes();
 
-	List<Operation> findByCategoYearMonth(Integer year, Integer month, String catego);
+	List<Operation> findByCategoYearMonth(Integer year, Integer month, String catego, String _compte);
 
 	List<Operation> findByYearMonth(int _year, int _month);
 

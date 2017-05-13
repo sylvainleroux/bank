@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ImportReport {
 
-	private List<ImportReportFile>	reportFiles	= new ArrayList<>();
+	private List<ImportReportFile> reportFiles = new ArrayList<>();
 
 	public List<ImportReportFile> getReportFiles() {
 		return reportFiles;
@@ -16,11 +16,16 @@ public class ImportReport {
 	}
 
 	public int getNbLines() {
-		int nbLines = 0;
-		for (ImportReportFile rf : reportFiles) {
-			nbLines += rf.getRawLines();
-		}
-		return nbLines;
+		return reportFiles.stream().mapToInt(r -> r.getRawLines()).sum();
+	}
+
+	@Override
+	public String toString() {
+		return "ImportReport [reportFiles=" + reportFiles + "]";
+	}
+
+	public Object getNewLines() {
+		return reportFiles.stream().mapToInt(r -> r.getNewLines()).sum();
 	}
 
 }

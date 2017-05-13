@@ -5,6 +5,7 @@ import org.junit.Test;
 import com.sleroux.bank.domain.ImportReport;
 import com.sleroux.bank.domain.ImportReportFile;
 import com.sleroux.bank.service.extract.ImportReportPresenter;
+import com.sleroux.bank.service.importer.ImportType;
 
 public class TestImportReportPresenter {
 
@@ -26,7 +27,7 @@ public class TestImportReportPresenter {
 		f.setFilename("CMB_Import");
 		f.setRawLines(10);
 		f.setNewLines(1);
-		f.setImportType("CMB");
+		f.setImportType(ImportType.CMB);
 		
 		report.getReportFiles().add(f);
 		

@@ -204,26 +204,40 @@ public class Config {
 	public static String getDBPass() {
 		return getProperty("DB_PASSWORD");
 	}
-	
+
 	public static String getImportCommandPath() {
 		return getProperty("IMPORT_COMMAND_PATH");
 	}
-	
+
 	public static String getImportCommandCMB() {
 		return getProperty("IMPORT_COMMAND_CMB");
 	}
-	
+
 	public static String getImportCommandBPO() {
 		return getProperty("IMPORT_COMMAND_BPO");
 	}
 
+	public static String getImportCommandEdenred() {
+		return getProperty("IMPORT_COMMAND_EDENRED");
+	}
+
 	// Prefix imported files with IMPORTED_
 	public static boolean getArchiveImportFiles() {
-		
+
 		return properties.get("ARCHIVE_IMPORT_FILES").equals("true");
+	}
+
+	public static void setArchiveImportFiles(Boolean _b) {
+		properties.setProperty("ARCHIVE_IMPORT_FILES", _b.toString());
 	}
 
 	public static boolean deleteImportFile() {
 		return properties.get("DELETE_IMPORT_FILES").equals("true");
 	}
+
+	public static void setDeleteImportFile(Boolean _b) {
+		properties.setProperty("DELETE_IMPORT_FILES", _b.toString());
+
+	}
+
 }

@@ -19,8 +19,8 @@ import com.sleroux.bank.TestConfig;
 import com.sleroux.bank.dao.IBalanceDao;
 import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.model.operation.Operation;
-import com.sleroux.bank.service.ImportService;
-import com.sleroux.bank.service.ImportType;
+import com.sleroux.bank.service.importer.ImportService;
+import com.sleroux.bank.service.importer.ImportType;
 import com.sleroux.bank.util.Config;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,6 +31,9 @@ public class TestImport {
 	public static void loadConfig() {
 		try {
 			Config.loadProperties();
+
+			Config.setArchiveImportFiles(false);
+			Config.setDeleteImportFile(false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -76,7 +79,7 @@ public class TestImport {
 
 		List<Operation> list = operationDao.findAll();
 
-		Assert.assertEquals("[BPO.COMPTE_CHEQUE|27/07/16|27/07/16|VIR ABMLSJH POE 0HBLJZHS-TGHJ 98HNB|18.57]",
+		Assert.assertEquals("[BPO.COMPTE_CHEQUE|27/07/16|27/07/16|VIR ABMLSJH POE 0HBLJZHS-TGHJ 98HNB|+18.57]",
 				list.get(0).toString());
 		Assert.assertEquals("[BPO.COMPTE_CHEQUE|26/07/16|26/07/16|VIR MOB AVLKJSH LKJHS 9SKHS|-95.45]",
 				list.get(1).toString());

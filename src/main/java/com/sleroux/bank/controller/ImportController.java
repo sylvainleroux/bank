@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.presenter.common.ConsoleAppHeader;
-import com.sleroux.bank.service.ExtractService;
-import com.sleroux.bank.service.ImportService;
-import com.sleroux.bank.service.ImportType;
+import com.sleroux.bank.service.extract.ExtractService;
+import com.sleroux.bank.service.importer.ImportService;
+import com.sleroux.bank.service.importer.ImportType;
 
 @Component
 public class ImportController extends BusinessServiceAbstract {

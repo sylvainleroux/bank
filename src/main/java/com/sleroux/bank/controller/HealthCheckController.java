@@ -23,13 +23,13 @@ import com.sleroux.bank.util.formats.OperationFormater;
 public class HealthCheckController extends BusinessServiceAbstract {
 
 	@Autowired
-	AnalysisService analysisService;
+	AnalysisService	analysisService;
 
 	@Autowired
-	BudgetService budgetService;
+	BudgetService	budgetService;
 
 	@Autowired
-	IOperationDao operationDao;
+	IOperationDao	operationDao;
 
 	@Override
 	@Transactional
@@ -38,7 +38,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 		Calendar c = Calendar.getInstance();
 
 		List<AnalysisFact> facts = analysisService.getFacts(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1);
-		if (facts.size() == 0){
+		if (facts.size() == 0) {
 			System.out.println("Everything looks good!");
 		}
 		for (AnalysisFact a : facts) {
@@ -73,7 +73,8 @@ public class HealthCheckController extends BusinessServiceAbstract {
 						+ " : " + a.getYear() + "/" + a.getMonth() + " ?");
 				System.out.println("  Corresponding operations : ");
 
-				List<Operation> ops = operationDao.findByCategoYearMonth(a.getYear(), a.getMonth(), a.getCatego());
+				List<Operation> ops = operationDao.findByCategoYearMonth(a.getYear(), a.getMonth(), a.getCatego(),
+						a.getCompte());
 				for (Operation o : ops) {
 					System.out.println("  " + OperationFormater.toString(o));
 				}
@@ -109,7 +110,6 @@ public class HealthCheckController extends BusinessServiceAbstract {
 					budgetService.createUpdateCredit(a);
 				}
 			}
-			
 
 		}
 
@@ -123,7 +123,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 			if (r.action == RequestAction.LIST_OPERATIONS) {
 				System.out.println("  Corresponding operations : ");
 				List<Operation> ops = operationDao.findByCategoYearMonth(_fact.getYear(), _fact.getMonth(),
-						_fact.getCatego());
+						_fact.getCatego(), _fact.getCompte());
 				for (Operation o : ops) {
 					System.out.println("  " + OperationFormater.toString(o));
 				}

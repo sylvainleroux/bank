@@ -161,6 +161,7 @@ public class BudgetIndex {
 	public BudgetIndex(List<Budget> _db) {
 
 		for (Budget b : _db) {
+			
 			Year y = map.get(b.getYear());
 			if (y == null) {
 				y = new Year();

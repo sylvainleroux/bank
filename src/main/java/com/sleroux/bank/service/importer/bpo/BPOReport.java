@@ -1,4 +1,4 @@
-package com.sleroux.bank.service.impl;
+package com.sleroux.bank.service.importer.bpo;
 
 import java.util.ArrayList;
 

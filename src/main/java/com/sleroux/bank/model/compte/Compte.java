@@ -45,4 +45,11 @@ public class Compte implements Serializable {
 		type = _type;
 	}
 
+	@Override
+	public String toString() {
+		return "Compte [id=" + id + ", nom=" + nom + ", type=" + type + "]";
+	}
+	
+	
+
 }

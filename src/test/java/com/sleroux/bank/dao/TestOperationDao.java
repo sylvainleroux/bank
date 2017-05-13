@@ -132,6 +132,7 @@ public class TestOperationDao {
 			Operation o = OperationHelper.createCreditOperation();
 			o.setYear(2016);
 			o.setLibelle("Operation 1");
+			o.setCompte("CMB");
 			o.setMonthAdjusted(2);
 			o.setCatego("AVION");
 			o.setCredit(new BigDecimal("100.00"));
@@ -141,6 +142,7 @@ public class TestOperationDao {
 		{
 			Operation o = OperationHelper.createCreditOperation();
 			o.setYear(2016);
+			o.setCompte("CMB");
 			o.setMonthAdjusted(2);
 			o.setLibelle("Operation 2");
 			o.setCatego("AVION");
@@ -151,12 +153,13 @@ public class TestOperationDao {
 		{
 			Operation o = OperationHelper.createCreditOperation();
 			o.setYear(2016);
+			o.setCompte("CMB");
 			o.setMonthAdjusted(2);
 			o.setCatego("POMME");
 			o.setCredit(new BigDecimal("100.00"));
 			operationDao.create(o);
 		}
-		List<Operation> list = operationDao.findByCategoYearMonth(2016, 2, "AVION");
+		List<Operation> list = operationDao.findByCategoYearMonth(2016, 2, "AVION", "CMB");
 		Assert.assertEquals(2, list.size());
 
 	}

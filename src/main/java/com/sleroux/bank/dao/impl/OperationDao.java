@@ -86,9 +86,11 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Operation> findByCategoYearMonth(Integer _year, Integer _month, String _catego) {
-		return getCurrentSession().createQuery("from Operation where year=:year and month=:month and catego=:catego")
-				.setParameter("year", _year).setParameter("month", _month).setParameter("catego", _catego).list();
+	public List<Operation> findByCategoYearMonth(Integer _year, Integer _month, String _catego, String _compte) {
+		return getCurrentSession()
+				.createQuery("from Operation where year=:year and month=:month and catego=:catego and compte=:compte")
+				.setParameter("year", _year).setParameter("month", _month).setParameter("catego", _catego)
+				.setParameter("compte", _compte).list();
 
 	}
 

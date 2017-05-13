@@ -1,14 +1,16 @@
 package com.sleroux.bank.domain;
 
+import com.sleroux.bank.service.importer.ImportType;
+
 public class ImportReportFile {
 
-	private String	importType	= "UNDEFINED";
+	private ImportType	importType	= null;
 
-	private String	filename = "UNDEFINED";
+	private String		filename	= "UNDEFINED";
 
-	private int		rawLines;
+	private int			rawLines;
 
-	private int		newLines;
+	private int			newLines;
 
 	public String getFilename() {
 		return filename;
@@ -34,12 +36,19 @@ public class ImportReportFile {
 		newLines = _newLines;
 	}
 
-	public String getImportType() {
+	public ImportType getImportType() {
 		return importType;
 	}
 
-	public void setImportType(String _importType) {
+	public void setImportType(ImportType _importType) {
 		importType = _importType;
 	}
 
+	@Override
+	public String toString() {
+		return "ImportReportFile [importType=" + importType + ", filename=" + filename + ", rawLines=" + rawLines
+				+ ", newLines=" + newLines + "]";
+	}
+
+	
 }

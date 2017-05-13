@@ -1,7 +1,10 @@
-package com.sleroux.bank.service;
+package com.sleroux.bank.service.extract;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -36,9 +39,9 @@ public class ExtractService {
 				if (line.contains("[Done]")) {
 					System.out.print(" (" + line.replaceAll("\t\\[Done\\] in ", "") + ")");
 				} else {
-					if (first){
+					if (first) {
 						first = false;
-					}else{
+					} else {
 						System.out.print("\n");
 					}
 					System.out.print(line);
@@ -96,6 +99,24 @@ public class ExtractService {
 			}
 		}
 		return foundFiles;
+	}
+
+	public List<String> getFilesEdenred() {
+		// Scan Downloads directory
+		List<String> foundFiles = new ArrayList<>();
+		try {
+			Files.list(Paths.get(Config.getExtractDownloadPath())).filter(ExtractService::isEdenredExtract)
+					.forEach(p -> {
+						foundFiles.add(p.toString());
+					});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return foundFiles;
+	}
+
+	public static boolean isEdenredExtract(Path f) {
+		return f.getFileName().getFileName().toString().startsWith("Edenred-Export");
 	}
 
 }
