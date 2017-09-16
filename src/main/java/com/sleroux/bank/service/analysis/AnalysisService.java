@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class AnalysisService {
 		return getFacts(_year, _month).size();
 	}
 
+	@Transactional
 	public List<AnalysisFact> getFacts(int _year, int _month) {
 
 		List<AnalysisFact> list = analysisDao.getFacts();

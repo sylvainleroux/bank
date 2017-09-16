@@ -72,8 +72,8 @@ public class ConsoleMonthBudgetPresenter implements MonitorInterface {
 			sign = _isCredit == 0 ? "+" : "-";
 			ratio = graph(ratioDouble);
 		} 
-		out.printf("│%-" + (columCatego - 1) + "s%s|%" + (columnDebit) + ".2f│%" + (columnDebit) + ".2f│%s│\n", _catego,
-				sign, budget, operation, ratio);
+		out.printf("│%s %-" + (columCatego - 2) + "s|%" + (columnDebit) + ".2f│%" + (columnDebit) + ".2f│%s│\n",sign, _catego,
+				 budget, operation, ratio);
 	}
 
 	public static String graph(double ratioDouble) {

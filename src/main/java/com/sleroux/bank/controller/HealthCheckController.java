@@ -5,42 +5,41 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
-import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.domain.AlertType;
 import com.sleroux.bank.model.analysis.AnalysisFact;
 import com.sleroux.bank.model.operation.Operation;
 import com.sleroux.bank.service.BudgetService;
 import com.sleroux.bank.service.analysis.AnalysisService;
+import com.sleroux.bank.service.operation.OperationService;
 import com.sleroux.bank.util.formats.OperationFormater;
 
 @Controller
 public class HealthCheckController extends BusinessServiceAbstract {
 
 	@Autowired
-	AnalysisService	analysisService;
+	AnalysisService		analysisService;
 
 	@Autowired
-	BudgetService	budgetService;
+	BudgetService		budgetService;
 
 	@Autowired
-	IOperationDao	operationDao;
+	OperationService	operationService;
 
 	@Override
-	@Transactional
 	public void run() throws Exception {
 
 		Calendar c = Calendar.getInstance();
 
 		List<AnalysisFact> facts = analysisService.getFacts(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1);
+
 		if (facts.size() == 0) {
 			System.out.println("Everything looks good!");
 		}
+
 		for (AnalysisFact a : facts) {
 
 			System.out.println("-----------------------------------------");
@@ -73,7 +72,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 						+ " : " + a.getYear() + "/" + a.getMonth() + " ?");
 				System.out.println("  Corresponding operations : ");
 
-				List<Operation> ops = operationDao.findByCategoYearMonth(a.getYear(), a.getMonth(), a.getCatego(),
+				List<Operation> ops = operationService.findByCategoYearMonth(a.getYear(), a.getMonth(), a.getCatego(),
 						a.getCompte());
 				for (Operation o : ops) {
 					System.out.println("  " + OperationFormater.toString(o));
@@ -122,7 +121,7 @@ public class HealthCheckController extends BusinessServiceAbstract {
 				;
 			if (r.action == RequestAction.LIST_OPERATIONS) {
 				System.out.println("  Corresponding operations : ");
-				List<Operation> ops = operationDao.findByCategoYearMonth(_fact.getYear(), _fact.getMonth(),
+				List<Operation> ops = operationService.findByCategoYearMonth(_fact.getYear(), _fact.getMonth(),
 						_fact.getCatego(), _fact.getCompte());
 				for (Operation o : ops) {
 					System.out.println("  " + OperationFormater.toString(o));
