@@ -1,3 +1,3 @@
 #!/bin/bash
 export JAVA_HOME=$(/usr/libexec/java_home)
-mvn clean dependency:copy-dependencies package assembly:single 
+mvn clean dependency:copy-dependencies package assembly:single -DargLine="--add-modules java.xml.bind" 

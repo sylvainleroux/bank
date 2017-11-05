@@ -51,7 +51,8 @@ public class ConsoleMonthBudgetPresenter implements MonitorInterface {
 
 		String format = "│%-" + columCatego + "s│%-" + columnDebit + "s│%-" + columnDebit + "s│%-" + columnGraph
 				+ "s│\n";
-		String[] params = (String[]) _list.toArray();
+		String[] params = new String[_list.size()];
+		params= _list.toArray(params);
 		out.printf(format, params[0], params[1], params[2], params[3]);
 	}
 
