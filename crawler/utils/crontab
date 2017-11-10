@@ -1,0 +1,1 @@
+*/5 * * * 1,2,3,4,5 /Users/sleroux/ideo/bank-crawler/bank-crawler > ~/Dropbox/Comptes/crawler/last-execution.log 2>&1
