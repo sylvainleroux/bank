@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class ExtractService {
 	@Autowired
 	IExtractHistoryDao	extractHistoryDao;
 
-	private Logger		logger	= Logger.getLogger(this.getClass());
+	private Logger		logger	= LogManager.getLogger(this.getClass());
 
 	public void runExtract(String _command) {
 		File file = new File(Config.getImportCommandPath() + File.separator + _command);

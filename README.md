@@ -1,7 +1,7 @@
 Bank :: personal finance manager
 ===============================
 
-A command line tool and an XLS document to keep track of expenses, check account balance and plan solid budgets. With automated Cyberplus import. 
+A command line tool and an XLS document to keep track of expenses, check account balance and plan solid budgets. With automated Cyberplus import.
 
 Features
 --------
@@ -22,7 +22,7 @@ Excel document : analysis and budget planning
 * Adjusted montly balances: avoid operations like salaries to be counted twice in the same time period, even if both are in the same month.
 * Budget timeline, a clear view on past and future budgets
 
-Usage 
+Usage
 -----
 
 ### Cyberplus import
@@ -34,9 +34,9 @@ $ bank import
 --------------------------------------------------------------------------------
 -- CYBERPLUS DONWLOAD                                                         --
 --------------------------------------------------------------------------------
-Account : 106XXXXXXXXXX 
+Account : 106XXXXXXXXXX
 Start   : 17/01/2015
-End     : 22/01/2015 
+End     : 22/01/2015
 --------------------------------------------------------------------------------
 [login] Get session cookies and token ...... ok.
 [login] Post authentication data ......... ok.
@@ -49,7 +49,7 @@ End     : 22/01/2015
 --------------------------------------------------------------------------------
 Completed, 6 operations downloaded
 --------------------------------------------------------------------------------
--- MERGE                                                                      -- 
+-- MERGE                                                                      --
 --------------------------------------------------------------------------------
 DUPLICATE [05/01/15;PRLV SEPA Bouygues Telec B2K0000XX8X01;01XXXXXM9;05/01/15;-15.99;INTERNET]
 DUPLICATE [05/01/15;CARTE 020115 CB:******** DECATHLON 0032;08XXXX;05/01/15;-13.9;HABILLEMENT]
@@ -87,7 +87,7 @@ Is catego valid ? (Y/n) >
 
 ### Balance and Budget
 
-Displays an accurate summary of accounts status, on the adjusted time period so that recurrent operations won't be counted twice if they happen on the same calendar month. 
+Displays an accurate summary of accounts status, on the adjusted time period so that recurrent operations won't be counted twice if they happen on the same calendar month.
 
 ```
 $ bank calc
@@ -117,7 +117,7 @@ $ bank calc
 +---------------+----------+----------+----------+--------------------+
 ```
 
-### All in a row 
+### All in a row
 
 Does import, merge, categorization, review, and summary with one command.
 
@@ -129,8 +129,8 @@ $ bank all
 ### Complete list of options
 
 ```
-Usage : bank <command> 
-Commands : 
+Usage : bank <command>
+Commands :
 	all        Run import, catego and calc commands
 	fileimport Import CSV files from disk
 	import     Import data from Cyberplus
@@ -139,7 +139,7 @@ Commands :
 	period     Start a new 'adjusted month'
 	server 	   Launch embedded http server
 
-Maintenance commands : 
+Maintenance commands :
 	version    Print version
 	pwd        Set/update password, stored with encryption
 	setup      Initial setup
@@ -160,38 +160,26 @@ If the command line breaks, this document can be maintained manually, it doesn't
 
 About the usage : full review quarterly, update of new know expenses and incomes weekly.
 
-
-![Demo](./src/main/resources/demo.png)
-
-Webapp
-------
-
-Web UI for Desktop / Mobile. AngularJS + Bootstrap. Server is embeded in bank app.
-
-```
-$ bank server
-```
-
-![Webapp](./src/main/resources/webapp.png?)
-
-Installation 
+Installation
 ------------
 
 Requirements
 
-* Tested on Mac OS 10.9+
-* JDK 7+
+* Tested on Mac OS 10.12
+* JDK 9
 * Maven
 * Git
+* Vagrant
 
 ```
 git clone git@bitbucket.org:sleroux/bank.git
 cd bank
+vagrant up
 ./compile
 ./install # Root password prompted during install
 ```
 
-Configuration 
+Configuration
 -------------
 
 
@@ -213,7 +201,7 @@ $ bank test
 ```
 
 
-Licence 
+Licence
 -------
 
 The MIT License (MIT)

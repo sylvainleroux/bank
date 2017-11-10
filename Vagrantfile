@@ -13,10 +13,10 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "ubuntu/trusty64"
-  # config.vm.box = "precise64"
-   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
-   config.vm.network :forwarded_port, guest: 3306, host: 3306
-   config.vm.provision :shell, :path => "install-mysql.sh"
-   config.vm.synced_folder ".", "/vagrant", :mount_options => ["dmode=777", "fmode=666"]
-   config.vm.network "private_network", ip: "33.33.33.10", type: "dhcp", auto_config: false  # SHELL
+  config.vm.box_check_update = false
+  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  config.vm.network :forwarded_port, guest: 3306, host: 3306
+  config.vm.provision :shell, :path => "vagrant/install-mysql.sh"
+  config.vm.synced_folder ".", "/vagrant", :mount_options => ["dmode=777", "fmode=666"]
+  config.vm.network "private_network", ip: "33.33.33.10", type: "dhcp", auto_config: false  # SHELL
 end

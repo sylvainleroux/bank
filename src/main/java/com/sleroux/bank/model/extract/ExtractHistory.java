@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class ExtractHistory  implements Serializable{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long	id;
 
 	@Column(name = "extract_date")

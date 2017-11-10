@@ -13,7 +13,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -32,7 +33,7 @@ public class BudgetDocument {
 	private String						documentFile;
 	private Workbook					wb;
 	private Sheet						sheet;
-	private Logger						logger					= Logger.getLogger(BudgetDocument.class);
+	private Logger						logger					= LogManager.getLogger(BudgetDocument.class);
 
 	private final static short			ROW_YEAR				= 0;
 	private final static short			ROW_MONTH				= 1;

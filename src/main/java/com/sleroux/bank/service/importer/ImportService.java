@@ -5,7 +5,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ import com.sleroux.bank.service.importer.edenred.EndenredImportService;
 @Service
 public class ImportService {
 
-	private Logger			logger	= Logger.getLogger(ImportService.class);
+	private Logger			logger	= LogManager.getLogger(ImportService.class);
 
 	private ObjectMapper	mapper	= new ObjectMapper();
 

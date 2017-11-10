@@ -16,11 +16,10 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import au.com.bytecode.opencsv.CSVReader;
 
 import com.sleroux.bank.dao.IExtractHistoryDao;
 import com.sleroux.bank.dao.IOperationDao;
@@ -32,12 +31,14 @@ import com.sleroux.bank.model.operation.Operation;
 import com.sleroux.bank.service.importer.ImportType;
 import com.sleroux.bank.util.Config;
 
+import au.com.bytecode.opencsv.CSVReader;
+
 @Service
 public class CMBImportService {
 
 	private final static ImportType	IMPORT_TYPE	= ImportType.CMB;
 
-	private Logger					logger		= Logger.getLogger(CMBImportService.class);
+	private Logger					logger		= LogManager.getLogger(CMBImportService.class);
 
 	@Autowired
 	IOperationDao					operationDao;

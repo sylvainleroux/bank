@@ -15,7 +15,8 @@ import java.util.Locale;
 
 import javax.transaction.Transactional;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ import com.sleroux.bank.util.Config;
 @Service
 public class EndenredImportService {
 
-	private Logger					logger	= Logger.getLogger(EndenredImportService.class);
+	private Logger					logger	= LogManager.getLogger(EndenredImportService.class);
 
 	@Autowired
 	IOperationDao					operationDao;

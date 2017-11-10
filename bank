@@ -6,4 +6,4 @@ then
 	exit 1
 fi
 COLUMNS=$(tput cols)
-java -cp /usr/local/bank/bank-jar-with-dependencies.jar com.sleroux.bank.Bank $@ columns:$COLUMNS
+java  --add-modules java.xml.bind --add-opens java.base/java.lang=ALL-UNNAMED -cp /usr/local/bank/bank-jar-with-dependencies.jar com.sleroux.bank.Bank $@ columns:$COLUMNS
