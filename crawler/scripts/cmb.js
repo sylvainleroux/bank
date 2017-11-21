@@ -1,5 +1,5 @@
 /* jshint -W041 */
-var DEBUG = false,
+var DEBUG = true,
   page = require('webpage').create(),
   fs = require('fs'),
   system = require('system'),
@@ -236,10 +236,10 @@ function listDownloadFiles(callback) {
 
           try {
             var node = document.querySelectorAll("div.actif>div>a");
-
-
             // Text objects referencing found operations
             var textNodes = document.getElementsByClassName("espace libelle_2");
+
+						var accountNameNodes = document.getElementsByClassName("espace libelle_24");
 
             var visible = true;
             for (var i in node) {
@@ -250,6 +250,11 @@ function listDownloadFiles(callback) {
 
                   // Check if there is no operations
                   if (i > 0) {
+										var nameNode = accountNameNodes[(i - 1) * 2];
+										var accountName = nameNode.innerText.trim().replace(/ /g, '_');
+
+
+
                     var textNode = textNodes[i - 1];
                     //console.log(textNode.innerHTML);
 
@@ -325,8 +330,8 @@ function prepareExportCommands(callback) {
         "'" + files[index] + "'",
         "-H", "'Referer: https://www.cmb.fr/banque/assurance/credit-mutuel/web/yc_8462/prive'",
         "-H", "'Cookie:" + globalJSessionID + "'",
-        ">",
-        "~/Downloads/RELEVE_" + new Date().format("yyyy_mm_dd") + "_" + comptes[counter++] + "_last5weeks" + ".csv"
+				"-J", // --remote-header-name
+				"-O"
       ].join(" ") + "\n";
     } else {
       //debug("not a download file");
