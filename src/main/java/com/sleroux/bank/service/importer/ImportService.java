@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sleroux.bank.dao.IBalanceDao;
 import com.sleroux.bank.domain.ImportReport;
 import com.sleroux.bank.model.balance.AccountBalance;
-import com.sleroux.bank.service.importer.bpo.BPOImportService;
 import com.sleroux.bank.service.importer.cmb.CMBImportService;
 import com.sleroux.bank.service.importer.edenred.EndenredImportService;
 
@@ -41,11 +40,7 @@ public class ImportService {
 			ctx.getBean(CMBImportService.class).importFiles(_files, report);
 		}
 
-		if (_type == ImportType.BPO) {
-			ctx.getBean(BPOImportService.class).importFiles(_files, report);
-		}
-		
-		if (_type == ImportType.EDENRED){
+		if (_type == ImportType.EDENRED) {
 			ctx.getBean(EndenredImportService.class).importFiles(_files, report);
 		}
 
@@ -73,7 +68,7 @@ public class ImportService {
 
 					balanceDao.update(b);
 				}
-				
+
 				// Delete file after import
 				new File(f).delete();
 

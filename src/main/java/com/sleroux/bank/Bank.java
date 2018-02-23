@@ -22,7 +22,7 @@ import com.sleroux.bank.business.tool.UpdatePassword;
 import com.sleroux.bank.business.tool.Version;
 import com.sleroux.bank.controller.CalcController;
 import com.sleroux.bank.controller.CategoController;
-import com.sleroux.bank.controller.DBToFile;
+import com.sleroux.bank.controller.DBToFileController;
 import com.sleroux.bank.controller.ExtractController;
 import com.sleroux.bank.controller.FileToDB;
 import com.sleroux.bank.controller.HealthCheckController;
@@ -132,7 +132,7 @@ public class Bank {
 
 	@Command(name = "db2file", description = "Write MySQL data to Excel document")
 	public void db2file() {
-		run(DBToFile.class);
+		run(DBToFileController.class);
 	}
 
 	@Command(name = "version", description = "Display current version")

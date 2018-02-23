@@ -24,18 +24,14 @@ public class ExtractController extends BusinessServiceAbstract {
 	@Override
 	public void run() throws Exception {
 
-		ConsoleAppHeader.printAppHeader("Extract BPO");
-		extractService.runExtract(Config.getImportCommandBPO());
-
-		ConsoleAppHeader.printAppHeader("Extract CMB");
+		ConsoleAppHeader.printAppHeader("Extract CMB"); 
 		extractService.runExtract(Config.getImportCommandCMB());
 
 		ConsoleAppHeader.printAppHeader("Extract Edenred");
 		extractService.runExtract(Config.getImportCommandEdenred());
 
 		ConsoleAppHeader.printAppHeader("Import documents");
-		ImportReport reportBPO = importService.importFiles(ImportType.BPO, extractService.getFilesBPO());
-		ImportReportPresenter.displayReport(reportBPO);
+
 		ImportReport reportCMB = importService.importFiles(ImportType.CMB, extractService.getFilesCMB());
 		ImportReportPresenter.displayReport(reportCMB);
 
