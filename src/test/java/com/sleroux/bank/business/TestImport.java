@@ -72,19 +72,13 @@ public class TestImport {
 	public void testImportBalances() throws Exception {
 
 		List<String> files = new ArrayList<>();
-		String f = TestImport.class.getResource("BPO_BALANCE.json").getFile();
-		files.add(new File(f).toString());
-
-		importService.updateBalances(files);
-
-		Assert.assertEquals(1, balanceDao.findAll().size());
 
 		String f2 = TestImport.class.getResource("CMB_BALANCE.json").getFile();
 		files.add(new File(f2).toString());
 
 		importService.updateBalances(files);
 
-		Assert.assertEquals(3, balanceDao.findAll().size());
+		Assert.assertEquals(2, balanceDao.findAll().size());
 	}
 
 }
