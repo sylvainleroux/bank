@@ -15,7 +15,7 @@ import com.sleroux.bank.model.analysis.AnalysisFact;
 public class AnalysisDao {
 
 	@Autowired
-	private SessionFactory	sessionFactory;
+	private SessionFactory sessionFactory;
 
 	protected final Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();

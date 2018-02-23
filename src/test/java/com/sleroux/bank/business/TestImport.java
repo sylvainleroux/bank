@@ -69,24 +69,6 @@ public class TestImport {
 
 	@Test
 	@Transactional
-	public void testImportBPO() throws Exception {
-
-		List<String> files = new ArrayList<>();
-		String f = TestImport.class.getResource("BPO.txt").getFile();
-		files.add(new File(f).toString());
-
-		importService.importFiles(ImportType.BPO, files);
-
-		List<Operation> list = operationDao.findAll();
-
-		Assert.assertEquals("[BPO.COMPTE_CHEQUE|27/07/16|27/07/16|VIR ABMLSJH POE 0HBLJZHS-TGHJ 98HNB|+18.57]",
-				list.get(0).toString());
-		Assert.assertEquals("[BPO.COMPTE_CHEQUE|26/07/16|26/07/16|VIR MOB AVLKJSH LKJHS 9SKHS|-95.45]",
-				list.get(1).toString());
-	}
-
-	@Test
-	@Transactional
 	public void testImportBalances() throws Exception {
 
 		List<String> files = new ArrayList<>();

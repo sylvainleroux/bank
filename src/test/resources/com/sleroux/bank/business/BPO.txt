@@ -1,1 +1,0 @@
-{"exportType":"bpo","content":[{"credit":"18.57","date_compta":"27/07/2016","date_ope":"27/07/2016","date_val":"27/07/2016","debit":"","libelle":"VIR ABMLSJH POE 0HBLJZHS-TGHJ","ref":"98HNB"},{"credit":"","date_compta":"26/07/2016","date_ope":"26/07/2016","date_val":"26/07/2016","debit":"95.45","libelle":"VIR MOB AVLKJSH LKJHS","ref":"9SKHS"}]}
