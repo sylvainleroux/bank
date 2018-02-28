@@ -9,6 +9,6 @@ rm -Rf tmp/*
 phantomjs --cookies-file=tmp/cmb-cookies scripts/edenred.js
 
 DATE_FORMATED=$(date +%Y-%M-%d-%H%M)
-cp tmp/edenred.csv ~/Downloads/Edenred-Export_$DATE_FORMATED.csv
+cp tmp/edenred.json ~/Downloads/Edenred-Export_$DATE_FORMATED.json
 
 rm tmp/cmb-cookies
