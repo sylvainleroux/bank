@@ -1,5 +1,6 @@
 package com.sleroux.bank.service.importer.edenred;
 
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -19,12 +20,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sleroux.bank.dao.IExtractHistoryDao;
 import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.domain.ImportReport;
 import com.sleroux.bank.domain.ImportReportFile;
 import com.sleroux.bank.model.extract.ExtractDocument;
+import com.sleroux.bank.model.extract.JSONExtract;
 import com.sleroux.bank.model.operation.Operation;
 import com.sleroux.bank.service.importer.ImportType;
 import com.sleroux.bank.util.Config;
@@ -32,20 +38,22 @@ import com.sleroux.bank.util.Config;
 @Service
 public class EndenredImportService {
 
-	private Logger					logger	= LogManager.getLogger(EndenredImportService.class);
+	private Logger logger = LogManager.getLogger(EndenredImportService.class);
 
 	@Autowired
-	IOperationDao					operationDao;
+	IOperationDao operationDao;
 
 	@Autowired
-	IExtractHistoryDao				extractHistoryDao;
+	IExtractHistoryDao extractHistoryDao;
 
-	private final static ImportType	TYPE	= ImportType.EDENRED;
+	private final static ImportType TYPE = ImportType.EDENRED;
 
-	private int						currentYear;
-	private int						currentMonth;
+	private int currentYear;
+	private int currentMonth;
 
-	private static DateFormat		df		= new SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH);
+	private static DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH);
+
+	private ObjectMapper objectMapper = new ObjectMapper();
 
 	public EndenredImportService() {
 		currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
@@ -63,22 +71,27 @@ public class EndenredImportService {
 	@Transactional
 	public void importFiles(List<String> _files, ImportReport _report) {
 
-		Calendar cal = Calendar.getInstance();
-		currentYear = cal.get(Calendar.YEAR);
+		/* Edenred extract generating JSON Files */
 
 		_files.forEach(f -> {
-			ImportReportFile rf = new ImportReportFile();
-			rf.setFilename(f);
-			rf.setImportType(TYPE);
+			ImportReportFile importReportFile = new ImportReportFile();
+			importReportFile.setFilename(f);
+			importReportFile.setImportType(TYPE);
 
-			ExtractDocument extractDocument = readFile(f);
-			rf.setRawLines(extractDocument.getOperations().size());
+			try {
+				objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+				JSONExtract jsonExtract = objectMapper.readValue(new File(f), JSONExtract.class);
 
-			int newLines = 0;
-			for (Operation o : extractDocument.getOperations()) {
-				newLines += operationDao.insertIgnore(o);
+				int newLines = 0;
+				for (Operation o : jsonExtract.getOperations()) {
+					newLines += operationDao.insertIgnore(o);
+				}
+				importReportFile.setNewLines(newLines);
+
+
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			rf.setNewLines(newLines);
 
 			if (Config.getArchiveImportFiles()) {
 				archiveFile(f);
@@ -87,8 +100,8 @@ public class EndenredImportService {
 				File file = new File(f);
 				file.delete();
 			}
-			
-			_report.getReportFiles().add(rf);
+
+			_report.getReportFiles().add(importReportFile);
 
 		});
 
@@ -102,76 +115,5 @@ public class EndenredImportService {
 		file.renameTo(renameTo);
 	}
 
-	private ExtractDocument readFile(String _f) {
-
-		String compte = "EDENRED.TICKET_RESTO";
-		ExtractDocument report = new ExtractDocument();
-		report.setFilename(_f);
-
-		try {
-			Files.readAllLines(Paths.get(_f)).forEach(line -> {
-				Operation o = processLine(line, compte);
-				report.addOperation(o);
-			});
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return report;
-	}
-
-	protected Operation processLine(String _line, String _compte) {
-
-		Operation operation = new Operation();
-
-		operation.setCompte(_compte);
-
-		String[] parts = _line.split(";");
-
-		// Date
-		String dayMonth = parts[0];
-		int month = Integer.parseInt(dayMonth.substring(3));
-		int yearOffset = 0;
-		if (month > currentMonth) {
-			yearOffset = -1;
-		}
-		String date = parts[0] + "/" + (currentYear + yearOffset);
-		try {
-			Date d = df.parse(date);
-			operation.setDateOperation(d);
-			operation.setDateValeur(d);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		int index = 2;
-
-		// Libelle
-		String libelle = parts[index++];
-		if (parts.length == 6) {
-			libelle += parts[index++];
-		}
-		operation.setLibelle(libelle.trim());
-
-		// Transaction status
-		// String status = parts[index++];
-		// line.status = status.trim();
-		index ++;
-		
-		// Montant
-		String montant = parts[index].trim().replaceAll(" ", "").replaceAll(",", ".");
-		try {
-			BigDecimal m = new BigDecimal(montant);
-			if (m.compareTo(BigDecimal.ZERO) > 0) {
-				operation.setCredit(m);
-			} else {
-				operation.setDebit(m.negate());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return operation;
-	}
 
 }

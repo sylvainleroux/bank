@@ -115,36 +115,40 @@ function extractTransactions(callback) {
 
 			var content = rows[i].innerText;
 			content = content.replace(/\t/g, "");
-			cLines = content.split('\n')
+			var cLines = content.split('\n')
 
 			
 			// Parse first line : 19h33 - ABALONE SUSHI
-			dateParts = cLines[0].split('/');
-			dd = dateParts[0];
-			mm = dateParts[1];
+			var dateParts = cLines[0].split('/');
+			var dd = dateParts[0];
+			var mm = dateParts[1];
 
-			year = new Date().getFullYear();
-			month = new Date().getMonth() + 1; // Jan is 0
-			lineMonth = parseInt(mm);
+			var year = new Date().getFullYear();
+			var month = new Date().getMonth() + 1; // Jan is 0
+			var lineMonth = parseInt(mm);
 			// Only 6 month are available on the edenred website
 			if (lineMonth > month){
 				year = year - 1;
 			}
 			
 			// Parse line 2: 19h33 - ABALONE SUSHI
-			line2 = cLines[1];
+			var line2 = cLines[1];
 
 			// Parse line 3: HALLES SAINT FRANCOIS 29000 QUIMPER
-			line3 = cLines[2];
+			var line3 = cLines[2];
 
 			// Parse line 4: Transaction status
-			line4 = cLines[3].replace(/transaction confirmée/, "TRANSACTION_OK");
+			var line4 = cLines[3].replace(/transaction confirmée/, "TRANSACTION_OK");
 
 			// Parse line 5 : - 16,00€
-			line5 = cLines[4].replace(/€/g, "").replace(/ /g, '').replace(/,/g, '.').replace(/-/g, '').trim();
+			var line5 = cLines[4].replace(/€/g, "").replace(/ /g, '').replace(/,/g, '.').replace(/-/g, '').trim();
 			
+			var timestamp = new Date(year, mm, dd).getTime();
+
 			var lineData = {
-				date_operation: new Date(year, mm, dd).getTime() + 1000,
+				compte: "EDENRED.TICKET_RESTO",
+				date_valeur: timestamp,
+				date_operation: timestamp,
 				libelle: line2.trim() + " " +  line3.trim(),
 				credit: 0,
 				debit: line5,
@@ -181,35 +185,39 @@ function loadCredits(callback) {
 			// line 5: 00 x 0,00€
 			
 			content = content.replace(/\t/g, "");
-			cLines = content.split('\n')
+			var cLines = content.split('\n')
 
 			
 			// Parse first line : 19h33 - ABALONE SUSHI
-			dateParts = cLines[0].split('/');
-			dd = dateParts[0];
-			mm = dateParts[1];
-			year = new Date().getFullYear();
-			month = new Date().getMonth() + 1; // Jan is 0
-			lineMonth = parseInt(mm);
+			var dateParts = cLines[0].split('/');
+			var dd = dateParts[0];
+			var mm = dateParts[1];
+			var year = new Date().getFullYear();
+			var month = new Date().getMonth() + 1; // Jan is 0
+			var lineMonth = parseInt(mm);
 			// Only 6 month are available on the edenred website
 			if (lineMonth > month){
 				year = year - 1;
 			}
 			
 			// Parse line 2: 19h33 - ABALONE SUSHI
-			line2 = cLines[1];
+			var line2 = cLines[1];
 
 			// Parse line 3: transaction confirmée  2015
-			line3 = cLines[2];
+			var line3 = cLines[2];
 			if (line3.indexOf('transaction confirmée') > -1 ) {
 				line3 = "TRANSACTION_OK"
 			}	
 
 			// Parse line 4 : + 16,00€
-			line4 = cLines[3].replace(/€/g, "").replace(/ /g, '').replace(/,/g, '.').replace(/\+/g, '').trim();
+			var line4 = cLines[3].replace(/€/g, "").replace(/ /g, '').replace(/,/g, '.').replace(/\+/g, '').trim();
 			
+			var timestamp = new Date(year, mm , dd).getTime();
+
 			var lineData = {
-				date_operation: new Date(year, mm, dd).getTime() / 1000,
+				compte: "EDENRED.TICKET_RESTO",
+				date_valeur: timestamp,
+				date_operation: timestamp,
 				libelle: line2.trim(),
 				debit: 0,
 				credit: line4,

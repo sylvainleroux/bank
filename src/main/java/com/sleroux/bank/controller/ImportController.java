@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.sleroux.bank.business.BusinessServiceAbstract;
+import com.sleroux.bank.domain.ImportReport;
 import com.sleroux.bank.presenter.common.ConsoleAppHeader;
 import com.sleroux.bank.service.extract.ExtractService;
+import com.sleroux.bank.service.extract.ImportReportPresenter;
 import com.sleroux.bank.service.importer.ImportService;
 import com.sleroux.bank.service.importer.ImportType;
 
@@ -22,8 +24,15 @@ public class ImportController extends BusinessServiceAbstract {
 	public void run() throws Exception {
 
 		ConsoleAppHeader.printAppHeader("Import");
-		importService.importFiles(ImportType.CMB, extractService.getFilesCMB());
-		
+		{
+			ImportReport report = importService.importFiles(ImportType.CMB, extractService.getFilesCMB());
+			ImportReportPresenter.displayReport(report);
+		}
+
+		{
+			ImportReport report = importService.importFiles(ImportType.EDENRED, extractService.getFilesEdenred());
+			ImportReportPresenter.displayReport(report);
+		}
 	}
 
 }

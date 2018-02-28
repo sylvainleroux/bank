@@ -1,8 +1,5 @@
 package com.sleroux.bank.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.sleroux.bank.business.BusinessServiceAbstract;
 import com.sleroux.bank.domain.ImportReport;
 import com.sleroux.bank.presenter.common.ConsoleAppHeader;
@@ -11,6 +8,9 @@ import com.sleroux.bank.service.extract.ImportReportPresenter;
 import com.sleroux.bank.service.importer.ImportService;
 import com.sleroux.bank.service.importer.ImportType;
 import com.sleroux.bank.util.Config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ExtractController extends BusinessServiceAbstract {

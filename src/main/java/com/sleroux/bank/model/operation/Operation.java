@@ -16,6 +16,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "operation")
@@ -34,10 +36,12 @@ public class Operation implements Serializable {
 
 	@Column(name = "date_operation")
 	@Temporal(TemporalType.DATE)
+	@JsonProperty(value="date_operation")
 	private Date		dateOperation;
 
 	@Column(name = "date_valeur")
 	@Temporal(TemporalType.DATE)
+	@JsonProperty(value="date_valeur")
 	private Date		dateValeur;
 	private String		libelle;
 

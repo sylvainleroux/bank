@@ -1,0 +1,33 @@
+{
+  "compte": "EDENRED.TICKET_RESTO",
+  "format_version": 1,
+  "date": 1519847705698,
+  "operations": [
+    {
+      "compte": "EDENRED.TICKET_RESTO",
+      "credit": 0,
+      "date_operation": 1522101600000,
+      "date_valeur": 1522101600000,
+      "debit": "16.00",
+      "libelle": "13h10 - ABALONE SUSHI QUIMPER,FRA QUIMPER",
+      "status": "transaction en attente de confirmation"
+    },
+    {
+      "compte": "EDENRED.TICKET_RESTO",
+      "credit": 0,
+      "date_operation": 1521586800000,
+      "date_valeur": 1521586800000,
+      "debit": "17.20",
+      "libelle": "19h42 - LE MAHRAJA 43 BOULEVARD DE KERGUELEN 29000 QUIMPER",
+      "status": "TRANSACTION_OK"
+    },
+    {
+      "compte": "EDENRED.TICKET_RESTO",
+      "credit": "60.20",
+      "date_operation": 1516489200000,
+      "date_valeur": 1516489200000,
+      "debit": 0,
+      "libelle": "05h48 - LKXJSG", "status": "TRANSACTION_OK"
+    }
+  ]
+}
