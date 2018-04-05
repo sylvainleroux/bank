@@ -92,7 +92,7 @@ public class TestEndenredImportService {
 
 		operationDao.create(o);
 
-		String fileName = TestEndenredImportService.class.getResource("Edenred-Export_2017-22-08-0822.csv").getFile();
+		String fileName = TestEndenredImportService.class.getResource("Edenred-Export_2018-58-23-2358.json").getFile();
 
 		ImportReport report = importService.importFiles(ImportType.EDENRED, Arrays.asList(fileName));
 		System.out.println(report);

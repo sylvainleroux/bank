@@ -22,7 +22,7 @@ public class SoldeService {
 		BigDecimal total = new BigDecimal(0);
 		List<AccountBalance> accounts = operationDao.getSoldes();
 		for (AccountBalance c : accounts) {
-			if (! (c.getSolde().compareTo(BigDecimal.ZERO) > 0)) {
+			if (c.getSolde().intValue() == 0) {
 				continue;
 			}
 
@@ -34,7 +34,7 @@ public class SoldeService {
 
 	}
 
-	public List<AccountBalance>  getSoldes() {
+	public List<AccountBalance> getSoldes() {
 		return operationDao.getSoldes();
 	}
 

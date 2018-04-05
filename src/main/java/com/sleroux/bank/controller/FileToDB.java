@@ -56,7 +56,11 @@ public class FileToDB extends BusinessServiceAbstract {
 					continue;
 				}
 				System.out.println("new " + b);
-				budgetDao.create(b);
+				try {
+					budgetDao.create(b);
+				}catch(org.springframework.dao.DuplicateKeyException e) {
+					System.out.println("Duplicated exception happened");
+				}
 			} else {
 
 				boolean update = false;

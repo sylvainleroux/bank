@@ -38,7 +38,7 @@ public class DBToFileController extends BusinessServiceAbstract {
 		BudgetDocument document = new BudgetDocument(Config.getBudgetDocumentTemplate());
 
 		BudgetIndex index = new BudgetIndex(budgetDao.findAll());
-		index.firstYear(2016);
+		index.firstYear(2018);
 
 		List<Compte> comptes = compteDao.findAll();
 		document.writeYears(index.getYears());

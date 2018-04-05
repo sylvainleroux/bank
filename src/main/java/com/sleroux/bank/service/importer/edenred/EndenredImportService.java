@@ -1,16 +1,9 @@
 package com.sleroux.bank.service.importer.edenred;
 
-import java.io.Console;
 import java.io.File;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,16 +13,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.core.JsonParseException;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sleroux.bank.dao.IExtractHistoryDao;
 import com.sleroux.bank.dao.IOperationDao;
 import com.sleroux.bank.domain.ImportReport;
 import com.sleroux.bank.domain.ImportReportFile;
-import com.sleroux.bank.model.extract.ExtractDocument;
 import com.sleroux.bank.model.extract.JSONExtract;
 import com.sleroux.bank.model.operation.Operation;
 import com.sleroux.bank.service.importer.ImportType;
@@ -38,22 +28,22 @@ import com.sleroux.bank.util.Config;
 @Service
 public class EndenredImportService {
 
-	private Logger logger = LogManager.getLogger(EndenredImportService.class);
+	private Logger					logger			= LogManager.getLogger(EndenredImportService.class);
 
 	@Autowired
-	IOperationDao operationDao;
+	IOperationDao					operationDao;
 
 	@Autowired
-	IExtractHistoryDao extractHistoryDao;
+	IExtractHistoryDao				extractHistoryDao;
 
-	private final static ImportType TYPE = ImportType.EDENRED;
+	private final static ImportType	TYPE			= ImportType.EDENRED;
 
-	private int currentYear;
-	private int currentMonth;
+	private int						currentYear;
+	private int						currentMonth;
 
-	private static DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH);
+	private static DateFormat		df				= new SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH);
 
-	private ObjectMapper objectMapper = new ObjectMapper();
+	private ObjectMapper			objectMapper	= new ObjectMapper();
 
 	public EndenredImportService() {
 		currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
@@ -80,6 +70,7 @@ public class EndenredImportService {
 
 			try {
 				objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
 				JSONExtract jsonExtract = objectMapper.readValue(new File(f), JSONExtract.class);
 
 				int newLines = 0;
@@ -87,7 +78,6 @@ public class EndenredImportService {
 					newLines += operationDao.insertIgnore(o);
 				}
 				importReportFile.setNewLines(newLines);
-
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -114,6 +104,5 @@ public class EndenredImportService {
 		File renameTo = new File(newFilename);
 		file.renameTo(renameTo);
 	}
-
 
 }
