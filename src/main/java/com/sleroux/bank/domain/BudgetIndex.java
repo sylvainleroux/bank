@@ -2,6 +2,7 @@ package com.sleroux.bank.domain;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -15,7 +16,9 @@ import com.sleroux.bank.model.budget.Budget;
 @SuppressWarnings("serial")
 public class BudgetIndex {
 
-	private final static String SOLDE_INIT = "SOLDE_INIT";
+	private final static String		SOLDE_INIT	= "SOLDE_INIT";
+
+	private HashMap<Integer, Year>	map			= new LinkedHashMap<>();
 
 	public List<String> getCredits(String _compte) {
 		Stream<List<String>> stream = map.values().stream().map(y -> y.getCredits(_compte));
@@ -114,7 +117,6 @@ public class BudgetIndex {
 			if (_value.intValue() == 0) {
 				return;
 			}
-
 			Budget soldeInit = this.get(SOLDE_INIT);
 			if (soldeInit == null) {
 				this.put(SOLDE_INIT, createSoldeInit(_value));
@@ -141,7 +143,7 @@ public class BudgetIndex {
 		if (_value.compareTo(BigDecimal.ZERO) > 0) {
 			b.setCredit(_value);
 		} else {
-			b.setDebit(_value);
+			b.setDebit(_value.negate());
 		}
 
 		return b;
@@ -156,12 +158,10 @@ public class BudgetIndex {
 		return _soldeInit;
 	}
 
-	public HashMap<Integer, Year> map = new LinkedHashMap<>();
-
 	public BudgetIndex(List<Budget> _db) {
-
+		
 		for (Budget b : _db) {
-			
+
 			Year y = map.get(b.getYear());
 			if (y == null) {
 				y = new Year();
@@ -215,7 +215,7 @@ public class BudgetIndex {
 	}
 
 	public List<Integer> getYears() {
-		return new ArrayList<>(map.keySet());
+		return map.keySet().stream().sorted().collect(Collectors.toList());
 	}
 
 	public void firstYear(int _firstYear) {
@@ -248,6 +248,10 @@ public class BudgetIndex {
 			}
 		}
 
+	}
+
+	public HashMap<Integer, Year> getMap() {
+		return map;
 	}
 
 }

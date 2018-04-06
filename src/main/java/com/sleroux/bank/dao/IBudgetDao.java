@@ -13,4 +13,6 @@ public interface IBudgetDao extends IOperations<Budget> {
 
 	Budget findByYearMonthCatego(int _year, int _month, String _catego, String _compte);
 
+	List<Budget> findAllSorted();
+
 }

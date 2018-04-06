@@ -2,6 +2,7 @@ package com.sleroux.bank.model.budget;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Comparator;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @IdClass(BudgetKey.class)
 @Table(name = "budget")
-public class Budget implements Serializable {
+public class Budget implements Serializable, Comparable<Budget> {
 
 	protected BigDecimal	debit	= BigDecimal.ZERO;
 	protected BigDecimal	credit	= BigDecimal.ZERO;
@@ -82,7 +83,22 @@ public class Budget implements Serializable {
 		return "Budget [debit=" + debit + ", credit=" + credit + ", year=" + year + ", month=" + month + ", catego="
 				+ catego + ", compte=" + compte + "]";
 	}
+
+	@Override
+	public int compareTo(Budget arg0) {
+		return Comparators.YEAR.compare(this, arg0);
+	}
 	
 	
+	public static class Comparators {
+
+        public static Comparator<Budget> YEAR = new Comparator<Budget>() {
+            @Override
+            public int compare(Budget o1, Budget o2) {
+                return o1.year - o2.year;
+            }
+        };
+      
+    }
 
 }

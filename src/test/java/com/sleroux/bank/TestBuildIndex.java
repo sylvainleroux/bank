@@ -69,7 +69,7 @@ public class TestBuildIndex {
 
 		BudgetIndex index = new BudgetIndex(Arrays.asList(a, b, c, d));
 
-		HashMap<String, BigDecimal> m = index.map.get(2017).reduce();
+		HashMap<String, BigDecimal> m = index.getMap().get(2017).reduce();
 
 		m.entrySet().forEach(e -> {
 			System.out.println(e.getKey() + " : " + e.getValue());

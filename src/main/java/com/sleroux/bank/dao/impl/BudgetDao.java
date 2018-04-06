@@ -1,9 +1,7 @@
 package com.sleroux.bank.dao.impl;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.sleroux.bank.dao.IBudgetDao;
@@ -28,9 +26,8 @@ public class BudgetDao extends AbstractHibernateDao<Budget> implements IBudgetDa
 
 	@Override
 	public void backupAndTruncate() {
-		getCurrentSession()
-				.createSQLQuery(
-						"insert into bank.budget_backup(year, month, catego, debit, credit, notes, compte) select year,month, catego, debit, credit, notes, compte from bank.budget")
+		getCurrentSession().createSQLQuery(
+				"insert into bank.budget_backup(year, month, catego, debit, credit, notes, compte) select year,month, catego, debit, credit, notes, compte from bank.budget")
 				.executeUpdate();
 
 		getCurrentSession().createSQLQuery("truncate table bank.budget").executeUpdate();
@@ -44,6 +41,11 @@ public class BudgetDao extends AbstractHibernateDao<Budget> implements IBudgetDa
 						"from Budget where year = :year and month = :month and catego = :catego and compte=:compte")
 				.setParameter("compte", _compte).setParameter("year", _year).setParameter("month", _month)
 				.setParameter("catego", _catego).uniqueResult();
+	}
+
+	@Override
+	public List<Budget> findAllSorted() {
+		return getCurrentSession().createQuery("from Budget order by year, month").list();
 	}
 
 }
