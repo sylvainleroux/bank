@@ -75,9 +75,11 @@ public class EndenredImportService {
 
 				int newLines = 0;
 				for (Operation o : jsonExtract.getOperations()) {
+					System.out.println(o);
 					newLines += operationDao.insertIgnore(o);
 				}
 				importReportFile.setNewLines(newLines);
+				importReportFile.setRawLines(jsonExtract.getOperations().size());
 
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
@@ -34,7 +35,7 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 		String sql = "INSERT IGNORE into operation (compte, date_operation, date_valeur, libelle, credit, debit)";
 		sql += "VALUES (:compte, :date_operation, :date_valeur, :libelle, :credit, :debit)";
 
-		Query query = getCurrentSession().createSQLQuery(sql);
+		NativeQuery<Operation> query = getCurrentSession().createNativeQuery(sql, Operation.class);
 		query.setParameter("compte", _o.getCompte());
 		query.setParameter("date_operation", _o.getDateOperation());
 		query.setParameter("date_valeur", _o.getDateValeur());
@@ -80,7 +81,7 @@ public class OperationDao extends AbstractHibernateDao<Operation> implements IOp
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<AccountBalance> getSoldes() {
-		Query query = getCurrentSession().createSQLQuery("select * from bank.soldes")
+		Query<AccountBalance> query = getCurrentSession().createSQLQuery("select * from bank.soldes")
 				.setResultTransformer(Transformers.aliasToBean(AccountBalance.class));
 		return query.list();
 	}

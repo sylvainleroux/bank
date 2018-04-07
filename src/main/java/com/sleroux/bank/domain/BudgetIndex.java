@@ -2,7 +2,6 @@ package com.sleroux.bank.domain;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -159,7 +158,7 @@ public class BudgetIndex {
 	}
 
 	public BudgetIndex(List<Budget> _db) {
-		
+
 		for (Budget b : _db) {
 
 			Year y = map.get(b.getYear());

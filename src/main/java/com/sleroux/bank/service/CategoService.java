@@ -61,16 +61,17 @@ public class CategoService {
 			int opMonth = c.get(Calendar.MONTH) + 1;
 
 			// Shift salaire to next month
-			if (o.getCatego().equals("SALAIRE")) {
+			if (o.getCatego().startsWith("REVENUS.")) {
 				if (c.get(Calendar.DAY_OF_MONTH) >= 20) {
 					opMonth++;
 					if (opMonth > 12) {
 						opMonth = 1;
 						opYear++;
 					}
+					System.out.printf("Assigned to year: %d, month: %d\n", opYear, opMonth);
 				}
 			}
-
+			
 			// Shift VIR.* to next month
 			if (o.getCatego().startsWith("PLMT.")) {
 				if (c.get(Calendar.DAY_OF_MONTH) >= 20) {
