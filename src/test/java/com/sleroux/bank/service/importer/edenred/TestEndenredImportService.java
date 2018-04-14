@@ -67,11 +67,11 @@ public class TestEndenredImportService {
 		}
 
 		Assert.assertEquals(
-				"[EDENRED.TICKET_RESTO|27/03/18|27/03/18|13h10 - ABALONE SUSHI QUIMPER,FRA QUIMPER|-16.00]",
+				"[EDENRED.TICKET_RESTO|29/04/17|29/04/17|13h10 - ABALONE SUSHI QUIMPER,FRA QUIMPER|-16.00]",
 				operations.get(0).toString());
 
 		Assert.assertEquals(
-				"[EDENRED.TICKET_RESTO|21/01/18|21/01/18|05h48 - LKXJSG|+60.20]",
+				"[EDENRED.TICKET_RESTO|19/03/18|19/03/18|05h48 - LKXJSG|+60.20]",
 				operations.get(2).toString());
 
 	}
@@ -98,10 +98,11 @@ public class TestEndenredImportService {
 		System.out.println(report);
 
 		List<Operation> operations = operationDao.findAll();
-
+		
 		Assert.assertEquals(
 				"[EDENRED.TICKET_RESTO|29/04/17|29/04/17|13h10 - ABALONE SUSHI QUIMPER,FRA QUIMPER|-16.00]",
 				operations.get(0).toString());
+		
 		Assert.assertEquals(3, report.getNbLines());
 		Assert.assertEquals(2, report.getNewLines());
 
