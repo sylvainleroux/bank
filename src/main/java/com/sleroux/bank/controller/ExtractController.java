@@ -30,16 +30,6 @@ public class ExtractController extends BusinessServiceAbstract {
 		ConsoleAppHeader.printAppHeader("Extract Edenred");
 		extractService.runExtract(Config.getImportCommandEdenred());
 
-		ConsoleAppHeader.printAppHeader("Import documents");
-
-		ImportReport reportCMB = importService.importFiles(ImportType.CMB, extractService.getFilesCMB());
-		ImportReportPresenter.displayReport(reportCMB);
-
-		ImportReport reportEdenred = importService.importFiles(ImportType.EDENRED, extractService.getFilesEdenred());
-		ImportReportPresenter.displayReport(reportEdenred);
-
-		ConsoleAppHeader.printAppHeader("Balances");
-		importService.updateBalances(extractService.getBalanceFiles());
 
 	}
 

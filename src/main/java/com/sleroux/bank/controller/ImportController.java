@@ -24,15 +24,15 @@ public class ImportController extends BusinessServiceAbstract {
 	public void run() throws Exception {
 
 		ConsoleAppHeader.printAppHeader("Import");
-		{
-			ImportReport report = importService.importFiles(ImportType.CMB, extractService.getFilesCMB());
-			ImportReportPresenter.displayReport(report);
-		}
 
-		{
-			ImportReport report = importService.importFiles(ImportType.EDENRED, extractService.getFilesEdenred());
-			ImportReportPresenter.displayReport(report);
-		}
+		ImportReport reportCMB = importService.importFiles(ImportType.CMB, extractService.getFilesCMB());
+		ImportReportPresenter.displayReport(reportCMB);
+
+		ImportReport reportEdenred = importService.importFiles(ImportType.EDENRED, extractService.getFilesEdenred());
+		ImportReportPresenter.displayReport(reportEdenred);
+
+		ConsoleAppHeader.printAppHeader("Balances");
+		importService.updateBalances(extractService.getBalanceFiles());
 	}
 
 }

@@ -85,8 +85,8 @@ public class TestEndenredImportService {
 
 		Operation o = new Operation();
 		o.setCompte("EDENRED.TICKET_RESTO");
-		o.setLibelle("15h11 - AVION 0373499 150 ROUTE DE XXXXX 29000 QUIMPER");
-		o.setDebit(new BigDecimal("19.00"));
+		o.setLibelle("13h10 - ABALONE SUSHI QUIMPER,FRA QUIMPER");
+		o.setDebit(new BigDecimal("16.00"));
 		o.setDateOperation(d);
 		o.setDateValeur(d);
 
@@ -100,10 +100,10 @@ public class TestEndenredImportService {
 		List<Operation> operations = operationDao.findAll();
 
 		Assert.assertEquals(
-				"[EDENRED.TICKET_RESTO|29/04/17|29/04/17|15h11 - AVION 0373499 150 ROUTE DE XXXXX 29000 QUIMPER|-19.00]",
+				"[EDENRED.TICKET_RESTO|29/04/17|29/04/17|13h10 - ABALONE SUSHI QUIMPER,FRA QUIMPER|-16.00]",
 				operations.get(0).toString());
-		Assert.assertEquals(16, report.getNbLines());
-		Assert.assertEquals(15, report.getNewLines());
+		Assert.assertEquals(3, report.getNbLines());
+		Assert.assertEquals(2, report.getNewLines());
 
 	}
 
