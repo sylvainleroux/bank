@@ -55,7 +55,7 @@ public class CategoService {
 				;
 
 			Calendar c = Calendar.getInstance();
-			c.setTime(o.getDateValeur());
+			c.setTime(o.getDateOperation());
 
 			int opYear = c.get(Calendar.YEAR);
 			int opMonth = c.get(Calendar.MONTH) + 1;
