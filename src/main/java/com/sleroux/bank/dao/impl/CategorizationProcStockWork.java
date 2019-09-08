@@ -24,7 +24,10 @@ public class CategorizationProcStockWork implements Work {
 	public void execute(Connection _connection) throws SQLException {
 		java.sql.Statement st = _connection.createStatement();
 		BigDecimal montant = op.getCredit().subtract(op.getDebit());
-		String sql = "CALL get_catego2(\"" + op.getLibelle().replaceAll("'", "").replaceAll("\"", "") + "\", '" + op.getCompte() + "'," + montant + ")";
+		
+		String libelle = op.getLibelle().replaceAll("'", "").replaceAll("\"", "") ;
+		
+		String sql = "CALL get_catego2(\"" + libelle+ "\", '" + op.getCompte() + "'," + montant + ")";
 		ResultSet rs = st.executeQuery(sql);
 
 		while (rs.next()) {

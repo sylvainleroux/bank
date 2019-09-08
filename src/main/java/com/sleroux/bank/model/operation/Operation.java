@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "operation")
+
 public class Operation implements Serializable {
 
 	@Id
@@ -36,12 +37,12 @@ public class Operation implements Serializable {
 
 	@Column(name = "date_operation")
 	@Temporal(TemporalType.DATE)
-	@JsonProperty(value="date_operation")
+	@JsonProperty(value = "date_operation")
 	private Date		dateOperation;
 
 	@Column(name = "date_valeur")
 	@Temporal(TemporalType.DATE)
-	@JsonProperty(value="date_valeur")
+	@JsonProperty(value = "date_valeur")
 	private Date		dateValeur;
 	private String		libelle;
 
@@ -114,8 +115,7 @@ public class Operation implements Serializable {
 
 	@Transient
 	public String toString() {
-		String montant = credit.compareTo(BigDecimal.ZERO) > 0 ? "+" + credit.toString()
-				: "-" + debit.toString();
+		String montant = credit.compareTo(BigDecimal.ZERO) > 0 ? "+" + credit.toString() : "-" + debit.toString();
 
 		String sep = "|";
 		return "[" + compte + sep + formatDate(dateOperation) + sep + formatDate(dateValeur) + sep + libelle + sep

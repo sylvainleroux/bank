@@ -113,6 +113,9 @@ public class CMBImportService {
 		if (_file.contains("PLAN EPARGNE LOGEMENT")) {
 			accountNumber = "CMB.PEL";
 		}
+		if (_file.contains("LIVRET DEV")) {
+			accountNumber = "CMB.LDDS";
+		}
 
 		ExtractDocument report = new ExtractDocument();
 		String fileName = _file;

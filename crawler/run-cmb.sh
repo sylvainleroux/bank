@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
- export PATH=$PATH:/usr/local/Cellar/node/4.2.1/lib/node_modules/phantomjs/lib/phantom/bin
+ export PATH=$PATH:/Users/sleroux/.nvm/versions/node/v8.11.1/bin
  PATH=$PATH:/usr/local/bin
 
 rm -Rf tmp/*

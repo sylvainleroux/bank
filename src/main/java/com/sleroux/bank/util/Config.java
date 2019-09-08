@@ -240,4 +240,8 @@ public class Config {
 
 	}
 
+	public static String getNetWorthDocumentTemplate() {
+		return getProperty("NETWORTH_DOCUMENT_TEMPLATE");
+	}
+
 }
