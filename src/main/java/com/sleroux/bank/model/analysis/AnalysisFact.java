@@ -1,7 +1,6 @@
 package com.sleroux.bank.model.analysis;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import com.sleroux.bank.domain.AlertType;
 
@@ -18,7 +17,7 @@ public class AnalysisFact {
 	private BigDecimal	credit_bud;
 	private BigDecimal	debit_bud;
 
-	private BigInteger	flag;
+	private Integer		flag;
 
 	private AlertType	alertType	= AlertType.UNDEFINED;
 
@@ -94,11 +93,11 @@ public class AnalysisFact {
 		compte = _compte;
 	}
 
-	public BigInteger getFlag() {
+	public Integer getFlag() {
 		return flag;
 	}
 
-	public void setFlag(BigInteger _flag) {
+	public void setFlag(Integer _flag) {
 		flag = _flag;
 	}
 
@@ -108,6 +107,5 @@ public class AnalysisFact {
 				+ ", credit_ops=" + credit_ops + ", debit_ops=" + debit_ops + ", credit_bud=" + credit_bud
 				+ ", debit_bud=" + debit_bud + ", flag=" + flag + ", alertType=" + alertType + "]";
 	}
-
 
 }

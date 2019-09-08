@@ -41,7 +41,7 @@ public class AnalysisDao {
 			fact.setDebit_ops((BigDecimal) tuple[5]);
 			fact.setCredit_bud((BigDecimal) tuple[6]);
 			fact.setDebit_bud((BigDecimal) tuple[7]);
-			fact.setFlag((Integer)tuple[8]);
+			fact.setFlag((Integer) tuple[8]);
 
 			facts.add(fact);
 		}
