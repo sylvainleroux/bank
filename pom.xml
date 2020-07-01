@@ -12,7 +12,7 @@
 		<buildNumber>${project.version}-${maven.build.timestamp}</buildNumber>
 
 		<javassist.version>3.20.0-GA</javassist.version>
-		<mysql-connector-java.version>5.1.37</mysql-connector-java.version>
+		<mysql-connector-java.version>8.0.16</mysql-connector-java.version>
 		<tomcat-dbcp.version>7.0.42</tomcat-dbcp.version>
 		<org.slf4j.version>1.7.13</org.slf4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
